@@ -9,11 +9,33 @@ repositories {
     mavenCentral()
 }
 
+project.ext.lwjglNatives = "natives-windows"
+
 dependencies {
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.6.0'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
+
+    // Lombok Annotations Dependencies
+    compile 'org.projectlombok:lombok:1.18.16'
+    annotationProcessor 'org.projectlombok:lombok:1.18.16'
+
+    // Math Dependencies
+    compile group: 'org.joml', name: 'joml', version: '1.10.0'
+
+    // LWJGL Dependencies
+    compile platform("org.lwjgl:lwjgl-bom:3.2.3")
+    compile "org.lwjgl:lwjgl"
+    compile "org.lwjgl:lwjgl-assimp"
+    compile "org.lwjgl:lwjgl-glfw"
+    compile "org.lwjgl:lwjgl-openal"
+    compile "org.lwjgl:lwjgl-opengl"
+    compile "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
 }
 
 test {
-    useJUnitPlatform()
+
 }
