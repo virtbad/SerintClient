@@ -83,4 +83,11 @@ public class Shader {
         fragment = null;
     }
 
+    /**
+     * Binds a shader for usage
+     */
+    public void bind(){
+        glUseProgram(id);
+    }
+
 }
