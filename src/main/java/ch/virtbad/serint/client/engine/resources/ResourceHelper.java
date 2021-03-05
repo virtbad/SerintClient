@@ -1,5 +1,7 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import lombok.extern.slf4j.Slf4j;
+
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
@@ -10,6 +12,7 @@ import java.util.Scanner;
  * This class helps with a few basic resource operations, like loading files
  * @author Virt
  */
+@Slf4j
 public class ResourceHelper {
 
     /**
@@ -18,6 +21,7 @@ public class ResourceHelper {
      * @return InputStream to be processed
      */
     public static InputStream getClasspathResource(String path){
+        log.debug("Fetching Classpath Resource {}", path);
         return ResourceHelper.class.getResourceAsStream(path);
     }
 

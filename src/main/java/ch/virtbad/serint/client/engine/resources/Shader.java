@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import lombok.extern.slf4j.Slf4j;
 import org.joml.Matrix4f;
 
 import static org.lwjgl.opengl.GL20.*;
@@ -8,6 +9,7 @@ import static org.lwjgl.opengl.GL20.*;
  * This class stores code for using and creating shaders
  * @author Virt
  */
+@Slf4j
 public class Shader {
     public static final String TYPE_INDICATOR = "#type ";
     public static final String TYPE_VERTEX = "vertex";
@@ -74,7 +76,8 @@ public class Shader {
         glLinkProgram(id);
 
         if (glGetProgrami(id, GL_LINK_STATUS) == GL_FALSE){
-            System.err.println(glGetProgramInfoLog(id, glGetProgrami(id, GL_INFO_LOG_LENGTH)));
+            log.error("Failed to link Shaders");
+            log.error(glGetProgramInfoLog(id, glGetProgrami(id, GL_INFO_LOG_LENGTH)));
             throw new RuntimeException("Failed to link Shaders");
         }
 

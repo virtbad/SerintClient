@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.engine.input;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
 import static org.lwjgl.glfw.GLFW.*;
 
@@ -8,6 +9,7 @@ import static org.lwjgl.glfw.GLFW.*;
  * This class implements a basic key listener, which keeps track of the states of the keys
  * @author Virt
  */
+@Slf4j
 public class Mouse {
 
     private boolean[] buttons;
@@ -38,7 +40,7 @@ public class Mouse {
      */
     private void buttonCallback(long window, int button, int action, int mods){
         if (!(button < 0 || button >= 8)) buttons[button] = action == GLFW_PRESS;
-        else System.err.println("Invalid Mouse Event received with following button: " + button);
+        else log.warn("Invalid Mouse Event received with following button: " + button);
     }
 
     /**

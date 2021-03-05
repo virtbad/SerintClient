@@ -1,12 +1,15 @@
 package ch.virtbad.serint.client.engine.resources;
 
 import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
+
 import static org.lwjgl.opengl.GL20.*;
 
 /**
  * This class defines a primitive part of a shader, this part is usually a Fragment or Vertex shader
  * @author Virt
  */
+@Slf4j
 public class PrimitiveShader {
 
     @Getter
@@ -25,7 +28,8 @@ public class PrimitiveShader {
         glCompileShader(id);
 
         if (glGetShaderi(id, GL_COMPILE_STATUS) == GL_FALSE){
-            System.err.println(glGetShaderInfoLog(id, glGetShaderi(id, GL_INFO_LOG_LENGTH)));
+            log.error("Failed to compile Shader");
+            log.error(glGetShaderInfoLog(id, glGetShaderi(id, GL_INFO_LOG_LENGTH)));
             throw new RuntimeException("Failed to compile Shader");
         }
     }

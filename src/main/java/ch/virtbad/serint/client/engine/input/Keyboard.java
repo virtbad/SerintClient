@@ -1,11 +1,14 @@
 package ch.virtbad.serint.client.engine.input;
 
+import lombok.extern.slf4j.Slf4j;
+
 import static org.lwjgl.glfw.GLFW.*;
 
 /**
  * This class implements a basic key listener, which keeps track of the states of the keys
  * @author Virt
  */
+@Slf4j
 public class Keyboard {
     private boolean[] keys;
 
@@ -27,7 +30,7 @@ public class Keyboard {
      */
     private void callback(long window, int key, int scancode, int action, int mods){
         if (!(key < 0 || key >= 350)) keys[key] = action != GLFW_RELEASE; // False if key was released, so GLFW_PRESS and GLFW_REPEAT both are true
-        else System.err.println("Invalid Keyboard Event received with following key: " + key);
+        else log.warn("Invalid Keyboard Event received with following key: " + key);
     }
 
     /**

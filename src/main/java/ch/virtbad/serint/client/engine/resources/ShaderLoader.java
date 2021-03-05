@@ -1,11 +1,14 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.util.HashMap;
 
 /**
  * This class loads and stores shaders for later use
  * @author Virt
  */
+@Slf4j
 public class ShaderLoader {
     public static final String FILE_ENDING = ".glsl";
     public static final String FILE_DEFAULT = "default.glsl";
@@ -38,7 +41,7 @@ public class ShaderLoader {
      * @param folder directory to load from
      */
     public void load(String folder){
-        System.out.println("Loading Shader Directory: " + folder);
+        log.info("Loading Shader Directory: " + folder);
         String content = ResourceHelper.getText(ResourceHelper.getClasspathResource(folder));
         if (content == null) throw new IllegalStateException("Failed to load shaders from folder: " + folder);
 
@@ -56,11 +59,11 @@ public class ShaderLoader {
      * @param name name of the shader
      */
     private void loadShader(String file, String name){
-        System.out.println("Loading Shader: " + file);
+        log.info("Loading Shader: " + file);
         String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(file));
 
         if (source == null){
-            System.err.println("Failed to load Shader: " + file);
+            log.warn("Failed to load Shader: " + file);
             return;
         }
 
@@ -70,7 +73,7 @@ public class ShaderLoader {
             map.put(name, shader);
         }catch (RuntimeException e){
             // Do not crash if shader syntax error or things like that
-            System.out.println("Failed to load Shader: " + file);
+            log.warn("Failed to load Shader: " + file);
             e.printStackTrace();
         }
     }
@@ -79,7 +82,7 @@ public class ShaderLoader {
      * Loads the default Shader
      */
     private void loadDefault(){
-        System.out.println("Loading default Shader");
+        log.info("Loading default Shader");
         String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(path + "/" + FILE_DEFAULT));
 
         if (source == null) throw new RuntimeException("Failed to load default Shader");

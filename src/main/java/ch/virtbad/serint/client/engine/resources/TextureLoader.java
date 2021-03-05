@@ -1,5 +1,7 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 
@@ -7,6 +9,7 @@ import java.util.HashMap;
  * This class stores and loads textures from resources for later use
  * @author Virt
  */
+@Slf4j
 public class TextureLoader {
     public static final String FILE_ENDING = ".png";
     public static final String FILE_DEFAULT = "default.png";
@@ -39,7 +42,7 @@ public class TextureLoader {
      * @param folder folder to load from
      */
     public void load(String folder){
-        System.out.println("Loading Texture Directory: " + folder);
+        log.info("Loading Texture Directory: " + folder);
         String content = ResourceHelper.getText(ResourceHelper.getClasspathResource(folder));
         if (content == null) throw new IllegalStateException("Failed to load textures from folder: " + folder);
 
@@ -57,11 +60,11 @@ public class TextureLoader {
      * @param name name to store it with
      */
     private void loadTexture(String file, String name){
-        System.out.println("Loading Texture: " + file);
+        log.info("Loading Texture: " + file);
         BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(file));
 
         if (image == null){
-            System.out.println("Failed to load Texture: " + file);
+            log.warn("Failed to load Texture: " + file);
             return;
         }
 
@@ -71,7 +74,7 @@ public class TextureLoader {
             map.put(name, texture);
         } catch (RuntimeException e){
             // Do also not crash if somehow failing to load single texture
-            System.out.println("Failed to load Texture: " + file);
+            log.warn("Failed to load Texture: " + file);
             e.printStackTrace();
         }
     }
@@ -80,7 +83,7 @@ public class TextureLoader {
      * Loads the default Texture
      */
     private void loadDefault(){
-        System.out.println("Loading default Texture");
+        log.info("Loading default Texture");
         BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(path + "/" + FILE_DEFAULT));
 
         if (image == null) throw new RuntimeException("Failed to load default Texture");
