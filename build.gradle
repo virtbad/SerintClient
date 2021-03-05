@@ -16,6 +16,7 @@ dependencies {
     // Lombok Annotations Dependencies
     compile 'org.projectlombok:lombok:1.18.16'
     annotationProcessor 'org.projectlombok:lombok:1.18.16'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.16'
 
     // Math Dependencies
     compile group: 'org.joml', name: 'joml', version: '1.10.0'
@@ -34,6 +35,16 @@ dependencies {
     runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
     runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    // Serialisation Dependencies
+    compile 'com.google.code.gson:gson:2.8.6'
+
+    // Networking Library
+    compile 'com.github.VirtCode:PseudoPackets:v1.0'
+
+    // Logging
+    compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha1'
+    compile group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha1'
 }
 
 test {
