@@ -1,6 +1,5 @@
-package ch.virtbad.serint.engine.resources;
+package ch.virtbad.serint.client.engine.resources;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.HashMap;
 

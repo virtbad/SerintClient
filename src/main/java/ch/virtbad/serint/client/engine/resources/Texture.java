@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine.resources;
+package ch.virtbad.serint.client.engine.resources;
 
 import lombok.Getter;
 

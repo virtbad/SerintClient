@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine.input;
+package ch.virtbad.serint.client.engine.input;
 
 import lombok.Getter;
 

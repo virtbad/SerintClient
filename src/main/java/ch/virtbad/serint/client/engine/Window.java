@@ -1,11 +1,11 @@
-package ch.virtbad.serint.engine;
+package ch.virtbad.serint.client.engine;
 
 
-import ch.virtbad.serint.engine.events.BasicEvent;
-import ch.virtbad.serint.engine.events.BooleanEvent;
-import ch.virtbad.serint.engine.events.EventHelper;
-import ch.virtbad.serint.engine.input.Keyboard;
-import ch.virtbad.serint.engine.input.Mouse;
+import ch.virtbad.serint.client.engine.events.BasicEvent;
+import ch.virtbad.serint.client.engine.events.BooleanEvent;
+import ch.virtbad.serint.client.engine.events.EventHelper;
+import ch.virtbad.serint.client.engine.input.Keyboard;
+import ch.virtbad.serint.client.engine.input.Mouse;
 import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.opengl.GL;

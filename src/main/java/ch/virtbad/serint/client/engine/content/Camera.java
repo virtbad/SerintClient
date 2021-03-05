@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine.content;
+package ch.virtbad.serint.client.engine.content;
 
 import org.joml.Matrix4f;
 import org.joml.Vector3f;

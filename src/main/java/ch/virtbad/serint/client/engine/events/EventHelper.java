@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine.events;
+package ch.virtbad.serint.client.engine.events;
 
 /**
  * This class contains helper Methods for dealing with simple Events

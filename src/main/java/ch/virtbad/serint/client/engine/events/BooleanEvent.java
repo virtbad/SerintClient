@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine.events;
+package ch.virtbad.serint.client.engine.events;
 
 /**
  * Basic Interface, used for Event Reference containing a boolean
