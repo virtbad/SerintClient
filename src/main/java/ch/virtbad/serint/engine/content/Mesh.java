@@ -1,4 +1,4 @@
-package ch.virtbad.serint.engine;
+package ch.virtbad.serint.engine.content;
 
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;

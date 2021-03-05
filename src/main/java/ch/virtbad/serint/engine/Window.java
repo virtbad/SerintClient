@@ -6,6 +6,7 @@ import ch.virtbad.serint.engine.events.BooleanEvent;
 import ch.virtbad.serint.engine.events.EventHelper;
 import ch.virtbad.serint.engine.input.Keyboard;
 import ch.virtbad.serint.engine.input.Mouse;
+import lombok.Getter;
 import lombok.Setter;
 import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
@@ -21,6 +22,7 @@ public class Window {
 
     private long id;
 
+    @Getter
     private int width, height;
 
     private String name;

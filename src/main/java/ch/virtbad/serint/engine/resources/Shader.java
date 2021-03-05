@@ -1,5 +1,7 @@
 package ch.virtbad.serint.engine.resources;
 
+import org.joml.Matrix4f;
+
 import static org.lwjgl.opengl.GL20.*;
 
 /**
@@ -88,6 +90,21 @@ public class Shader {
      */
     public void bind(){
         glUseProgram(id);
+    }
+
+    /**
+     * Uploads a 4x4 Matrix as a uniform
+     * @param name name of the uniform
+     * @param mat matrix to upload
+     */
+    public void uploadMatrix4f(String name, Matrix4f mat){
+        int loc = glGetUniformLocation(id, name);
+
+        // Stores matrix in float array
+        float[] floats = new float[4 * 4];
+        mat.get(floats);
+
+        glUniformMatrix4fv(loc, false, floats);
     }
 
 }
