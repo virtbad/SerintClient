@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.networking;
 
 import ch.virt.pseudopackets.client.Client;
+import ch.virtbad.serint.client.util.Globals;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
@@ -13,6 +14,7 @@ import java.io.IOException;
 public class NetworkHandler {
 
     private Client client;
+    private Communications communications;
 
     /**
      * Initializes the NetworkHandler and its components
@@ -26,18 +28,25 @@ public class NetworkHandler {
      * @param hostname hostname or ip to connect to
      * @param port port to connect to
      */
-    public void connect(String hostname, int port){
+    public Communications connect(Communications communications, String hostname, int port){
 
         log.info("Connecting to server on {}:{}", hostname, port);
 
-        client = new Client(new ProtocolWrapper().getProtocol(), Communications.getInstance());
+        client = new Client(new ProtocolWrapper().getProtocol(), communications);
         try {
             client.connect(hostname, port);
         } catch (IOException e) {
             log.error("Failed to connect to said server!");
             e.printStackTrace();
+
+            return null;
         }
 
-        Communications.getInstance().setClient(client);
+        Globals.getNetwork().setServerHostname(hostname);
+        Globals.getNetwork().setServerPort(port);
+
+        communications.setClient(client);
+
+        return communications;
     }
 }

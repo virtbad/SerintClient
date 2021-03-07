@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client;
 
+import ch.virtbad.serint.client.game.Game;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +13,9 @@ public class Serint {
     public static final String VERSION = "0.1-alpha";
 
     NetworkHandler network;
+    Communications communications;
+
+    Game game;
 
     /**
      * Creates the Main Class
@@ -38,8 +42,6 @@ public class Serint {
     public void create(){
         log.info("Creating Client components");
 
-        // Loading Communications
-        Communications.load();
         // Creating Networking
         network = new NetworkHandler();
     }
@@ -50,6 +52,16 @@ public class Serint {
     public void post(){
         log.info("Cleaning current Instance");
 
-        network.connect("localhost", 17371);
+        tryToConnect();
+    }
+
+    public void tryToConnect(){
+        communications = network.connect(new Communications(), "localhost", 17371);
+        if (communications == null){
+            log.error("Failed to connect to server, going to exit.");
+            System.exit(0);
+        }
+
+        game = new Game(communications);
     }
 }
