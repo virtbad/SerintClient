@@ -4,6 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Scanner;
@@ -23,6 +25,21 @@ public class ResourceHelper {
     public static InputStream getClasspathResource(String path){
         log.debug("Fetching Classpath Resource {}", path);
         return ResourceHelper.class.getResourceAsStream(path);
+    }
+
+    /**
+     * Fetches a resource from the local filesystem
+     * @param path path to fetch from
+     * @return stream to be processed
+     */
+    public static InputStream getFilesystemResource(String path){
+        log.debug("Fetching Filesystem File: {}", path);
+        try {
+            return new FileInputStream(path);
+        } catch (FileNotFoundException e) {
+            log.debug("Failed to fetch Filesystem File {}", path);
+            return null;
+        }
     }
 
     /**

@@ -11,17 +11,29 @@ public class Globals {
 
     @Getter
     private static final NetworkingGlobals network = new NetworkingGlobals();
+    @Getter
+    private static final RenderingGlobals rendering = new RenderingGlobals();
 
     /**
      * Contains globals about networking
      */
+    @Getter @Setter
     public static class NetworkingGlobals {
-        @Getter @Setter private String serverName;
-        @Getter @Setter private String serverDescription;
+        private String serverName;
+        private String serverDescription;
+        private String serverVersion;
 
-        @Getter @Setter private String serverHostname;
-        @Getter @Setter private int serverPort;
+        private String serverHostname;
+        private int serverPort;
 
-        @Getter @Setter private float serverPing;
+        private float serverPing;
+    }
+
+    /**
+     * Contains globals about rendering
+     */
+    @Getter @Setter
+    public static class RenderingGlobals {
+        private int fps;
     }
 }

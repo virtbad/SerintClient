@@ -1,9 +1,13 @@
 package ch.virtbad.serint.client;
 
+import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.game.Game;
+import ch.virtbad.serint.client.graphics.DisplayHandler;
+import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
 import lombok.extern.slf4j.Slf4j;
+import org.lwjgl.opengl.GL;
 
 /**
  * @author Virt
@@ -14,6 +18,7 @@ public class Serint {
 
     NetworkHandler network;
     Communications communications;
+    DisplayHandler rendering;
 
     Game game;
 
@@ -33,7 +38,14 @@ public class Serint {
      */
     public void init(){
         log.info("Initializing key components");
+        // Load Config
+        ConfigHandler.load("config.json");
+        ResourceHandler.init();
+        // Create and show Display
+        rendering = new DisplayHandler();
+        rendering.init();
 
+        // Perhaps show Loading screen Here
     }
 
     /**
@@ -41,6 +53,12 @@ public class Serint {
      */
     public void create(){
         log.info("Creating Client components");
+
+        // Loading Resources
+        rendering.obtainContext();
+        ResourceHandler.load(); // Needs to have context to work
+        rendering.loseContext();
+
 
         // Creating Networking
         network = new NetworkHandler();
@@ -53,6 +71,9 @@ public class Serint {
         log.info("Cleaning current Instance");
 
         tryToConnect();
+
+        // Enter Event Listening Loop, should shut down if exited
+        rendering.endUpInListeningLoop();
     }
 
     public void tryToConnect(){

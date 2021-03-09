@@ -42,7 +42,7 @@ public class Communications extends ClientPacketHandler {
 
     @Override
     public void disconnected() {
-        log.info("Disconnected to server!");
+        log.info("Disconnected from server!");
     }
 
     public void handle(PingPacket packet) {
@@ -57,7 +57,11 @@ public class Communications extends ClientPacketHandler {
     }
 
     public void handle(LoggedInPacket packet){
+        Globals.getNetwork().setServerName(packet.getName());
+        Globals.getNetwork().setServerDescription(packet.getDescription());
+        Globals.getNetwork().setServerVersion(packet.getVersion());
 
+        log.info("Successfully connected to {} with Description \"{}\" on Version {}", packet.getName(), packet.getDescription(), packet.getVersion());
     }
 
 }

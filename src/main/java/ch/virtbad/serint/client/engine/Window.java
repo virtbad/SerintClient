@@ -12,6 +12,7 @@ import org.lwjgl.opengl.GL;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.glfw.GLFW.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -59,6 +60,8 @@ public class Window {
         // Initialize OpenGL
         GL.createCapabilities();
         GL11.glViewport(0, 0, width, height);
+        glEnable(GL_BLEND); // Configure Transparency
+        glBlendFunc(GL_ONE, GL_ONE_MINUS_SRC_ALPHA);
 
         // Add Callbacks
         glfwSetWindowCloseCallback(id, window -> EventHelper.emitEvent(closeEvent));
@@ -85,6 +88,12 @@ public class Window {
      */
     public void displayBuffer(){
         glfwSwapBuffers(id);
+    }
+
+    /**
+     * Fetches events from the system. NEEDS TO BE CALLED FROM MAIN THREAD!
+     */
+    public void fetchEvents(){
         glfwPollEvents();
     }
 
@@ -113,5 +122,20 @@ public class Window {
         Mouse mouse = new Mouse();
         mouse.bindCallbacks(this.id);
         return mouse;
+    }
+
+    /**
+     * Gives the context to the current thread
+     */
+    public void obtainContext(){
+        glfwMakeContextCurrent(id);
+        GL.createCapabilities();
+    }
+
+    /**
+     * Removes the current Context
+     */
+    public void loseContext(){
+        glfwMakeContextCurrent(NULL);
     }
 }

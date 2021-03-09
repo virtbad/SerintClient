@@ -14,4 +14,8 @@ public class Game {
         communications.setGame(this);
     }
 
+    public void join(){
+
+    }
+
 }

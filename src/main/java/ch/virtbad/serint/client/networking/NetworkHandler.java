@@ -33,6 +33,8 @@ public class NetworkHandler {
         log.info("Connecting to server on {}:{}", hostname, port);
 
         client = new Client(new ProtocolWrapper().getProtocol(), communications);
+        communications.setClient(client);
+
         try {
             client.connect(hostname, port);
         } catch (IOException e) {
@@ -44,8 +46,6 @@ public class NetworkHandler {
 
         Globals.getNetwork().setServerHostname(hostname);
         Globals.getNetwork().setServerPort(port);
-
-        communications.setClient(client);
 
         return communications;
     }
