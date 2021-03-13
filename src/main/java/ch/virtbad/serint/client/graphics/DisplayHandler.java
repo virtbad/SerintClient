@@ -1,14 +1,11 @@
 package ch.virtbad.serint.client.graphics;
 
-import ch.virtbad.serint.client.config.Config;
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.Window;
 import ch.virtbad.serint.client.engine.input.Keyboard;
 import ch.virtbad.serint.client.engine.input.Mouse;
-import ch.virtbad.serint.client.util.Time;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
-import org.lwjgl.opengl.GL11;
 
 import java.util.HashMap;
 
@@ -24,9 +21,8 @@ public class DisplayHandler {
     private int selected;
     private HashMap<Integer, Scene> scenes;
 
-    private UpdateThread thread;
-    private volatile boolean needToClaimContext = true;
-    private volatile boolean getRidOfContext = false;
+    @Getter
+    private DisplayUpdater updater;
 
     private Keyboard keyboard;
     private Mouse mouse;
@@ -37,7 +33,7 @@ public class DisplayHandler {
     public DisplayHandler(){
         scenes = new HashMap<>();
 
-        thread = new UpdateThread(this);
+        updater = new DisplayUpdater(this);
     }
 
     /**
@@ -54,14 +50,8 @@ public class DisplayHandler {
         keyboard = window.getKeyboard();
         mouse = window.getMouse();
 
-        window.loseContext();
-
-        needToClaimContext = true;
-
-        thread.setFrameRate(ConfigHandler.getConfig().getFps());
-        thread.start();
-
-        while (needToClaimContext); // Wait until context is claimed
+        updater.setFrameRate(ConfigHandler.getConfig().getFps());
+        updater.forceCall();
     }
 
     /**
@@ -91,57 +81,13 @@ public class DisplayHandler {
      * Updates / Renders the scene
      */
     public void update() {
-        if (needToClaimContext){
-            log.info("Reclaiming GL Context!");
-            window.obtainContext();
-            needToClaimContext = false;
-        }
-        if (getRidOfContext){
-            log.info("Getting Rid of GL Context!");
-            window.loseContext();
-            getRidOfContext = false;
-        }
-
         if (scenes.get(selected) != null) {
             scenes.get(selected).update();
             scenes.get(selected).draw();
         }
 
         window.displayBuffer();
-    }
-
-    /**
-     * Puts the Thread into the event listening loop
-     */
-    public void endUpInListeningLoop(){
-        log.info("Dedicating Main thread to Event Listening");
-        while (thread.isRunning()) window.fetchEvents();
-    }
-
-    /**
-     * Obtains the GL context into the current thread
-     */
-    public void obtainContext(){
-        log.info("Passing Context onto {}", Thread.currentThread().getName());
-
-        getRidOfContext = true;
-
-        while (getRidOfContext);
-        thread.setPaused(true);
-
-        window.obtainContext();
-    }
-
-    /**
-     * Loses the GL context off of the current thread
-     */
-    public void loseContext(){
-        log.info("Loosing Context");
-
-        needToClaimContext = true;
-        window.loseContext();
-
-        thread.setPaused(false);
+        window.fetchEvents();
     }
 
 }

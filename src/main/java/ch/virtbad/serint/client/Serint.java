@@ -55,6 +55,7 @@ public class Serint {
         rendering.setScene(0);
 
         rendering.init();
+        rendering.getUpdater().forceCall();
     }
 
     /**
@@ -64,9 +65,7 @@ public class Serint {
         log.info("Creating Client components");
 
         // Loading Resources
-        rendering.obtainContext();
         ResourceHandler.load(); // Needs to have context to work
-        rendering.loseContext();
 
 
         // Creating Networking
@@ -82,15 +81,19 @@ public class Serint {
         //tryToConnect();
         game = new Game(null);
 
-        rendering.obtainContext();
         rendering.addScene(1, game);
         rendering.setScene(1);
-        rendering.loseContext();
 
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
 
         // Enter Event Listening Loop, should shut down if exited
-        rendering.endUpInListeningLoop();
+        run();
+    }
+
+    public void run(){
+        while (true) { // TODO: Add breakpoint
+            rendering.getUpdater().call();
+        }
     }
 
     public void tryToConnect(){

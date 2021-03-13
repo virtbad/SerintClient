@@ -8,7 +8,6 @@ uniform mat4 viewMatrix;
 
 void main() {
     gl_Position = viewMatrix * (worldMatrix * vec4(pos.x, pos.y, 0.0, 1.0));
-    //gl_Position = vec4(pos.x, pos.y, 0.0, 1.0);
 }
 
 #type fragment
@@ -17,5 +16,5 @@ void main() {
 out vec4 FragColor;
 
 void main(){
-    FragColor = vec4(1, 0, 1, 1);
+    FragColor = vec4(1, 0, 0, 1);
 }
