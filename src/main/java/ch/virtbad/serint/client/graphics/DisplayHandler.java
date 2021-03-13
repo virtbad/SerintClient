@@ -3,6 +3,8 @@ package ch.virtbad.serint.client.graphics;
 import ch.virtbad.serint.client.config.Config;
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.Window;
+import ch.virtbad.serint.client.engine.input.Keyboard;
+import ch.virtbad.serint.client.engine.input.Mouse;
 import ch.virtbad.serint.client.util.Time;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +28,9 @@ public class DisplayHandler {
     private volatile boolean needToClaimContext = true;
     private volatile boolean getRidOfContext = false;
 
+    private Keyboard keyboard;
+    private Mouse mouse;
+
     /**
      * Creates a display handler
      */
@@ -45,6 +50,10 @@ public class DisplayHandler {
         // Initializing Window with OpenGL
         window.init();
         window.show();
+
+        keyboard = window.getKeyboard();
+        mouse = window.getMouse();
+
         window.loseContext();
 
         needToClaimContext = true;
@@ -63,6 +72,9 @@ public class DisplayHandler {
     public void addScene(int id, Scene scene) {
         log.info("Added scene {}", id);
         scenes.put(id, scene);
+        // Initializing Scene
+        scenes.get(id).setKeyboard(keyboard);
+        scenes.get(id).setMouse(mouse);
         scenes.get(id).init();
     }
 
@@ -79,7 +91,6 @@ public class DisplayHandler {
      * Updates / Renders the scene
      */
     public void update() {
-
         if (needToClaimContext){
             log.info("Reclaiming GL Context!");
             window.obtainContext();
@@ -91,11 +102,10 @@ public class DisplayHandler {
             getRidOfContext = false;
         }
 
-        GL11.glClearColor(1, 0, 0, 1);
-        GL11.glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-        //scenes.get(selected).update();
-        //scenes.get(selected).draw();
+        if (scenes.get(selected) != null) {
+            scenes.get(selected).update();
+            scenes.get(selected).draw();
+        }
 
         window.displayBuffer();
     }

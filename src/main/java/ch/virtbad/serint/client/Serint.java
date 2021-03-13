@@ -6,6 +6,9 @@ import ch.virtbad.serint.client.graphics.DisplayHandler;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
+import ch.virtbad.serint.client.ui.LoadingScene;
+import ch.virtbad.serint.client.ui.TestScene;
+import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
 import org.lwjgl.opengl.GL;
 
@@ -22,6 +25,8 @@ public class Serint {
 
     Game game;
 
+    float startTime;
+
     /**
      * Creates the Main Class
      */
@@ -37,15 +42,19 @@ public class Serint {
      * Initializes minor Things
      */
     public void init(){
+        startTime = Time.getSeconds();
+
         log.info("Initializing key components");
         // Load Config
         ConfigHandler.load("config.json");
         ResourceHandler.init();
         // Create and show Display
         rendering = new DisplayHandler();
-        rendering.init();
 
-        // Perhaps show Loading screen Here
+        rendering.addScene(0, new LoadingScene());
+        rendering.setScene(0);
+
+        rendering.init();
     }
 
     /**
@@ -70,7 +79,15 @@ public class Serint {
     public void post(){
         log.info("Cleaning current Instance");
 
-        tryToConnect();
+        //tryToConnect();
+        game = new Game(null);
+
+        rendering.obtainContext();
+        rendering.addScene(1, game);
+        rendering.setScene(1);
+        rendering.loseContext();
+
+        log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
 
         // Enter Event Listening Loop, should shut down if exited
         rendering.endUpInListeningLoop();

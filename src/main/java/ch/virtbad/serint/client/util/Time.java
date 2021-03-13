@@ -7,7 +7,10 @@ package ch.virtbad.serint.client.util;
  */
 public class Time {
     public static final long NANO_AMOUNT = (long) 1e+9;
-    public static final long MILLI_AMOUNT = (long) 1e+6;
+    public static final long MICRO_AMOUNT = (long) 1e+6;
+    public static final long MILLI_AMOUNT = (long) 1e+3;
+
+    public static final long START = System.currentTimeMillis();
 
     /**
      * Returns the current time in nanoseconds
@@ -33,7 +36,7 @@ public class Time {
      * @return current seconds
      */
     public static float getSeconds() {
-        return System.currentTimeMillis() / 1000f;
+        return (START - System.currentTimeMillis()) / 1000f; //TODO: Make Unified and why does it need this?
     }
 
     /**
