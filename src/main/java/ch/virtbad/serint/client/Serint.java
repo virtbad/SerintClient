@@ -36,6 +36,8 @@ public class Serint {
         init();
         create();
         post();
+
+        run();
     }
 
     /**
@@ -85,8 +87,6 @@ public class Serint {
         rendering.setScene(1);
 
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
-
-        run();
     }
 
     public void run(){

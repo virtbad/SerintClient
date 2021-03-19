@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
+ * This class keeps track of players
  * @author Virt
  */
 @Slf4j
@@ -20,6 +21,8 @@ public class PlayerRegister {
     private boolean ownInit = false;
 
     private HashMap<Integer, Player> players;
+
+    // Initialization and Destruction have to be done on a update since they require the OpenGL context. That's why there are those lists.
     private ArrayList<Integer> toInit;
     private ArrayList<Integer> toDestroy;
 

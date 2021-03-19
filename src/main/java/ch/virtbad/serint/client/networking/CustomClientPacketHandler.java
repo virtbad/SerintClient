@@ -8,10 +8,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 /**
- * @author VirtCode
- * @version 1.0
+ * This class should be replaced by the original ClientPacketHandler from pseudo packets. It currently adds better logging which makes it possible to debug it
+ * @author Virt
  */
-@Slf4j
+@Slf4j @Deprecated
 public abstract class CustomClientPacketHandler extends ClientPacketHandler {
 
     public abstract void connected();

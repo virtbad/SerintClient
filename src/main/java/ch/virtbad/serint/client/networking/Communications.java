@@ -44,6 +44,9 @@ public class Communications extends CustomClientPacketHandler {
         log.info("Disconnected from server!");
     }
 
+
+    // ----- Basic Connection Packets -----
+
     public void handle(PingPacket packet) {
         long diff = System.nanoTime() - packet.getCurrentTimeNanos();
         Globals.getNetwork().setServerPing(diff / 10E6f);
@@ -66,20 +69,16 @@ public class Communications extends CustomClientPacketHandler {
         join(Color.RED, "Test");
     }
 
-    /**
-     * Joins the client using basic player information
-     * @param color color to join with
-     * @param name name to join with
-     */
-    public void join(Color color, String name){
-        log.info("Joining the Game with Name: {}", name);
-        client.sendPacket(new JoinPacket(name, color.getRGB()));
-    }
+
+    // ----- Advanced Connection Packets -----
 
     public void handle(JoinedPacket packet){
         log.info("Joined with Player id {}", packet.getPlayerId());
         game.joined(packet.getPlayerId());
     }
+
+
+    // ----- Player Connection Packets -----
 
     public void handle(PlayerCreatePacket packet){
         game.createPlayer(packet.getPlayerId(), packet.getColor(), packet.getName());
@@ -93,6 +92,23 @@ public class Communications extends CustomClientPacketHandler {
         game.relocatePlayer(packet.getPlayerId(), packet.getX(), packet.getY(), packet.getVelocityX(), packet.getVelocityY());
     }
 
+
+    // ----- Other Methods -----
+
+    /**
+     * Joins the client using basic player information
+     * @param color color to join with
+     * @param name name to join with
+     */
+    public void join(Color color, String name){
+        log.info("Joining the Game with Name: {}", name);
+        client.sendPacket(new JoinPacket(name, color.getRGB()));
+    }
+
+    /**
+     * Pushes a location as a player location onto the server
+     * @param location location to publish
+     */
     public void pushPlayerLocation(MovedLocation location){
         client.sendPacket(new PlayerLocationPacket(0, location.getPosX(), location.getPosY(), location.getVelocityX(), location.getVelocityY())); // We do not care about ids
     }

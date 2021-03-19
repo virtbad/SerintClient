@@ -3,14 +3,13 @@ package ch.virtbad.serint.client.game.features;
 import ch.virtbad.serint.client.engine.content.MeshHelper;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.positioning.MovedLocation;
-import ch.virtbad.serint.client.util.Globals;
 import lombok.Getter;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 
 /**
+ * This class represents an instance of a player that is also drawable on the screen
  * @author Virt
  */
 public class Player extends MeshedGameObject {
@@ -21,6 +20,12 @@ public class Player extends MeshedGameObject {
     @Getter
     private String name;
 
+    /**
+     * Creates a player instance
+     * @param id id of the player
+     * @param color colour of the player (as a float vector)
+     * @param name name of the player
+     */
     public Player(int id, Vector3f color, String name) {
         super(MeshHelper.createQuadVertices(1, 1), MeshHelper.createQuadIndices(), "player", new MovedLocation(), 0);
 

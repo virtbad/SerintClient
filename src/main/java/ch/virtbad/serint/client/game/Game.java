@@ -20,10 +20,16 @@ import static org.lwjgl.opengl.GL11.*;
 public class Game extends Scene {
 
     private Communications communications;
+
+    /**
+     * Creates a game scene
+     * @param communications Communications for game to be based on
+     */
     public Game(Communications communications){
         this.communications = communications;
         communications.setGame(this);
     }
+
 
     private GameContext context;
     private float lastTime = Time.getSeconds();
@@ -31,6 +37,7 @@ public class Game extends Scene {
     private Camera camera;
 
     private PlayerRegister players;
+
 
     @Override
     public void init() {
@@ -62,8 +69,14 @@ public class Game extends Scene {
         players.draw();
     }
 
+
+    /**
+     * This methods takes input from the user and applies velocities to the player.
+     * It should be replaced by a specific controller class one day
+     */
+    @Deprecated
     public void controls(){
-        if (players.getOwn() == null) return;
+        if (players.getOwn() == null) return; // Only run if local player has already been created
 
         float moveVelocity = 4;
         float velocityX = 0;
@@ -82,19 +95,41 @@ public class Game extends Scene {
         if (updated) communications.pushPlayerLocation(players.getOwn().getLocation());
     }
 
+    /**
+     * Is called when the player has successfully joined the game.
+     * @param ownId assigned id by the server
+     */
     public void joined(int ownId){
-        players.setOwn(new Player(ownId, new Vector3f(1, 1, 0), "Own Test"));
+        players.setOwn(new Player(ownId, new Vector3f(1, 1, 0), "Own Test")); // TODO: Replace info here with actual info sent to the server
     }
 
+    /**
+     * Creates a remote player
+     * @param id id of the player
+     * @param color colour of the player
+     * @param name name of the player
+     */
     public void createPlayer(int id, int color, String name){
         Color c = new Color(color);
         players.add(new Player(id, new Vector3f(c.getRed() / 255f, c.getGreen() / 255f, c.getBlue() / 255f), name));
     }
 
+    /**
+     * Destroys / removes a remote player
+     * @param id if of the player
+     */
     public void destroyPlayer(int id){
         players.remove(id);
     }
 
+    /**
+     * Sets the Position and Velocity of a player
+     * @param id id of the player
+     * @param x x coordinate of player
+     * @param y y coordinate of player
+     * @param velX x velocity of player
+     * @param velY y velocity of player
+     */
     public void relocatePlayer(int id, float x, float y, float velX, float velY){
         Player p = players.get(id);
 
