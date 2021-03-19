@@ -3,15 +3,14 @@ package ch.virtbad.serint.client.networking;
 import ch.virt.pseudopackets.client.Client;
 import ch.virt.pseudopackets.handlers.ClientPacketHandler;
 import ch.virtbad.serint.client.game.Game;
-import ch.virtbad.serint.client.networking.packets.LoggedInPacket;
+import ch.virtbad.serint.client.game.positioning.MovedLocation;
+import ch.virtbad.serint.client.networking.packets.*;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.Serint;
-import ch.virtbad.serint.client.networking.packets.KickPaket;
-import ch.virtbad.serint.client.networking.packets.LoginPacket;
-import ch.virtbad.serint.client.networking.packets.PingPacket;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.awt.*;
 import java.io.IOException;
 
 /**
@@ -19,7 +18,7 @@ import java.io.IOException;
  * @author Virt
  */
 @Slf4j
-public class Communications extends ClientPacketHandler {
+public class Communications extends CustomClientPacketHandler {
 
     @Setter
     private Client client; // Is getting set automatically after server creation
@@ -56,12 +55,46 @@ public class Communications extends ClientPacketHandler {
         client.close();
     }
 
-    public void handle(LoggedInPacket packet){
+    public void handle(LoggedInPacket packet) {
         Globals.getNetwork().setServerName(packet.getName());
         Globals.getNetwork().setServerDescription(packet.getDescription());
         Globals.getNetwork().setServerVersion(packet.getVersion());
 
         log.info("Successfully connected to {} with Description \"{}\" on Version {}", packet.getName(), packet.getDescription(), packet.getVersion());
+
+        //TODO: Remove, this is only for Testing reasons
+        join(Color.RED, "Test");
+    }
+
+    /**
+     * Joins the client using basic player information
+     * @param color color to join with
+     * @param name name to join with
+     */
+    public void join(Color color, String name){
+        log.info("Joining the Game with Name: {}", name);
+        client.sendPacket(new JoinPacket(name, color.getRGB()));
+    }
+
+    public void handle(JoinedPacket packet){
+        log.info("Joined with Player id {}", packet.getPlayerId());
+        game.joined(packet.getPlayerId());
+    }
+
+    public void handle(PlayerCreatePacket packet){
+        game.createPlayer(packet.getPlayerId(), packet.getColor(), packet.getName());
+    }
+
+    public void handle(PlayerDestroyPacket packet){
+        game.destroyPlayer(packet.getPlayerId());
+    }
+
+    public void handle(PlayerLocationPacket packet){
+        game.relocatePlayer(packet.getPlayerId(), packet.getX(), packet.getY(), packet.getVelocityX(), packet.getVelocityY());
+    }
+
+    public void pushPlayerLocation(MovedLocation location){
+        client.sendPacket(new PlayerLocationPacket(0, location.getPosX(), location.getPosY(), location.getVelocityX(), location.getVelocityY())); // We do not care about ids
     }
 
 }

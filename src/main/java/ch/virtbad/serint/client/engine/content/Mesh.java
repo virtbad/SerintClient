@@ -3,8 +3,7 @@ package ch.virtbad.serint.client.engine.content;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
-import static org.lwjgl.opengl.GL30.glBindVertexArray;
-import static org.lwjgl.opengl.GL30.glGenVertexArrays;
+import static org.lwjgl.opengl.GL30.*;
 import static org.lwjgl.system.MemoryUtil.NULL;
 
 /**
@@ -76,5 +75,18 @@ public class Mesh {
     public void draw(){
         glBindVertexArray(vao);
         glDrawElements(GL_TRIANGLES, indices.length, GL_UNSIGNED_INT, NULL);
+    }
+
+    /**
+     * Removes the stored buffers from gpu memory
+     */
+    public void destroy(){
+        // Make Sure none is binded
+        glBindVertexArray(0);
+
+        glDeleteBuffers(vbo);
+        glDeleteBuffers(ebo);
+
+        glDeleteVertexArrays(vao);
     }
 }

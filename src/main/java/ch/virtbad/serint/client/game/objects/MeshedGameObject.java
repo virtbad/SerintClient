@@ -2,9 +2,7 @@ package ch.virtbad.serint.client.game.objects;
 
 import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.content.Mesh;
-import ch.virtbad.serint.client.engine.resources.ResourceHelper;
 import ch.virtbad.serint.client.engine.resources.Shader;
-import ch.virtbad.serint.client.engine.resources.Texture;
 import ch.virtbad.serint.client.game.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import org.joml.Matrix4f;
@@ -78,13 +76,20 @@ public class MeshedGameObject extends PositionedGameObject {
 
         // Binds and modifies Shader
         shader.bind();
-        shader.uploadMatrix4f("worldMatrix", worldMatrix);
-        shader.uploadMatrix4f("viewMatrix", context.getCamera().getViewMatrix());
+        shader.uploadMatrix("worldMatrix", worldMatrix);
+        shader.uploadMatrix("viewMatrix", context.getCamera().getViewMatrix());
         uploadUniforms();
 
         // Draws Mesh
         mesh.draw();
 
         super.draw();
+    }
+
+    /**
+     * Destroys the game object
+     */
+    public void destroy(){
+        mesh.destroy();
     }
 }

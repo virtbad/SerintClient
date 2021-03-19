@@ -78,20 +78,19 @@ public class Serint {
     public void post(){
         log.info("Cleaning current Instance");
 
-        //tryToConnect();
-        game = new Game(null);
+        tryToConnect();
+        //game = new Game(null);
 
         rendering.addScene(1, game);
         rendering.setScene(1);
 
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
 
-        // Enter Event Listening Loop, should shut down if exited
         run();
     }
 
     public void run(){
-        while (true) { // TODO: Add breakpoint
+        while (true) { // TODO: Add breakpoint(s)
             rendering.getUpdater().call();
         }
     }

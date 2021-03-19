@@ -1,10 +1,7 @@
 package ch.virtbad.serint.client.networking;
 
 import ch.virt.pseudopackets.packets.Protocol;
-import ch.virtbad.serint.client.networking.packets.KickPaket;
-import ch.virtbad.serint.client.networking.packets.LoggedInPacket;
-import ch.virtbad.serint.client.networking.packets.LoginPacket;
-import ch.virtbad.serint.client.networking.packets.PingPacket;
+import ch.virtbad.serint.client.networking.packets.*;
 import lombok.Getter;
 
 /**
@@ -32,10 +29,24 @@ public class ProtocolWrapper {
     private void registerPackets(){
         // Register Packets here
 
+        // Moderation Packets
         protocol.addPacket(PingPacket.class, 0);
         protocol.addPacket(LoginPacket.class, 1);
         protocol.addPacket(LoggedInPacket.class, 2);
         protocol.addPacket(KickPaket.class, 3);
+
+        // Game Connection Packets
+        protocol.addPacket(JoinPacket.class, 10);
+        protocol.addPacket(JoinedPacket.class, 11);
+
+        // Game Content Packets
+        // Map Transmission
+        // Insert here
+
+        // Player Transmission
+        protocol.addPacket(PlayerCreatePacket.class, 30);
+        protocol.addPacket(PlayerDestroyPacket.class, 31);
+        protocol.addPacket(PlayerLocationPacket.class, 32);
 
     }
 }

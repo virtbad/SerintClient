@@ -2,6 +2,9 @@ package ch.virtbad.serint.client.engine.resources;
 
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Matrix4f;
+import org.joml.Vector2f;
+import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL20.*;
 
@@ -100,7 +103,7 @@ public class Shader {
      * @param name name of the uniform
      * @param mat matrix to upload
      */
-    public void uploadMatrix4f(String name, Matrix4f mat){
+    public void uploadMatrix(String name, Matrix4f mat){
         int loc = glGetUniformLocation(id, name);
 
         // Stores matrix in float array
@@ -108,6 +111,61 @@ public class Shader {
         mat.get(floats);
 
         glUniformMatrix4fv(loc, false, floats);
+    }
+
+    /**
+     * Uploads a Float as a uniform
+     * @param name name of the uniform
+     * @param f float to upload
+     */
+    public void uploadFloat(String name, float f){
+        int loc = glGetUniformLocation(id, name);
+
+        glUniform1f(loc, f);
+    }
+
+    /**
+     * Uploads an Integer as a uniform
+     * @param name name of the uniform
+     * @param i integer to upload
+     */
+    public void uploadInt(String name, int i){
+        int loc = glGetUniformLocation(id, name);
+
+        glUniform1i(loc, i);
+    }
+
+    /**
+     * Uploads a Vector with the size 4 as a uniform
+     * @param name name of the uniform
+     * @param vec vector to upload
+     */
+    public void uploadVector(String name, Vector4f vec){
+        int loc = glGetUniformLocation(id, name);
+
+        glUniform4f(loc, vec.x, vec.y, vec.z, vec.w);
+    }
+
+    /**
+     * Uploads a Vector with the size 3 as a uniform
+     * @param name name of the uniform
+     * @param vec vector to upload
+     */
+    public void uploadVector(String name, Vector3f vec){
+        int loc = glGetUniformLocation(id, name);
+
+        glUniform3f(loc, vec.x, vec.y, vec.z);
+    }
+
+    /**
+     * Uploads a Vector with the size 2 as a uniform
+     * @param name name of the uniform
+     * @param vec vector to upload
+     */
+    public void uploadVector(String name, Vector2f vec){
+        int loc = glGetUniformLocation(id, name);
+
+        glUniform2f(loc, vec.x, vec.y);
     }
 
 }
