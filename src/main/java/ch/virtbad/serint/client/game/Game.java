@@ -3,8 +3,10 @@ package ch.virtbad.serint.client.game;
 import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.game.client.Cinematography;
 import ch.virtbad.serint.client.game.client.Controls;
-import ch.virtbad.serint.client.game.features.Player;
-import ch.virtbad.serint.client.game.registers.PlayerRegister;
+import ch.virtbad.serint.client.game.map.MapObject;
+import ch.virtbad.serint.client.game.map.TileMap;
+import ch.virtbad.serint.client.game.player.Player;
+import ch.virtbad.serint.client.game.player.PlayerRegister;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.util.Time;
@@ -40,6 +42,8 @@ public class Game extends Scene {
     private Controls controls;
 
     private PlayerRegister players;
+    private MapObject map;
+    boolean mapInit = true;
 
 
     @Override
@@ -68,11 +72,20 @@ public class Game extends Scene {
 
         cinematography.update();
 
+        if (!mapInit){
+            map.setContext(context);
+            map.init();
+            mapInit = true;
+        }
+        if (map != null) map.update(delta);
+
+
         lastTime = currentTime;
     }
 
     @Override
     public void draw() {
+        if (map != null && mapInit) map.draw();
         players.draw();
     }
 
@@ -120,5 +133,11 @@ public class Game extends Scene {
         p.getLocation().setPosY(y);
         p.getLocation().setVelocityX(velX);
         p.getLocation().setVelocityY(velY);
+    }
+
+    public void createMap(TileMap map){
+        this.map = new MapObject(map);
+        mapInit = false;
+
     }
 }

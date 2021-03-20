@@ -1,8 +1,8 @@
-package ch.virtbad.serint.client.game.features;
+package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.engine.content.MeshHelper;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
-import ch.virtbad.serint.client.game.positioning.MovedLocation;
+import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import lombok.Getter;
 import org.joml.Vector3f;
 

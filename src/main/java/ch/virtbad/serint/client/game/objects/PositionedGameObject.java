@@ -1,6 +1,6 @@
 package ch.virtbad.serint.client.game.objects;
 
-import ch.virtbad.serint.client.game.positioning.FixedLocation;
+import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 
 /**
  * This class represents a game object which has a position with a quad attached to it

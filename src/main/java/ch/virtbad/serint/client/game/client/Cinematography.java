@@ -1,7 +1,7 @@
 package ch.virtbad.serint.client.game.client;
 
 import ch.virtbad.serint.client.game.GameContext;
-import ch.virtbad.serint.client.game.positioning.FixedLocation;
+import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 
 /**
  * This class handles camera movement

@@ -1,7 +1,7 @@
 package ch.virtbad.serint.client.game.client;
 
 import ch.virtbad.serint.client.game.GameContext;
-import ch.virtbad.serint.client.game.features.Player;
+import ch.virtbad.serint.client.game.player.Player;
 import lombok.Setter;
 import org.lwjgl.glfw.GLFW;
 

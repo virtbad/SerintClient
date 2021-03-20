@@ -40,8 +40,7 @@ public class ProtocolWrapper {
         protocol.addPacket(JoinedPacket.class, 11);
 
         // Game Content Packets
-        // Map Transmission
-        // Insert here
+        protocol.addPacket(MapPacket.class, 20);
 
         // Player Transmission
         protocol.addPacket(PlayerCreatePacket.class, 30);

@@ -1,4 +1,4 @@
-package ch.virtbad.serint.client.game.positioning;
+package ch.virtbad.serint.client.game.objects.positioning;
 
 import lombok.Getter;
 import lombok.Setter;

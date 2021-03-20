@@ -1,9 +1,8 @@
-package ch.virtbad.serint.client.game.registers;
+package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.game.GameContext;
-import ch.virtbad.serint.client.game.features.Player;
+import ch.virtbad.serint.client.game.player.Player;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;

@@ -3,12 +3,12 @@ package ch.virtbad.serint.client.game.objects;
 import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.content.Mesh;
 import ch.virtbad.serint.client.engine.resources.Shader;
-import ch.virtbad.serint.client.game.positioning.FixedLocation;
+import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import org.joml.Matrix4f;
 
 /**
- * This class is a game object that has basic drawing features and has a mesh attached
+ * This class is a game object that has basic drawing player and has a mesh attached
  * @author Virt
  */
 public class MeshedGameObject extends PositionedGameObject {

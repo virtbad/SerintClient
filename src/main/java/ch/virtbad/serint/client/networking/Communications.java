@@ -1,12 +1,13 @@
 package ch.virtbad.serint.client.networking;
 
 import ch.virt.pseudopackets.client.Client;
-import ch.virt.pseudopackets.handlers.ClientPacketHandler;
 import ch.virtbad.serint.client.game.Game;
-import ch.virtbad.serint.client.game.positioning.MovedLocation;
+import ch.virtbad.serint.client.game.map.MapOperations;
+import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import ch.virtbad.serint.client.networking.packets.*;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.Serint;
+import com.google.gson.Gson;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -96,6 +97,13 @@ public class Communications extends CustomClientPacketHandler {
 
     public void handle(PlayerLocationPacket packet){
         game.relocatePlayer(packet.getPlayerId(), packet.getX(), packet.getY(), packet.getVelocityX(), packet.getVelocityY());
+    }
+
+
+    // ----- Map Packets -----
+
+    public void handle(MapPacket packet){
+        game.createMap(packet.getMap());
     }
 
 
