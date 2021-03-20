@@ -12,11 +12,13 @@ public class GameObject {
     @Setter
     protected GameContext context;
 
+    protected boolean initialized;
+
     /**
      * Is called when the object should be initialized
      */
     public void init(){
-
+        initialized = true;
     }
 
     /**

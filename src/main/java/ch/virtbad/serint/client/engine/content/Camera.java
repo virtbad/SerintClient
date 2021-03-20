@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.engine.content;
 
+import lombok.Getter;
 import org.joml.Matrix4f;
 import org.joml.Vector3f;
 
@@ -32,7 +33,10 @@ public class Camera {
 
     private Matrix4f viewMatrix;
     private float xScale, yScale;
+    @Getter
     private float xPos, yPos;
+    @Getter
+    private float xUnits, yUnits;
 
     private float xMinUnits, yMinUnits;
 
@@ -55,6 +59,7 @@ public class Camera {
      * @param screenHeight screen height
      */
     public void setScreenSize(int screenWidth, int screenHeight){
+
         float unitsInHeight, unitsInWidth;
 
         // Calculates units on greater axis using the ratio
@@ -68,6 +73,10 @@ public class Camera {
 
         xScale = 2f / unitsInWidth; // 2 because of NDC -1 to 1
         yScale = 2f / unitsInHeight;
+
+        yUnits = unitsInHeight;
+        xUnits = unitsInWidth;
+
 
         recalculate();
     }
@@ -92,7 +101,7 @@ public class Camera {
 
         viewMatrix.translate(-1, -1, 0); // Translate to bottom left corner
         viewMatrix.scale(xScale, yScale, 0); // Scale to desired screen size
-        viewMatrix.translate(xPos, yPos, 0); // Translate to world coordinates of camera
+        viewMatrix.translate(-xPos, -yPos, 0); // Translate to world coordinates of camera
     }
 
     /**

@@ -73,6 +73,7 @@ public class MeshedGameObject extends PositionedGameObject {
 
     @Override
     public void draw() {
+        if (!initialized) return;
 
         // Binds and modifies Shader
         shader.bind();

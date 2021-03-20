@@ -32,11 +32,17 @@ public class Communications extends CustomClientPacketHandler {
 
     }
 
+    /**
+     * Logs into the server
+     */
+    public void connect(){
+        client.sendPacket(new PingPacket(System.nanoTime())); // Send Test Ping
+        client.sendPacket(new LoginPacket(Serint.VERSION)); // Login
+    }
+
     @Override
     public void connected() {
         log.info("Connected to server!");
-        client.sendPacket(new PingPacket(System.nanoTime())); // Send Test Ping
-        client.sendPacket(new LoginPacket(Serint.VERSION)); // Login
     }
 
     @Override

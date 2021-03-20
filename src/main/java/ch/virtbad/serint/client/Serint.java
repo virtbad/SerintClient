@@ -86,6 +86,8 @@ public class Serint {
         rendering.addScene(1, game);
         rendering.setScene(1);
 
+        communications.connect();
+
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
     }
 

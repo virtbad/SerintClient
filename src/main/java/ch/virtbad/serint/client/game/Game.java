@@ -1,13 +1,14 @@
 package ch.virtbad.serint.client.game;
 
 import ch.virtbad.serint.client.engine.content.Camera;
+import ch.virtbad.serint.client.game.client.Cinematography;
+import ch.virtbad.serint.client.game.client.Controls;
 import ch.virtbad.serint.client.game.features.Player;
 import ch.virtbad.serint.client.game.registers.PlayerRegister;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.util.Time;
 import org.joml.Vector3f;
-import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -19,14 +20,14 @@ import static org.lwjgl.opengl.GL11.*;
  */
 public class Game extends Scene {
 
-    private Communications communications;
+    private Communications com;
 
     /**
      * Creates a game scene
      * @param communications Communications for game to be based on
      */
     public Game(Communications communications){
-        this.communications = communications;
+        this.com = communications;
         communications.setGame(this);
     }
 
@@ -35,6 +36,8 @@ public class Game extends Scene {
     private float lastTime = Time.getSeconds();
 
     private Camera camera;
+    private Cinematography cinematography;
+    private Controls controls;
 
     private PlayerRegister players;
 
@@ -47,6 +50,8 @@ public class Game extends Scene {
 
         context = new GameContext(camera, keyboard, mouse);
 
+        controls = new Controls(context);
+        cinematography = new Cinematography(context);
         players = new PlayerRegister(context);
     }
 
@@ -58,8 +63,10 @@ public class Game extends Scene {
         float currentTime = Time.getSeconds();
         float delta = lastTime - currentTime;
 
-        controls();
+        if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
         players.update(delta);
+
+        cinematography.update();
 
         lastTime = currentTime;
     }
@@ -69,38 +76,14 @@ public class Game extends Scene {
         players.draw();
     }
 
-
-    /**
-     * This methods takes input from the user and applies velocities to the player.
-     * It should be replaced by a specific controller class one day
-     */
-    @Deprecated
-    public void controls(){
-        if (players.getOwn() == null) return; // Only run if local player has already been created
-
-        float moveVelocity = 4;
-        float velocityX = 0;
-        float velocityY = 0;
-
-        if (context.getKeyboard().isDown(GLFW.GLFW_KEY_UP)) velocityY = moveVelocity;
-        if (context.getKeyboard().isDown(GLFW.GLFW_KEY_DOWN)) velocityY = -moveVelocity;
-        if (context.getKeyboard().isDown(GLFW.GLFW_KEY_RIGHT)) velocityX = moveVelocity;
-        if (context.getKeyboard().isDown(GLFW.GLFW_KEY_LEFT)) velocityX = -moveVelocity;
-
-        boolean updated = players.getOwn().getLocation().getVelocityX() != velocityX || players.getOwn().getLocation().getVelocityY() != velocityY;
-
-        players.getOwn().getLocation().setVelocityX(velocityX);
-        players.getOwn().getLocation().setVelocityY(velocityY);
-
-        if (updated) communications.pushPlayerLocation(players.getOwn().getLocation());
-    }
-
     /**
      * Is called when the player has successfully joined the game.
      * @param ownId assigned id by the server
      */
     public void joined(int ownId){
         players.setOwn(new Player(ownId, new Vector3f(1, 1, 0), "Own Test")); // TODO: Replace info here with actual info sent to the server
+        controls.setPlayer(players.getOwn());
+        cinematography.follow(players.getOwn().getLocation());
     }
 
     /**
