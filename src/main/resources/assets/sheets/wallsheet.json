@@ -1,0 +1,130 @@
+[
+  {
+    "x": 0,
+    "y": 0,
+    "top": false,
+    "right": false,
+    "left": false,
+    "bottom": false
+  },
+  {
+    "x": 1,
+    "y": 0,
+    "top": false,
+    "right": true,
+    "left": false,
+    "bottom": false
+  },
+  {
+    "x": 2,
+    "y": 0,
+    "top": true,
+    "right": false,
+    "left": false,
+    "bottom": false
+  },
+  {
+    "x": 3,
+    "y": 0,
+    "top": false,
+    "right": false,
+    "left": false,
+    "bottom": true
+  },
+  {
+    "x": 4,
+    "y": 0,
+    "top": false,
+    "right": false,
+    "left": true,
+    "bottom": false
+  },
+  {
+    "x": 5,
+    "y": 0,
+    "top": true,
+    "right": true,
+    "left": false,
+    "bottom": false
+  },
+  {
+    "x": 6,
+    "y": 0,
+    "top": false,
+    "right": true,
+    "left": false,
+    "bottom": true
+  },
+  {
+    "x": 7,
+    "y": 0,
+    "top": false,
+    "right": true,
+    "left": true,
+    "bottom": false
+  },
+  {
+    "x": 8,
+    "y": 0,
+    "top": true,
+    "right": false,
+    "left": false,
+    "bottom": true
+  },
+  {
+    "x": 9,
+    "y": 0,
+    "top": true,
+    "right": false,
+    "left": true,
+    "bottom": false
+  },
+  {
+    "x": 10,
+    "y": 0,
+    "top": false,
+    "right": false,
+    "left": true,
+    "bottom": true
+  },
+  {
+    "x": 11,
+    "y": 0,
+    "top": true,
+    "right": true,
+    "left": false,
+    "bottom": true
+  },
+  {
+    "x": 12,
+    "y": 0,
+    "top": true,
+    "right": true,
+    "left": true,
+    "bottom": false
+  },
+  {
+    "x": 13,
+    "y": 0,
+    "top": false,
+    "right": true,
+    "left": true,
+    "bottom": true
+  },
+  {
+    "x": 14,
+    "y": 0,
+    "top": true,
+    "right": false,
+    "left": true,
+    "bottom": true
+  },
+  {
+    "x": 15,
+    "y": 0,
+    "top": true,
+    "right": true,
+    "left": true,
+    "bottom": true
+  }
+]

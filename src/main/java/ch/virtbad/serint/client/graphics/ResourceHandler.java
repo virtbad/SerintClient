@@ -25,6 +25,7 @@ public class ResourceHandler {
         log.info("Initializing Resource Handler");
         textures = new TextureLoader(TEXTURE_LOCATION);
         shaders = new ShaderLoader(SHADER_LOCATION);
+        sheets = new SheetLoader();
     }
 
     /**
