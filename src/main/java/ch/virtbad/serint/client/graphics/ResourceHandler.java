@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.graphics;
 
 import ch.virtbad.serint.client.engine.resources.ShaderLoader;
 import ch.virtbad.serint.client.engine.resources.TextureLoader;
+import ch.virtbad.serint.client.game.map.SheetLoader;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -17,6 +18,8 @@ public class ResourceHandler {
     private static TextureLoader textures;
     @Getter
     private static ShaderLoader shaders;
+    @Getter
+    private static SheetLoader sheets;
 
     /**
      * Initializes the Resource Loader
@@ -34,6 +37,7 @@ public class ResourceHandler {
     public static void load(){
         textures.load();
         shaders.load();
+        sheets.load();
     }
 
 }

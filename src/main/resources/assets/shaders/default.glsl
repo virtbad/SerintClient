@@ -16,5 +16,5 @@ void main() {
 out vec4 FragColor;
 
 void main(){
-    FragColor = vec4(0f, 1f, 0.5f, 1f); // Colour that only should appear here, so you can decide whether it is the default shader or not
+    FragColor = vec4(0.0f, 1.0f, 0.5f, 1.0f); // Colour that only should appear here, so you can decide whether it is the default shader or not
 }

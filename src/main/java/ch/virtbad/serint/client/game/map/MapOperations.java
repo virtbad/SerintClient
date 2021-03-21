@@ -22,11 +22,12 @@ public class MapOperations {
         WallSheet[] sheets = ResourceHandler.getSheets().getDefaultSheets();
 
         for (TileMap.Tile tile : mapTiles) {
-            int x = tile.getX();
-            int y = tile.getY();
             TileMap.Tile.TileType type = tile.getType();
-            int index = y * width + x;
-            tiles[index] = new RenderedTile(FLOOR_STONEBRICK[0], FLOOR_STONEBRICK[1], index);
+            int index = tile.getY() * width + tile.getX();
+
+            tiles[index] = new RenderedTile(FLOOR_STONEBRICK[0], FLOOR_STONEBRICK[1], index); // TODO: Dynamic Types
+            wandfloors[index] = true;
+            floors[index] = true;
         }
 
         for (int i = 0; i < tiles.length; i++) {
