@@ -2,22 +2,21 @@ package ch.virtbad.serint.client.game.map;
 
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 
-import java.util.ArrayList;
-
 /**
  * @author Virt
  */
 public class MapOperations {
-    public static final int[] WALL = new int[]{0, 1};
-    public static final int[] FLOOR_STONEBRICK = new int[]{1, 1};
+    public static final int[] WALL = new int[]{4, 1};
+    public static final int[] FLOOR_STONEBRICK = new int[]{5, 1};
 
     public static final float TILESHEET_WIDTH = 16f;
     public static final float TILESHEET_HEIGHT = 16f;
 
     public static RenderedTile[] createRenderMap(TileMap.Tile[] mapTiles, int width, int height){
         RenderedTile[] tiles = new RenderedTile[width * height];
-        boolean[] wandfloors = new boolean[width * height];
+        boolean[] wallfloors = new boolean[width * height];
         boolean[] floors = new boolean[width * height];
+        boolean[] borders = new boolean[width * height];
 
         WallSheet[] sheets = ResourceHandler.getSheets().getDefaultSheets();
 
@@ -26,7 +25,7 @@ public class MapOperations {
             int index = tile.getY() * width + tile.getX();
 
             tiles[index] = new RenderedTile(FLOOR_STONEBRICK[0], FLOOR_STONEBRICK[1], index); // TODO: Dynamic Types
-            wandfloors[index] = true;
+            wallfloors[index] = true;
             floors[index] = true;
         }
 
@@ -38,34 +37,55 @@ public class MapOperations {
 
             if(bottom) {
                 tiles[i] = new RenderedTile(WALL[0], WALL[1], i); // TODO: MAKE DYNAMIC PLS NOW!
-                wandfloors[i] = true;
+                wallfloors[i] = true;
             }
 
         }
 
+
         for (int i = 0; i < tiles.length ; i++) {
-            if(wandfloors[i]) continue;
+            if(wallfloors[i]) continue;
 
             // THIS IS DEFINITELY A BETTER PRACTICE THAN YESTERDAY
 
             boolean top = false, left = false, right = false, bottom = false;
 
-            if(i + width < height * width) top = wandfloors[i + width];
-            if(i - 1 >= 0) left = wandfloors[i - 1];
-            if(i + 1 < width * height) right = wandfloors[i + 1];
-            if(i - width >= 0) bottom = wandfloors[i - width];
+            if(i + width < height * width) top = wallfloors[i + width];
+            if(i - 1 >= 0) left = i % height != 0 && wallfloors[i - 1];
+            if(i + 1 < width * height) right = i % height != width-1 && wallfloors[i + 1];
+            if(i - width >= 0) bottom = wallfloors[i - width];
 
             boolean changed = false;
             for (WallSheet sheet : sheets) {
                 if (sheet.isTop() == top && sheet.isRight() == right && sheet.isLeft() == left && sheet.isBottom() == bottom) {
                     tiles[i] = new RenderedTile(sheet.getX(), sheet.getY(), i);
+                    borders[i] = top || right || left || bottom;
                     changed = true;
                     break;
                 }
             }
 
-
             if (!changed) tiles[i] = new RenderedTile(sheets[0].getX(), sheets[0].getY(), i); // TODO: Make dynamic
+        }
+
+        for (int i = 0; i <  tiles.length; i++) {
+            if(borders[i] || wallfloors[i]) continue;
+
+            boolean top = false, left = false, right = false, bottom = false, corner1 = false, corner2 = false, corner3 = false, corner4 = false;
+            if(i + width < height * width) top = borders[i + width];
+            if(i - 1 >= 0) left = borders[i - 1];
+            if(i + 1 < width * height) right = borders[i + 1];
+            if(i - width >= 0) bottom = borders[i - width];
+
+
+            if(!top && !left && !right && !bottom) continue;
+
+            for (WallSheet sheet : sheets) {
+                if (sheet.isTop() == top && sheet.isRight() == right && sheet.isLeft() == left && sheet.isBottom() == bottom) {
+                    tiles[i] = new RenderedTile(sheet.getX(), sheet.getY(), i);
+                    break;
+                }
+            }
         }
 
         return tiles;
