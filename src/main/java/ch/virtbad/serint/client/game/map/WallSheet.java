@@ -8,5 +8,5 @@ import lombok.Getter;
 @Getter
 public class WallSheet {
     private int x,y;
-    private boolean top,left,right,bottom;
+    private boolean top,left,right,bottom,bottomLeft,topLeft,bottomRight,topRight;
 }
