@@ -2,10 +2,11 @@ package ch.virtbad.serint.client.game.map;
 
 import ch.virtbad.serint.client.engine.content.Mesh;
 import ch.virtbad.serint.client.engine.resources.Texture;
-import ch.virtbad.serint.client.engine.resources.TextureLoader;
+import ch.virtbad.serint.client.game.collisions.MapCollisions;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import lombok.Getter;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 
@@ -17,10 +18,14 @@ public class MapObject extends MeshedGameObject {
     public TileMap map;
     public Texture texture;
 
+    @Getter
+    private MapCollisions collisions;
+
     public MapObject(TileMap map) {
         super(new float[0], new int[0], "map", new FixedLocation(), -1);
 
         this.map = map;
+        collisions = new MapCollisions(map);
     }
 
     @Override

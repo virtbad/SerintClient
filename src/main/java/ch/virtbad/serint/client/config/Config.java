@@ -15,4 +15,6 @@ public class Config {
 
     private int fps = 60;
 
+    private String serverHost = "localhost";
+    private int serverPort = 17371;
 }

@@ -30,6 +30,13 @@ public class MapOperations {
     public static final float TILESHEET_WIDTH = 16f;
     public static final float TILESHEET_HEIGHT = 16f;
 
+    /**
+     * Creates a map of rendered tiles for the base tilemap
+     * @param mapTiles tiles of the map
+     * @param width width of the tiles
+     * @param height height of the tiles
+     * @return map of rendered tiles
+     */
     public static RenderedTile[] createRenderMap(TileMap.Tile[] mapTiles, int width, int height){
         RenderedTile[] tiles = new RenderedTile[width * height];
         for (int i = 0; i < tiles.length; i++) tiles[i] = new RenderedTile(WALLTOP[0], WALLTOP[1], i);

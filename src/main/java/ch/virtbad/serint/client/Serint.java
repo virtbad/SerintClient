@@ -81,7 +81,6 @@ public class Serint {
         log.info("Cleaning current Instance");
 
         tryToConnect();
-        //game = new Game(null);
 
         rendering.addScene(1, game);
         rendering.setScene(1);
@@ -98,7 +97,7 @@ public class Serint {
     }
 
     public void tryToConnect(){
-        communications = network.connect(new Communications(), "localhost", 17371);
+        communications = network.connect(new Communications(), ConfigHandler.getConfig().getServerHost(), ConfigHandler.getConfig().getServerPort());
         if (communications == null){
             log.error("Failed to connect to server, going to exit.");
             System.exit(0);

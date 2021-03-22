@@ -64,6 +64,7 @@ public class PlayerRegister {
      * @param id id of the player
      */
     public Player get(int id){
+        if (own != null && own.getId() == id) return own;
         return players.get(id);
     }
 
