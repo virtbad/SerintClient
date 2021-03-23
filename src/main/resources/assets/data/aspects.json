@@ -7,10 +7,10 @@
       "x": 2,
       "y": 2
     },
-    "bottom" : {
+    "bottom": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "WALL"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -21,10 +21,10 @@
       "x": 1,
       "y": 2
     },
-    "bottom" : {
+    "top": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -35,10 +35,10 @@
       "x": 0,
       "y": 2
     },
-    "right" : {
+    "right": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -49,10 +49,10 @@
       "x": 3,
       "y": 2
     },
-    "left" : {
+    "left": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -63,20 +63,20 @@
       "x": 10,
       "y": 2
     },
-    "right" : {
+    "right": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "bottom" : {
+    "bottom": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "bottomRight" : {
+    "bottomRight": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -87,20 +87,20 @@
       "x": 9,
       "y": 2
     },
-    "left" : {
+    "left": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "bottom" : {
+    "bottom": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "bottomLeft" : {
+    "bottomLeft": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -111,20 +111,20 @@
       "x": 11,
       "y": 2
     },
-    "right" : {
+    "right": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "top" : {
+    "top": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "topRight" : {
+    "topRight": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -135,20 +135,20 @@
       "x": 8,
       "y": 2
     },
-    "left" : {
+    "left": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "top" : {
+    "top": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     },
-    "topLeft" : {
+    "topLeft": {
       "type": "TYPE",
-      "inverted": false,
-      "targetType": "FLOOR"
+      "inverted": true,
+      "targetType": "TOP"
     }
   },
   {
@@ -159,17 +159,17 @@
       "x": 6,
       "y": 2
     },
-    "right" : {
+    "right": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "bottom" : {
+    "bottom": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "bottomRight" : {
+    "bottomRight": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "WALL"
@@ -183,17 +183,17 @@
       "x": 5,
       "y": 2
     },
-    "left" : {
+    "left": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "bottom" : {
+    "bottom": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "bottomLeft" : {
+    "bottomLeft": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "WALL"
@@ -207,17 +207,17 @@
       "x": 7,
       "y": 2
     },
-    "right" : {
+    "right": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "top" : {
+    "top": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "topRight" : {
+    "topRight": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "FLOOR"
@@ -231,20 +231,20 @@
       "x": 4,
       "y": 2
     },
-    "left" : {
+    "left": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "top" : {
+    "top": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "TOP"
     },
-    "topLeft" : {
+    "topLeft": {
       "type": "TYPE",
       "inverted": false,
       "targetType": "FLOOR"
     }
   }
-  ]
+]

@@ -1,7 +1,12 @@
-package ch.virtbad.serint.client.game.map.data;
+package ch.virtbad.serint.client.game.map.data.requirements;
 
+import ch.virtbad.serint.client.game.map.data.Tile;
 import lombok.Getter;
 
+/**
+ * This class represents a requirement that an aspect requires to be shown
+ * This specific requirement is bound onto the type
+ */
 @Getter
 public class AspectTypeRequirement extends AspectRequirement {
 

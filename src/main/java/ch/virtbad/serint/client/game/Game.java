@@ -9,6 +9,7 @@ import ch.virtbad.serint.client.game.player.Player;
 import ch.virtbad.serint.client.game.player.PlayerRegister;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
+import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.util.Time;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
@@ -45,6 +46,8 @@ public class Game extends Scene {
     private MapObject map;
     boolean mapInit = true;
 
+    private float lastS = 0;
+
 
     @Override
     public void init() {
@@ -78,7 +81,6 @@ public class Game extends Scene {
             mapInit = true;
         }
         if (map != null) map.update(delta);
-
 
         lastTime = currentTime;
     }

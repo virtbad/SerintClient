@@ -1,8 +1,14 @@
 package ch.virtbad.serint.client.game.map.data;
 
+import ch.virtbad.serint.client.game.map.data.requirements.AspectRequirement;
+import ch.virtbad.serint.client.game.map.data.requirements.AspectRequirementDeserializer;
 import com.google.gson.annotations.JsonAdapter;
 import lombok.Getter;
 
+/**
+ * This class represents an aspect
+ * An aspect is an overlay over a specific tile
+ */
 @Getter
 public class Aspect {
 
@@ -10,21 +16,21 @@ public class Aspect {
     private int layer;
     private TextureLocation texture;
 
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement top;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement bottom;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement left;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement right;
 
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement topRight;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement topLeft;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement bottomRight;
-    @JsonAdapter(AspectAdapter.class)
+    @JsonAdapter(AspectRequirementDeserializer.class)
     private AspectRequirement bottomLeft;
 }

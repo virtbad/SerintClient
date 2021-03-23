@@ -2,7 +2,6 @@ package ch.virtbad.serint.client.graphics;
 
 import ch.virtbad.serint.client.engine.resources.ShaderLoader;
 import ch.virtbad.serint.client.engine.resources.TextureLoader;
-import ch.virtbad.serint.client.game.map.DataLoader;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 

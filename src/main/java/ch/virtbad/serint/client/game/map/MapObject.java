@@ -25,8 +25,7 @@ public class MapObject extends MeshedGameObject {
 
     @Override
     public void init() {
-        RenderedTile[] renderedTiles = MapOperations.createRenderMap(map.getTiles(), map.getWidth(), map.getHeight());
-        mesh = new Mesh(MapOperations.generateVertices(renderedTiles, map.getWidth(), map.getHeight()), MapOperations.generateIndices(renderedTiles, map.getWidth(), map.getHeight()));
+        mesh = new Mesh(MapOperations.generateVertices(MapOperations.createRenderMap(map.getTiles(), map.getWidth(), map.getHeight()), map.getWidth(), map.getHeight()), MapOperations.generateIndices(map.getWidth(), map.getHeight()));
 
         texture = ResourceHandler.getTextures().get("tilesheet");
 
@@ -35,13 +34,21 @@ public class MapObject extends MeshedGameObject {
 
     @Override
     protected void setAttribPointers() {
-        mesh.addVertexAttribPointer(0, 2, GL_FLOAT, 4 * Float.BYTES, 0);
-        mesh.addVertexAttribPointer(1, 2, GL_FLOAT, 4 * Float.BYTES, 2 * Float.BYTES);
+        int stride = (2 + MapOperations.TEXTURE_LAYERS * 2) * Float.BYTES; // Since all are of length 2
+        int index = 0;
+        int type = GL_FLOAT;
+
+        mesh.addVertexAttribPointer(index++, 2, type, stride, 0);
+
+        for (int i = 0; i < MapOperations.TEXTURE_LAYERS; i++) {
+            mesh.addVertexAttribPointer(index++, 2, type, stride, (index - 1) * 2 * Float.BYTES);
+        }
     }
 
     @Override
     protected void uploadUniforms() {
         texture.bind();
+        shader.uploadFloat("textureDimension", 16f);
         super.uploadUniforms();
     }
 }
