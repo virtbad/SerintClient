@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.game.GameContext;
+import ch.virtbad.serint.client.game.collisions.MapCollisions;
 import ch.virtbad.serint.client.game.player.Player;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
@@ -113,6 +114,14 @@ public class PlayerRegister {
         // Update Objects
         for (Player value : players.values()) {
             value.update(delta);
+        }
+    }
+
+    public void doMapCollisions(float delta, MapCollisions collisions){
+        if (own != null) own.getLocation().timeCollided(delta, collisions.checkCollisions(own.getBounds()));
+
+        for (Player value : players.values()) {
+            value.getLocation().timeCollided(delta, collisions.checkCollisions(value.getBounds()));
         }
     }
 

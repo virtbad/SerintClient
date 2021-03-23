@@ -82,7 +82,8 @@ public class Game extends Scene {
         }
         if (map != null) {
             map.update(delta);
-            if (players.getOwn() != null) players.getOwn().getLocation().timeCollided(delta, map.getCollisions().checkCollisions(players.getOwn().getBounds())); // TODO: Organize Better
+
+            players.doMapCollisions(delta, map.getCollisions());
         }
 
         lastTime = currentTime;
