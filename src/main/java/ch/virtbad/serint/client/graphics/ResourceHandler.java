@@ -37,7 +37,7 @@ public class ResourceHandler {
     public static void load(){
         textures.load();
         shaders.load();
-        sheets.load();
+        data.load();
     }
 
 }

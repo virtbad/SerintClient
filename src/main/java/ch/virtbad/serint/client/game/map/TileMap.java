@@ -33,14 +33,7 @@ public class TileMap {
     public static class Tile {
         private int x;
         private int y;
-        private TileType type;
-
-        public enum TileType {
-            GRAVEL,
-            GRASS,
-            BRICK,
-            STONE,
-        }
+        private int type;
     }
 
     @Getter

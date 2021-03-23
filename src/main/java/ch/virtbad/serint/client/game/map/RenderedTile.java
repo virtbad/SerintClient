@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.game.map;
 
+import ch.virtbad.serint.client.game.map.data.TextureLocation;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -8,6 +9,5 @@ import lombok.Getter;
  */
 @Getter @AllArgsConstructor
 public class RenderedTile {
-    private int textureX, textureY;
-    private int index;
+    private TextureLocation[] location;
 }

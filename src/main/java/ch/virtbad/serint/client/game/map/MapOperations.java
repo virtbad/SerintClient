@@ -11,6 +11,7 @@ import java.util.Arrays;
 /**
  * @author Virt
  */
+@Slf4j
 public class MapOperations {
     public static final int[] WALL = new int[]{4, 1};
     public static final int[] FLOOR_STONEBRICK = new int[]{5, 1};
@@ -95,6 +96,38 @@ public class MapOperations {
     }
 
     /**
+     * Returns the type of a tile
+     * @param id tile to check
+     * @return type of tile
+     */
+    private static Tile.Type getType(int id) {
+        for (Tile tile : ResourceHandler.getData().getTiles()) {
+            if (tile.getId() == id) return tile.getType();
+        }
+
+        return Tile.Type.TOP; // Default option
+    }
+
+    /**
+     * Returns whether the aspect matches all sides
+     * @param aspect aspect to check
+     * [The other parameters are the ids of the tiles at those positions]
+     * @return whether the aspects are true
+     */
+    private static boolean matchesAll(Aspect aspect, int top, int right, int bottom, int left, int topLeft, int topRight, int bottomLeft, int bottomRight) {
+        if (aspect.getTop() != null && !aspect.getTop().matches(top, getType(top))) return false;
+        if (aspect.getBottom() != null && !aspect.getBottom().matches(bottom, getType(bottom))) return false;
+        if (aspect.getRight() != null && !aspect.getRight().matches(right, getType(right))) return false;
+        if (aspect.getLeft() != null && !aspect.getLeft().matches(left, getType(left))) return false;
+        if (aspect.getTopLeft() != null && !aspect.getTopLeft().matches(topLeft, getType(topLeft))) return false;
+        if (aspect.getTopRight() != null && !aspect.getTopRight().matches(topRight, getType(topRight))) return false;
+        if (aspect.getBottomLeft() != null && !aspect.getBottomLeft().matches(bottomLeft, getType(bottomLeft))) return false;
+        if (aspect.getBottomRight() != null && !aspect.getBottomRight().matches(bottomRight, getType(bottomRight))) return false;
+
+        return true;
+    }
+
+    /**
      * Generates vertices for a map object
      * <p>
      * Each vertex consists of four floats
@@ -110,7 +143,7 @@ public class MapOperations {
      */
     public static float[] generateVertices(RenderedTile[] tiles, int width, int height) {
 
-        float[] vertices = new float[width * height * 4 * 4]; // 4*4 for four attributes
+        float[] vertices = new float[width * height * 4 * (2 + 9 * 2)]; // 4*20 for 20 attributes for four vertices
 
         int index = 0;
         for (RenderedTile tile : tiles) {
