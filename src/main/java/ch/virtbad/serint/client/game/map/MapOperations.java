@@ -1,151 +1,220 @@
 package ch.virtbad.serint.client.game.map;
 
-import java.util.ArrayList;
+import ch.virtbad.serint.client.game.map.data.Aspect;
+import ch.virtbad.serint.client.game.map.data.TextureLocation;
+import ch.virtbad.serint.client.game.map.data.Tile;
+import ch.virtbad.serint.client.graphics.ResourceHandler;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Arrays;
 
 /**
  * @author Virt
+ * This class is for handling or calculating various things regarding the map
  */
+@Slf4j
 public class MapOperations {
-    public static final int TILE_HEIGHT = 16;
-    public static final int TILE_WIDTH = 16;
-    public static final int[] WALLTOP =                     new int[]{ 0, 0};
-    public static final int[] WALLTOP_RIGHT =               new int[]{ 1, 0};
-    public static final int[] WALLTOP_TOP =                 new int[]{ 2, 0};
-    public static final int[] WALLTOP_BOTTOM =              new int[]{ 3, 0};
-    public static final int[] WALLTOP_LEFT =                new int[]{ 4, 0};
-    public static final int[] WALLTOP_RIGHT_TOP =           new int[]{ 5, 0};
-    public static final int[] WALLTOP_RIGHT_BOTTOM =        new int[]{ 6, 0};
-    public static final int[] WALLTOP_RIGHT_LEFT =          new int[]{ 7, 0};
-    public static final int[] WALLTOP_TOP_BOTTOM =          new int[]{ 8, 0};
-    public static final int[] WALLTOP_TOP_LEFT =            new int[]{ 9, 0};
-    public static final int[] WALLTOP_BOTTOM_LEFT =         new int[]{10, 0};
-    public static final int[] WALLTOP_RIGHT_TOP_BOTTOM =    new int[]{ 5, 0};
-    public static final int[] WALLTOP_RIGHT_TOP_LEFT =      new int[]{ 5, 0};
-    public static final int[] WALLTOP_RIGHT_BOTTOM_LEFT =   new int[]{ 6, 0};
-    public static final int[] WALLTOP_TOP_BOTTOM_LEFT =     new int[]{ 8, 0};
-    public static final int[] WALLTOP_TOP_RIGHT_LEFT_BOTTOM = new int[]{0,0};
-    public static final int[] WALL =                        new int[]{11, 0};
-    public static final int[] FLOOR_STONEBRICK =            new int[]{12, 0};
 
-    public static final float TILESHEET_WIDTH = 16f;
-    public static final float TILESHEET_HEIGHT = 16f;
+    public static final int TEXTURE_LAYERS = 9;
 
     /**
-     * Creates a map of rendered tiles for the base tilemap
-     * @param mapTiles tiles of the map
-     * @param width width of the tiles
-     * @param height height of the tiles
-     * @return map of rendered tiles
+     * This method is used for creating an array of texture locations that are
+     * @param mapTiles tiles from the map data
+     * @param width width of the map
+     * @param height height of the map
+     * @return 3 dimensional array containing a bunch of layers for each tile
      */
-    public static RenderedTile[] createRenderMap(TileMap.Tile[] mapTiles, int width, int height){
-        RenderedTile[] tiles = new RenderedTile[width * height];
-        for (int i = 0; i < tiles.length; i++) tiles[i] = new RenderedTile(WALLTOP[0], WALLTOP[1], i);
+    public static TextureLocation[][][] createRenderMap(TileMap.Tile[] mapTiles, int width, int height) {
+        int top = 5, wall = 4, none = 0; // TODO: Include default walls and tiles in map data
+        int[][] tiles = new int[width][height];
+
+        for (int[] ints : tiles) Arrays.fill(ints, top);
+
         for (TileMap.Tile tile : mapTiles) {
-            int x = tile.getX();
-            int y = tile.getY();
-            TileMap.Tile.TileType type = tile.getType();
-            int index = y * width + x;
-            tiles[index] = new RenderedTile(FLOOR_STONEBRICK[0], FLOOR_STONEBRICK[1], index);
+            tiles[tile.getX()][tile.getY()] = tile.getType();
+            if (tile.getY() < width - 1 && tiles[tile.getX()][tile.getY() + 1] == top)
+                tiles[tile.getX()][tile.getY() + 1] = wall;
         }
 
-        for (int i = 0; i < tiles.length ; i++) {
-            RenderedTile tile = tiles[i];
+        TextureLocation[][][] rendered = new TextureLocation[width][height][TEXTURE_LAYERS]; // one ground, 8 aspect textures
 
-            if(tile.getTextureX() != WALLTOP[0] && tile.getTextureY() != WALLTOP[1]) continue;
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int current = tiles[i][j];
 
-            // THIS IS DEFINITELY (NOT) THE BEST PRACTICE;
+                // Query Grounds
+                for (Tile tile : ResourceHandler.getData().getTiles()) {
+                    if (tile.getId() == current){
+                        rendered[i][j][0] = tile.getTexture();
+                        break;
+                    }
+                }
 
-            RenderedTile topTile = null;
-            RenderedTile leftTile = null;
-            RenderedTile rightTile = null;
-            RenderedTile bottomTile = null;
+                if (rendered[i][j][0] == null) {
+                    rendered[i][j][0] = new TextureLocation(0, 0);
+                    log.warn("Tile type {} at {},{} was not found", tiles[i][j], i, j);
+                }
 
-            boolean top = false;
-            boolean left = false;
-            boolean right = false;
-            boolean bottom = false;
+                // Query Aspects
+                Aspect[] aspects = ResourceHandler.getData().getAspects();
+                int topTile = j + 1 < height ? tiles[i][j + 1] : -1;
+                int rightTile = i + 1 < width ? tiles[i + 1][j] : -1;
+                int bottomTile = j - 1 >= 0 ? tiles[i][j - 1] : -1;
+                int leftTile = i - 1 >= 0 ? tiles[i - 1][j] : -1;
+                int bottomRightTile = bottomTile != -1 && rightTile != -1 ? tiles[i + 1][j - 1] : -1;
+                int bottomLeftTile = bottomTile != -1 && leftTile != -1 ? tiles[i - 1][j - 1] : -1;
+                int topRightTile = topTile != -1 && rightTile != -1 ? tiles[i + 1][j + 1] : -1;
+                int topLeftTile = topTile != -1 && leftTile != -1 ? tiles[i - 1][j + 1] : -1;
 
-            if(tile.getIndex() - width >= 0) topTile = tiles[tile.getIndex() -width];
-            if(tile.getIndex()-1 >= 0) leftTile = tiles[tile.getIndex()-1];
-            if(tile.getIndex() + 1 < width * height) rightTile = tiles[tile.getIndex() + 1];
-            if(tile.getIndex() + width < width * height ) bottomTile = tiles[tile.getIndex() + width];
+                int firstIndex = 1, secondIndex = 5;
 
-            if(topTile != null && topTile.getTextureX() != WALLTOP[0]&& topTile.getTextureY() != WALLTOP[1]) top = true;
-            if(leftTile != null && leftTile.getTextureX() != WALLTOP[0]&& leftTile.getTextureY() != WALLTOP[1]) left = true;
-            if(rightTile != null && rightTile.getTextureX() != WALLTOP[0]&& rightTile.getTextureY() != WALLTOP[1]) right = true;
-            if(bottomTile != null && bottomTile.getTextureX() != WALLTOP[0]&& bottomTile.getTextureY() != WALLTOP[1]) bottom = true;
+                for (Aspect aspect : aspects) {
+                    if (aspect.getTarget() != current) continue;
 
-            if(top && left && right && bottom) tiles[i] = new RenderedTile(WALLTOP_TOP_RIGHT_LEFT_BOTTOM[0], WALLTOP_TOP_RIGHT_LEFT_BOTTOM[1], i);
-            else if(top && left && right) tiles[i] = new RenderedTile(WALLTOP_RIGHT_TOP_LEFT[0], WALLTOP_RIGHT_TOP_LEFT[1], i);
-            else if(left && right && bottom) tiles[i] = new RenderedTile(WALLTOP_RIGHT_BOTTOM_LEFT[0], WALLTOP_RIGHT_BOTTOM_LEFT[1], i);
-            else if(top && left && bottom) tiles[i] = new RenderedTile(WALLTOP_TOP_BOTTOM_LEFT[0], WALLTOP_TOP_BOTTOM_LEFT[1], i);
-            else if(left && bottom) tiles[i] = new RenderedTile(WALLTOP_BOTTOM_LEFT[0], WALLTOP_BOTTOM_LEFT[1], i);
-            else if(left && top) tiles[i] = new RenderedTile(WALLTOP_TOP_LEFT[0], WALLTOP_TOP_LEFT[1], i);
-            else if(right && left) tiles[i] = new RenderedTile(WALLTOP_RIGHT_LEFT[0], WALLTOP_RIGHT_LEFT[1], i);
-            else if(top && bottom) tiles[i] = new RenderedTile(WALLTOP_TOP_BOTTOM[0], WALLTOP_TOP_BOTTOM[1], i);
-            else if(right && bottom) tiles[i] = new RenderedTile(WALLTOP_RIGHT_BOTTOM[0], WALLTOP_RIGHT_BOTTOM[1], i);
-            else if(top && right) tiles[i] = new RenderedTile(WALLTOP_RIGHT_TOP[0], WALLTOP_RIGHT_TOP[1], i);
-            else if(left) tiles[i] = new RenderedTile( WALLTOP_LEFT[0], WALLTOP_LEFT[1], i);
-            else if(bottom) tiles[i] = new RenderedTile(WALLTOP_BOTTOM[0], WALLTOP_BOTTOM[1], i);
-            else if(right) tiles[i] = new RenderedTile(WALLTOP_RIGHT[0], WALLTOP_RIGHT[1], i);
-            else if(top) tiles[i] = new RenderedTile(WALLTOP_TOP[0], WALLTOP_TOP[1], i);
+                    // Quick and dirty from here:
+                    if (matchesAll(aspect, topTile, rightTile, bottomTile, leftTile, topLeftTile, topRightTile, bottomLeftTile, bottomRightTile)){
+                        if (aspect.getLayer() == 1) { // First layer
+                            if (firstIndex > (TEXTURE_LAYERS - 1) / 2){
+                                log.warn("Reached 1st Level aspect limit with tile {} at {},{}", tiles[i][j], i, j);
+                                continue;
+                            }
 
-            if(topTile != null && !top && bottom) tiles[i] = new RenderedTile(WALL[0], WALL[1], i);
+                            rendered[i][j][firstIndex] = aspect.getTexture();
+
+                            firstIndex++;
+                        }else if (aspect.getLayer() == 2){
+                            if (secondIndex == TEXTURE_LAYERS) {
+                                log.warn("Reached 2nd Level aspect limit with tile {} at {},{}", tiles[i][j], i, j);
+                                continue;
+                            }
+
+                            rendered[i][j][secondIndex] = aspect.getTexture();
+
+                            secondIndex++;
+                        }
+                    }
+                }
+            }
         }
 
-        return tiles;
+        return rendered;
+    }
+
+    /**
+     * Returns the type of a tile
+     * @param id tile to check
+     * @return type of tile
+     */
+    private static Tile.Type getType(int id) {
+        for (Tile tile : ResourceHandler.getData().getTiles()) {
+            if (tile.getId() == id) return tile.getType();
+        }
+
+        return Tile.Type.TOP; // Default option
+    }
+
+    /**
+     * Returns whether the aspect matches all sides
+     * @param aspect aspect to check
+     * [The other parameters are the ids of the tiles at those positions]
+     * @return whether the aspects are true
+     */
+    private static boolean matchesAll(Aspect aspect, int top, int right, int bottom, int left, int topLeft, int topRight, int bottomLeft, int bottomRight) {
+        if (aspect.getTop() != null && !aspect.getTop().matches(top, getType(top))) return false;
+        if (aspect.getBottom() != null && !aspect.getBottom().matches(bottom, getType(bottom))) return false;
+        if (aspect.getRight() != null && !aspect.getRight().matches(right, getType(right))) return false;
+        if (aspect.getLeft() != null && !aspect.getLeft().matches(left, getType(left))) return false;
+        if (aspect.getTopLeft() != null && !aspect.getTopLeft().matches(topLeft, getType(topLeft))) return false;
+        if (aspect.getTopRight() != null && !aspect.getTopRight().matches(topRight, getType(topRight))) return false;
+        if (aspect.getBottomLeft() != null && !aspect.getBottomLeft().matches(bottomLeft, getType(bottomLeft))) return false;
+        if (aspect.getBottomRight() != null && !aspect.getBottomRight().matches(bottomRight, getType(bottomRight))) return false;
+
+        return true;
     }
 
     /**
      * Generates vertices for a map object
-     *
+     * <p>
      * Each vertex consists of four floats
      * * Two for Position (X,Y)
-     * * Two for Texture (U,V)
+     * * 18 for Texture (U,V)
+     * <p>
+     *
+     * A vertex will then look like the following:
+     * x, y, u1, v1, u2, v2 ... uN, vN
+     * If a pair of uv coordinates is not existent, they will be negative one
      *
      * There are also four vertices per tile
      *
-     * @param tiles tiles to use
-     * @param width width of the map
+     * @param tiles  tiles to use
+     * @param width  width of the map
      * @param height height of the map
      * @return vertices
      */
-    public static float[] generateVertices(RenderedTile[] tiles, int width, int height){
+    public static float[] generateVertices(TextureLocation[][][] tiles, int width, int height) {
 
-        float[] vertices = new float[width * height * 4 * 4]; // 4*4 for four attributes
+        float[] vertices = new float[width * height * 4 * (2 + 9 * 2)]; // 4*20 for 20 attributes for four vertices
 
         int index = 0;
-        for (RenderedTile tile : tiles) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
 
-            // Bottom Left
-            vertices[index        ] = tile.getIndex() % width;
-            vertices[index     + 1] = tile.getIndex() / width;
+                // Bottom Left
+                vertices[index++] = i;
+                vertices[index++] = j;
 
-            vertices[index     + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX());
-            vertices[index     + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY() + 1);
+                for (int k = 0; k < TEXTURE_LAYERS; k++) {
+                    if (tiles[i][j][k] == null) {
+                        vertices[index++] = -1;
+                        vertices[index++] = -1;
+                    } else {
+                        vertices[index++] = tiles[i][j][k].getX();
+                        vertices[index++] = tiles[i][j][k].getY() + 1;
+                    }
+                }
 
-            // Bottom Right
-            vertices[index + 4    ] = tile.getIndex() % width + 1;
-            vertices[index + 4 + 1] = tile.getIndex() / width;
+                // Bottom Right
+                vertices[index++] = i + 1;
+                vertices[index++] = j;
 
-            vertices[index + 4 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX() + 1);
-            vertices[index + 4 + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY() + 1);
+                for (int k = 0; k < TEXTURE_LAYERS; k++) {
+                    if (tiles[i][j][k] == null) {
+                        vertices[index++] = -1;
+                        vertices[index++] = -1;
+                    } else {
+                        vertices[index++] = tiles[i][j][k].getX() + 1;
+                        vertices[index++] = tiles[i][j][k].getY() + 1;
+                    }
+                }
 
-            // Top Left
-            vertices[index + 8    ] = tile.getIndex() % width;
-            vertices[index + 8 + 1] = tile.getIndex() / width + 1;
+                // Top Left
+                vertices[index++] = i;
+                vertices[index++] = j + 1;
 
-            vertices[index + 8 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX());
-            vertices[index + 8 + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY());
+                for (int k = 0; k < TEXTURE_LAYERS; k++) {
+                    if (tiles[i][j][k] == null) {
+                        vertices[index++] = -1;
+                        vertices[index++] = -1;
+                    } else {
+                        vertices[index++] = tiles[i][j][k].getX();
+                        vertices[index++] = tiles[i][j][k].getY();
+                    }
+                }
 
-            // Top Right
-            vertices[index + 12    ] = tile.getIndex() % width + 1;
-            vertices[index + 12 + 1] = tile.getIndex() / width + 1;
+                // Top Left
+                vertices[index++] = i + 1;
+                vertices[index++] = j + 1;
 
-            vertices[index + 12 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX() + 1);
-            vertices[index + 12 + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY());
-
-            index += 4 * 4;
+                for (int k = 0; k < TEXTURE_LAYERS; k++) {
+                    if (tiles[i][j][k] == null) {
+                        vertices[index++] = -1;
+                        vertices[index++] = -1;
+                    } else {
+                        vertices[index++] = tiles[i][j][k].getX() + 1;
+                        vertices[index++] = tiles[i][j][k].getY();
+                    }
+                }
+            }
         }
 
         return vertices;
@@ -153,39 +222,41 @@ public class MapOperations {
 
     /**
      * Generates indices for Rendered tiles
-     *
+     * <p>
      * The Quad is divided like follows:
-     *
-     *  2-----3
-     *  |   / |
-     *  | /   |
-     *  0-----1
-     *
+     * <p>
+     * 2-----3      <br>
+     * |   / |      <br>
+     * | /   |      <br>
+     * 0-----1      <br>
+     * <p>
      * This results in the indices:
      * 0, 3, 1 and 0, 3, 2
      *
-     * @param tiles tiles
-     * @param width width of the map
+     * @param tiles  tiles
+     * @param width  width of the map
      * @param height height of the map
      * @return indices
      */
-    public static int[] generateIndices(RenderedTile[] tiles, int width, int height){
+    public static int[] generateIndices(int width, int height) {
         int[] indices = new int[width * height * 2 * 3]; // 2*3 for two triangles per tile
 
         int index = 0;
         int cornerIndex = 0;
-        for (RenderedTile ignored : tiles) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
 
-            indices[index        ] = cornerIndex;
-            indices[index     + 1] = cornerIndex + 3;
-            indices[index     + 2] = cornerIndex + 1;
+                indices[index++] = cornerIndex;
+                indices[index++] = cornerIndex + 3;
+                indices[index++] = cornerIndex + 1;
 
-            indices[index + 3    ] = cornerIndex;
-            indices[index + 3 + 1] = cornerIndex + 3;
-            indices[index + 3 + 2] = cornerIndex + 2;
+                indices[index++] = cornerIndex;
+                indices[index++] = cornerIndex + 3;
+                indices[index++] = cornerIndex + 2;
 
-            index += 2 * 3;
-            cornerIndex += 4;
+                cornerIndex += 4;
+
+            }
         }
 
         return indices;

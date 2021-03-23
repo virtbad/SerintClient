@@ -1,0 +1,250 @@
+[
+  {
+    "target": 5,
+    "name": "BORDER_BOTTOM",
+    "layer": 1,
+    "texture": {
+      "x": 2,
+      "y": 2
+    },
+    "bottom": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "BORDER_TOP",
+    "layer": 1,
+    "texture": {
+      "x": 1,
+      "y": 2
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "BORDER_RIGHT",
+    "layer": 1,
+    "texture": {
+      "x": 0,
+      "y": 2
+    },
+    "right": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "BORDER_LEFT",
+    "layer": 1,
+    "texture": {
+      "x": 3,
+      "y": 2
+    },
+    "left": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "INNER_CORNER_BOTTOM_RIGHT",
+    "layer": 2,
+    "texture": {
+      "x": 10,
+      "y": 2
+    },
+    "right": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "bottom": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "bottomRight": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "INNER_CORNER_BOTTOM_LEFT",
+    "layer": 2,
+    "texture": {
+      "x": 9,
+      "y": 2
+    },
+    "left": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "bottom": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "bottomLeft": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "INNER_CORNER_TOP_RIGHT",
+    "layer": 2,
+    "texture": {
+      "x": 11,
+      "y": 2
+    },
+    "right": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "topRight": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "INNER_CORNER_TOP_LEFT",
+    "layer": 2,
+    "texture": {
+      "x": 8,
+      "y": 2
+    },
+    "left": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    },
+    "topLeft": {
+      "type": "TYPE",
+      "inverted": true,
+      "targetType": "TOP"
+    }
+  },
+  {
+    "target": 5,
+    "name": "OUTER_CORNER_BOTTOM_RIGHT",
+    "layer": 2,
+    "texture": {
+      "x": 6,
+      "y": 2
+    },
+    "right": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "bottom": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "bottomRight": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 5,
+    "name": "OUTER_CORNER_BOTTOM_LEFT",
+    "layer": 2,
+    "texture": {
+      "x": 5,
+      "y": 2
+    },
+    "left": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "bottom": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "bottomLeft": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 5,
+    "name": "OUTER_CORNER_TOP_RIGHT",
+    "layer": 2,
+    "texture": {
+      "x": 7,
+      "y": 2
+    },
+    "right": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "topRight": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "FLOOR"
+    }
+  },
+  {
+    "target": 5,
+    "name": "OUTER_CORNER_TOP_LEFT",
+    "layer": 2,
+    "texture": {
+      "x": 4,
+      "y": 2
+    },
+    "left": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "TOP"
+    },
+    "topLeft": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "FLOOR"
+    }
+  }
+]

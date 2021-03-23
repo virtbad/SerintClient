@@ -1,0 +1,56 @@
+[
+  {
+    "id": 0,
+    "name": "BRICK",
+    "texture": {
+      "x": 5,
+      "y": 1
+    },
+    "type": "FLOOR"
+  },
+  {
+    "id": 1,
+    "name": "STONE",
+    "texture": {
+      "x": 8,
+      "y": 1
+    },
+    "type": "FLOOR"
+  },
+  {
+    "id": 2,
+    "name": "GRASS",
+    "texture": {
+      "x": 6,
+      "y": 1
+    },
+    "type": "FLOOR"
+  },
+  {
+    "id": 3,
+    "name": "GRAVEL",
+    "texture": {
+      "x": 7,
+      "y": 1
+    },
+    "type": "FLOOR"
+  },
+  {
+    "id": 4,
+    "name": "BRICK_WALL",
+    "texture": {
+      "x": 4,
+      "y": 1
+    },
+  "type": "WALL"
+  },
+  {
+    "id": 5,
+    "name": "WALL_TOP",
+    "texture": {
+      "x": 0,
+      "y": 0
+    },
+    "type": "TOP"
+  }
+]

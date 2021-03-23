@@ -15,6 +15,10 @@ public class Controls {
     private static final int KEY_DOWN = GLFW.GLFW_KEY_DOWN;
     private static final int KEY_LEFT = GLFW.GLFW_KEY_LEFT;
     private static final int KEY_RIGHT = GLFW.GLFW_KEY_RIGHT;
+    private static final int KEY_W = GLFW.GLFW_KEY_W;
+    private static final int KEY_A = GLFW.GLFW_KEY_A;
+    private static final int KEY_S = GLFW.GLFW_KEY_S;
+    private static final int KEY_D = GLFW.GLFW_KEY_D;
 
     private static final float SPEED = 5f; // = 5 tiles per second
 
@@ -41,10 +45,10 @@ public class Controls {
         float velocityX = 0;
         float velocityY = 0;
 
-        if (context.getKeyboard().isDown(KEY_UP)) velocityY = SPEED;
-        if (context.getKeyboard().isDown(KEY_DOWN)) velocityY = -SPEED;
-        if (context.getKeyboard().isDown(KEY_RIGHT)) velocityX = SPEED;
-        if (context.getKeyboard().isDown(KEY_LEFT)) velocityX = -SPEED;
+        if (context.getKeyboard().isDown(KEY_UP) || context.getKeyboard().isDown(KEY_W)) velocityY = SPEED;
+        if (context.getKeyboard().isDown(KEY_DOWN) || context.getKeyboard().isDown(KEY_S)) velocityY = -SPEED;
+        if (context.getKeyboard().isDown(KEY_RIGHT) || context.getKeyboard().isDown(KEY_D)) velocityX = SPEED;
+        if (context.getKeyboard().isDown(KEY_LEFT) || context.getKeyboard().isDown(KEY_A)) velocityX = -SPEED;
 
         boolean updated = player.getLocation().getVelocityX() != velocityX || player.getLocation().getVelocityY() != velocityY;
 

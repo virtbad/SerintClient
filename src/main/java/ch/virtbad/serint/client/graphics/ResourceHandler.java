@@ -17,6 +17,8 @@ public class ResourceHandler {
     private static TextureLoader textures;
     @Getter
     private static ShaderLoader shaders;
+    @Getter
+    private static DataLoader data;
 
     /**
      * Initializes the Resource Loader
@@ -25,6 +27,7 @@ public class ResourceHandler {
         log.info("Initializing Resource Handler");
         textures = new TextureLoader(TEXTURE_LOCATION);
         shaders = new ShaderLoader(SHADER_LOCATION);
+        data = new DataLoader();
     }
 
     /**
@@ -33,6 +36,7 @@ public class ResourceHandler {
     public static void load(){
         textures.load();
         shaders.load();
+        data.load();
     }
 
 }
