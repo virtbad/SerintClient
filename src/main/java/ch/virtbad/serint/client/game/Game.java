@@ -3,6 +3,7 @@ package ch.virtbad.serint.client.game;
 import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.game.client.Cinematography;
 import ch.virtbad.serint.client.game.client.Controls;
+import ch.virtbad.serint.client.game.collisions.CollisionResult;
 import ch.virtbad.serint.client.game.map.MapObject;
 import ch.virtbad.serint.client.game.map.TileMap;
 import ch.virtbad.serint.client.game.player.Player;
@@ -12,6 +13,7 @@ import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.util.Time;
 import org.joml.Vector3f;
+import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
@@ -64,8 +66,6 @@ public class Game extends Scene {
 
     @Override
     public void update() {
-        glClearColor(0, 0, 0, 1);
-        glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         float currentTime = Time.getSeconds();
         float delta = lastTime - currentTime;
@@ -80,13 +80,22 @@ public class Game extends Scene {
             map.init();
             mapInit = true;
         }
-        if (map != null) map.update(delta);
+        if (map != null) {
+            map.update(delta);
+            if (players.getOwn() != null) players.getOwn().getLocation().timeCollided(delta, map.getCollisions().checkCollisions(players.getOwn().getBounds())); // TODO: Organize Better
+        }
 
         lastTime = currentTime;
     }
 
     @Override
     public void draw() {
+        glClearColor(0, 0, 0, 1);
+        glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+        if (keyboard.isDown(GLFW.GLFW_KEY_TAB)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+
         if (map != null && mapInit) map.draw();
         players.draw();
     }
@@ -130,7 +139,6 @@ public class Game extends Scene {
      */
     public void relocatePlayer(int id, float x, float y, float velX, float velY){
         Player p = players.get(id);
-
         p.getLocation().setPosX(x);
         p.getLocation().setPosY(y);
         p.getLocation().setVelocityX(velX);

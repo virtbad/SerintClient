@@ -14,6 +14,7 @@ import java.util.Arrays;
  */
 @Slf4j
 public class MapOperations {
+
     public static final int TEXTURE_LAYERS = 9;
 
     /**

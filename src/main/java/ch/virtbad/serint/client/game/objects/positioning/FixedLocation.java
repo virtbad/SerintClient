@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.game.objects.positioning;
 
+import ch.virtbad.serint.client.game.collisions.CollisionResult;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -19,6 +20,17 @@ public class FixedLocation {
      * @param delta time that has passed
      */
     public void time(float delta) {
+
+    }
+
+
+    /**
+     * Manipulates the position based time and collisions
+     *
+     * @param delta time that has passed
+     * @param result results of the collision
+     */
+    public void timeCollided(float delta, CollisionResult result) {
 
     }
 }

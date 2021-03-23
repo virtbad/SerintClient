@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.engine.content.MeshHelper;
+import ch.virtbad.serint.client.game.collisions.AABB;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import lombok.Getter;
@@ -19,6 +20,8 @@ public class Player extends MeshedGameObject {
     private Vector3f color;
     @Getter
     private String name;
+    @Getter
+    private AABB bounds;
 
     /**
      * Creates a player instance
@@ -32,6 +35,7 @@ public class Player extends MeshedGameObject {
         this.id = id;
         this.name = name;
         this.color = color;
+        this.bounds = new AABB(location.getPosX(), location.getPosY(), 1, 0.2f);
     }
 
     @Override
@@ -46,8 +50,8 @@ public class Player extends MeshedGameObject {
 
     @Override
     public void update(float updateDelta) {
-        location.time(updateDelta);
         updateWorldMatrix();
+        bounds.setPosition(location.getPosX(), location.getPosY());
     }
 
     /**
