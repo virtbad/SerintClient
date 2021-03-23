@@ -1,6 +1,12 @@
 package ch.virtbad.serint.client.game.map;
 
+import ch.virtbad.serint.client.game.map.data.Aspect;
+import ch.virtbad.serint.client.game.map.data.TextureLocation;
+import ch.virtbad.serint.client.game.map.data.Tile;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import lombok.extern.slf4j.Slf4j;
+
+import java.util.Arrays;
 
 /**
  * @author Virt
@@ -12,100 +18,97 @@ public class MapOperations {
     public static final float TILESHEET_WIDTH = 16f;
     public static final float TILESHEET_HEIGHT = 16f;
 
-    public static RenderedTile[] createRenderMap(TileMap.Tile[] mapTiles, int width, int height){
-        RenderedTile[] tiles = new RenderedTile[width * height];
-        boolean[] wallfloors = new boolean[width * height];
-        boolean[] floors = new boolean[width * height];
-        boolean[] borders = new boolean[width * height];
+    public static TextureLocation[][][] createRenderMap(TileMap.Tile[] mapTiles, int width, int height) {
+        int top = 5, wall = 4, none = 0;
+        int[][] tiles = new int[width][height];
 
-        WallSheet[] sheets = ResourceHandler.getSheets().getDefaultSheets();
+        for (int[] ints : tiles) Arrays.fill(ints, top);
 
         for (TileMap.Tile tile : mapTiles) {
-            TileMap.Tile.TileType type = tile.getType();
-            int index = tile.getY() * width + tile.getX();
-
-            tiles[index] = new RenderedTile(FLOOR_STONEBRICK[0], FLOOR_STONEBRICK[1], index); // TODO: Dynamic Types
-            wallfloors[index] = true;
-            floors[index] = true;
+            tiles[tile.getX()][tile.getY()] = tile.getType();
+            if (tile.getY() < width - 1 && tiles[tile.getX()][tile.getY() + 1] == top)
+                tiles[tile.getX()][tile.getY() + 1] = wall;
         }
 
-        for (int i = 0; i < tiles.length; i++) {
-            if(floors[i]) continue;
+        TextureLocation[][][] rendered = new TextureLocation[width][height][9]; // one ground, 8 aspect textures
 
-            boolean bottom = false;
-            if(i - width >= 0) bottom = floors[i - width];
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                int current = tiles[i][j];
 
-            if(bottom) {
-                tiles[i] = new RenderedTile(WALL[0], WALL[1], i); // TODO: MAKE DYNAMIC PLS NOW!
-                wallfloors[i] = true;
-            }
+                // Query Grounds
+                for (Tile tile : ResourceHandler.getData().getTiles()) {
+                    if (tile.getId() == current){
+                        rendered[i][j][0] = tile.getTexture();
+                        break;
+                    }
+                }
 
-        }
+                if (rendered[i][j][0] == null) {
+                    rendered[i][j][0] = new TextureLocation(0, 0);
+                    log.warn("Tiletype {} at {},{} was not found", tiles[i][j], i, j);
+                }
 
+                // Query Aspects
+                Aspect[] aspects = ResourceHandler.getData().getAspects();
+                int topTile = i - 1 >= 0 ? tiles[i - 1][j] : -1;
+                int rightTile = j + 1 <= width ? tiles[i][j + 1] : -1;
+                int bottomTile = i + 1 <= height ? tiles[i + 1][j] : -1;
+                int leftTile = j - 1 >= 0 ? tiles[i][j - 1] : -1;
+                int bottomRightTile = bottomTile != -1 && rightTile != -1 ? tiles[i + 1][j + 1] : -1;
+                int bottomLeftTile = bottomTile != -1 && leftTile != -1 ? tiles[i + 1][j - 1] : -1;
+                int topRightTile = topTile != -1 && rightTile != -1 ? tiles[i - 1][j + 1] : -1;
+                int topLeftTile = topTile != -1 && leftTile != -1 ? tiles[i - 1][j - 1] : -1;
 
-        for (int i = 0; i < tiles.length ; i++) {
-            if(wallfloors[i]) continue;
+                int firstIndex = 1, secondIndex = 5;
 
-            // THIS IS DEFINITELY A BETTER PRACTICE THAN YESTERDAY
+                for (Aspect aspect : aspects) {
+                    if (aspect.getTarget() != current) continue;
 
-            boolean top = false, left = false, right = false, bottom = false;
+                    // Quick and dirty from here [buy now for good price]:
+                    if (matchesAll(aspect, topTile, rightTile, bottomTile, leftTile, topLeftTile, topRightTile, bottomLeftTile, bottomRightTile)){
+                        if (aspect.getLayer() == 1) { // First layer
+                            if (firstIndex > 4){
+                                log.warn("Reached 1st Level aspect limit with tile {} at {},{}", tiles[i][j], i, j);
+                                continue;
+                            }
 
-            if(i + width < height * width) top = wallfloors[i + width];
-            if(i - 1 >= 0) left = i % height != 0 && wallfloors[i - 1];
-            if(i + 1 < width * height) right = i % height != width-1 && wallfloors[i + 1];
-            if(i - width >= 0) bottom = wallfloors[i - width];
+                            rendered[i][j][firstIndex] = aspect.getTexture();
 
-            boolean changed = false;
-            for (WallSheet sheet : sheets) {
-                if (sheet.isTop() == top && sheet.isRight() == right && sheet.isLeft() == left && sheet.isBottom() == bottom) {
-                    tiles[i] = new RenderedTile(sheet.getX(), sheet.getY(), i);
-                    borders[i] = top || right || left || bottom;
-                    changed = true;
-                    break;
+                            firstIndex++;
+                        }else if (aspect.getLayer() == 2){
+                            if (secondIndex == 9) {
+                                log.warn("Reached 1st Level aspect limit with tile {} at {},{}", tiles[i][j], i, j);
+                                continue;
+                            }
+
+                            rendered[i][j][secondIndex] = aspect.getTexture();
+
+                            secondIndex++;
+                        }
+                    }
                 }
             }
-
-            if (!changed) tiles[i] = new RenderedTile(sheets[0].getX(), sheets[0].getY(), i); // TODO: Make dynamic
         }
 
-        for (int i = 0; i <  tiles.length; i++) {
-            if(borders[i] || wallfloors[i]) continue;
-
-            boolean top = false, left = false, right = false, bottom = false, corner1 = false, corner2 = false, corner3 = false, corner4 = false;
-            if(i + width < height * width) top = borders[i + width];
-            if(i - 1 >= 0) left = borders[i - 1];
-            if(i + 1 < width * height) right = borders[i + 1];
-            if(i - width >= 0) bottom = borders[i - width];
-
-
-            if(!top && !left && !right && !bottom) continue;
-
-            for (WallSheet sheet : sheets) {
-                if (sheet.isTop() == top && sheet.isRight() == right && sheet.isLeft() == left && sheet.isBottom() == bottom) {
-                    tiles[i] = new RenderedTile(sheet.getX(), sheet.getY(), i);
-                    break;
-                }
-            }
-        }
-
-        return tiles;
+        return rendered;
     }
 
     /**
      * Generates vertices for a map object
-     *
+     * <p>
      * Each vertex consists of four floats
      * * Two for Position (X,Y)
      * * Two for Texture (U,V)
-     *
+     * <p>
      * There are also four vertices per tile
      *
-     * @param tiles tiles to use
-     * @param width width of the map
+     * @param tiles  tiles to use
+     * @param width  width of the map
      * @param height height of the map
      * @return vertices
      */
-    public static float[] generateVertices(RenderedTile[] tiles, int width, int height){
+    public static float[] generateVertices(RenderedTile[] tiles, int width, int height) {
 
         float[] vertices = new float[width * height * 4 * 4]; // 4*4 for four attributes
 
@@ -113,28 +116,28 @@ public class MapOperations {
         for (RenderedTile tile : tiles) {
 
             // Bottom Left
-            vertices[index        ] = tile.getIndex() % width;
-            vertices[index     + 1] = tile.getIndex() / width;
+            vertices[index] = tile.getIndex() % width;
+            vertices[index + 1] = tile.getIndex() / width;
 
-            vertices[index     + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX());
-            vertices[index     + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY() + 1);
+            vertices[index + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX());
+            vertices[index + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY() + 1);
 
             // Bottom Right
-            vertices[index + 4    ] = tile.getIndex() % width + 1;
+            vertices[index + 4] = tile.getIndex() % width + 1;
             vertices[index + 4 + 1] = tile.getIndex() / width;
 
             vertices[index + 4 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX() + 1);
             vertices[index + 4 + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY() + 1);
 
             // Top Left
-            vertices[index + 8    ] = tile.getIndex() % width;
+            vertices[index + 8] = tile.getIndex() % width;
             vertices[index + 8 + 1] = tile.getIndex() / width + 1;
 
             vertices[index + 8 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX());
             vertices[index + 8 + 3] = 1 / TILESHEET_HEIGHT * (tile.getTextureY());
 
             // Top Right
-            vertices[index + 12    ] = tile.getIndex() % width + 1;
+            vertices[index + 12] = tile.getIndex() % width + 1;
             vertices[index + 12 + 1] = tile.getIndex() / width + 1;
 
             vertices[index + 12 + 2] = 1 / TILESHEET_WIDTH * (tile.getTextureX() + 1);
@@ -148,34 +151,34 @@ public class MapOperations {
 
     /**
      * Generates indices for Rendered tiles
-     *
+     * <p>
      * The Quad is divided like follows:
-     *
-     *  2-----3
-     *  |   / |
-     *  | /   |
-     *  0-----1
-     *
+     * <p>
+     * 2-----3
+     * |   / |
+     * | /   |
+     * 0-----1
+     * <p>
      * This results in the indices:
      * 0, 3, 1 and 0, 3, 2
      *
-     * @param tiles tiles
-     * @param width width of the map
+     * @param tiles  tiles
+     * @param width  width of the map
      * @param height height of the map
      * @return indices
      */
-    public static int[] generateIndices(RenderedTile[] tiles, int width, int height){
+    public static int[] generateIndices(RenderedTile[] tiles, int width, int height) {
         int[] indices = new int[width * height * 2 * 3]; // 2*3 for two triangles per tile
 
         int index = 0;
         int cornerIndex = 0;
         for (RenderedTile ignored : tiles) {
 
-            indices[index        ] = cornerIndex;
-            indices[index     + 1] = cornerIndex + 3;
-            indices[index     + 2] = cornerIndex + 1;
+            indices[index] = cornerIndex;
+            indices[index + 1] = cornerIndex + 3;
+            indices[index + 2] = cornerIndex + 1;
 
-            indices[index + 3    ] = cornerIndex;
+            indices[index + 3] = cornerIndex;
             indices[index + 3 + 1] = cornerIndex + 3;
             indices[index + 3 + 2] = cornerIndex + 2;
 

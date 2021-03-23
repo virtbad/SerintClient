@@ -10,7 +10,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 
 @Slf4j
-public class SheetLoader {
+public class DataLoader {
 
     public static final String DEFAULT_PATH = "/assets/sheets/wallsheet.json";
 
