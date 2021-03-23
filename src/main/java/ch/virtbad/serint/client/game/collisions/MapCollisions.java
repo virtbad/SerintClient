@@ -87,7 +87,14 @@ public class MapCollisions {
                         } else if (target.getYStart() >= (j + 1)){ // On top
                             yStartPadding = target.getYStart() - (j + 1);
                         } else { // Would collide on the y axis
-                            // Its too late
+                            // Go Reverse
+                            // This code kicks out the player on the x-axis
+
+                            float xStartDelta = target.getXStart() - (i + 1);
+                            float xEndDelta = i - target.getXEnd();
+
+                            xStartPadding = xStartDelta;
+                            xEndPadding = xEndDelta;
                         }
 
                     }
