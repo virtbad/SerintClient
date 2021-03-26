@@ -1,0 +1,18 @@
+[
+  {
+    "id": 0,
+    "name": "DEBUG",
+    "texture": {
+      "x": 0,
+      "y": 0
+    }
+  },
+  {
+    "id": 1,
+    "name": "SPEEDUP",
+    "texture": {
+      "x": 1,
+      "y": 0
+    }
+  }
+]

@@ -31,4 +31,20 @@ public class MeshHelper {
                 1, 3, 2
         };
     }
+
+
+    /**
+     * Creates textured Vertices for a Quad
+     * @param width width of the quad
+     * @param height height of the quad
+     * @return vertices of the quad
+     */
+    public static float[] createTexturedQuadVertices(float width, float height){
+        return new float[]{
+                0, 0, 0, 1,
+                0, height, 0, 0,
+                width, 0, 1, 1,
+                width, height, 1, 0
+        };
+    }
 }

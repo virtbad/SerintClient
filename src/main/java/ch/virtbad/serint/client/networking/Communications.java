@@ -100,10 +100,18 @@ public class Communications extends CustomClientPacketHandler {
     }
 
 
-    // ----- Map Packets -----
+    // ----- Environment Packets -----
 
     public void handle(MapPacket packet){
         game.createMap(packet.getMap());
+    }
+
+    public void handle(ItemCreatePacket packet) {
+        game.createItem(packet.getItemId(), packet.getX(), packet.getY(), packet.getItemType());
+    }
+
+    public void handle(ItemDestroyPacket packet) {
+        game.destroyItem(packet.getItemId());
     }
 
 

@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.graphics;
 
 
 import ch.virtbad.serint.client.engine.resources.ResourceHelper;
+import ch.virtbad.serint.client.game.item.ItemType;
 import ch.virtbad.serint.client.game.map.data.Aspect;
 import ch.virtbad.serint.client.game.map.data.Tile;
 import com.google.gson.Gson;
@@ -19,11 +20,14 @@ public class DataLoader {
 
     public static final String ASPECT_PATH = "/assets/data/aspects.json";
     public static final String TILE_PATH = "/assets/data/tiles.json";
+    public static final String ITEM_PATH = "/assets/data/items.json";
 
     @Getter
     private Aspect[] aspects;
     @Getter
     private Tile[] tiles;
+    @Getter
+    private ItemType[] items;
 
     /**
      * Loads the jsons

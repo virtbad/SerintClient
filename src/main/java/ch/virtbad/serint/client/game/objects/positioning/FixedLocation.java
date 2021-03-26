@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.game.objects.positioning;
 
 import ch.virtbad.serint.client.game.collisions.CollisionResult;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,11 +9,17 @@ import lombok.Setter;
  * This class handles a fixed location
  * @author Virt
  */
+@AllArgsConstructor
 public class FixedLocation {
 
     @Getter
     @Setter
     protected float posX, posY;
+
+    /**
+     * Empty constructor
+     */
+    public FixedLocation(){}
 
     /**
      * Manipulates the position based on time

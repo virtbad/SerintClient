@@ -1,9 +1,11 @@
 package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.engine.content.MeshHelper;
+import ch.virtbad.serint.client.engine.resources.Texture;
 import ch.virtbad.serint.client.game.collisions.AABB;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
+import ch.virtbad.serint.client.graphics.ResourceHandler;
 import lombok.Getter;
 import org.joml.Vector3f;
 
@@ -22,6 +24,9 @@ public class Player extends MeshedGameObject {
     private String name;
     @Getter
     private AABB bounds;
+    private final float xPadding = 0.12f;
+
+    private Texture texture;
 
     /**
      * Creates a player instance
@@ -30,29 +35,39 @@ public class Player extends MeshedGameObject {
      * @param name name of the player
      */
     public Player(int id, Vector3f color, String name) {
-        super(MeshHelper.createQuadVertices(1, 1), MeshHelper.createQuadIndices(), "player", new MovedLocation(), 0);
+        super(MeshHelper.createTexturedQuadVertices(1, 1), MeshHelper.createQuadIndices(), "player", new MovedLocation(), 0);
 
         this.id = id;
         this.name = name;
         this.color = color;
-        this.bounds = new AABB(location.getPosX(), location.getPosY(), 1, 0.2f);
+        this.bounds = new AABB(location.getPosX() + xPadding, location.getPosY(), 1 - xPadding * 2, 0.2f);
+    }
+
+    @Override
+    public void init() {
+        texture = ResourceHandler.getTextures().get("player"); // TODO: Fix
+        super.init();
     }
 
     @Override
     protected void setAttribPointers() {
-        mesh.addVertexAttribPointer(0, 2, GL_FLOAT, 2 * Float.BYTES, 0);
+        mesh.addVertexAttribPointer(0, 2, GL_FLOAT, 4 * Float.BYTES, 0);
+        mesh.addVertexAttribPointer(1, 2, GL_FLOAT, 4 * Float.BYTES, 2 * Float.BYTES);
     }
 
     @Override
     protected void uploadUniforms() {
+        texture.bind();
         shader.uploadVector("color", color);
     }
 
     @Override
     public void update(float updateDelta) {
         updateWorldMatrix();
-        bounds.setPosition(location.getPosX(), location.getPosY());
+        bounds.setPosition(location.getPosX() + xPadding, location.getPosY());
     }
+
+
 
     /**
      * Gets the real player location

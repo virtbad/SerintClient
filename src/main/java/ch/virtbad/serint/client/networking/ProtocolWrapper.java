@@ -39,8 +39,10 @@ public class ProtocolWrapper {
         protocol.addPacket(JoinPacket.class, 10);
         protocol.addPacket(JoinedPacket.class, 11);
 
-        // Game Content Packets
+        // Environment Data Packets
         protocol.addPacket(MapPacket.class, 20);
+        protocol.addPacket(ItemCreatePacket.class, 21);
+        protocol.addPacket(ItemDestroyPacket.class, 22);
 
         // Player Transmission
         protocol.addPacket(PlayerCreatePacket.class, 30);
