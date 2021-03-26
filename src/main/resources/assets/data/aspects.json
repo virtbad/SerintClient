@@ -246,5 +246,19 @@
       "inverted": false,
       "targetType": "FLOOR"
     }
+  },
+  {
+    "target": 0,
+    "name": "WALL_SHADOW_BOTTOM",
+    "layer": 1,
+    "texture": {
+      "x": 9,
+      "y": 1
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
   }
 ]
