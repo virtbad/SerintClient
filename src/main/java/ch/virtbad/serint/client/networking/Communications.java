@@ -16,6 +16,7 @@ import java.io.IOException;
 
 /**
  * This class handles all packet traffic
+ *
  * @author Virt
  */
 @Slf4j
@@ -29,14 +30,14 @@ public class Communications extends CustomClientPacketHandler {
     /**
      * Creates the communication
      */
-    public Communications(){
+    public Communications() {
 
     }
 
     /**
      * Logs into the server
      */
-    public void connect(){
+    public void connect() {
         client.sendPacket(new PingPacket(System.nanoTime())); // Send Test Ping
         client.sendPacket(new LoginPacket(Serint.VERSION)); // Login
     }
@@ -79,7 +80,7 @@ public class Communications extends CustomClientPacketHandler {
 
     // ----- Advanced Connection Packets -----
 
-    public void handle(JoinedPacket packet){
+    public void handle(JoinedPacket packet) {
         log.info("Joined with Player id {}", packet.getPlayerId());
         game.joined(packet.getPlayerId());
     }
@@ -87,22 +88,22 @@ public class Communications extends CustomClientPacketHandler {
 
     // ----- Player Connection Packets -----
 
-    public void handle(PlayerCreatePacket packet){
+    public void handle(PlayerCreatePacket packet) {
         game.createPlayer(packet.getPlayerId(), packet.getColor(), packet.getName());
     }
 
-    public void handle(PlayerDestroyPacket packet){
+    public void handle(PlayerDestroyPacket packet) {
         game.destroyPlayer(packet.getPlayerId());
     }
 
-    public void handle(PlayerLocationPacket packet){
+    public void handle(PlayerLocationPacket packet) {
         game.relocatePlayer(packet.getPlayerId(), packet.getX(), packet.getY(), packet.getVelocityX(), packet.getVelocityY());
     }
 
 
     // ----- Environment Packets -----
 
-    public void handle(MapPacket packet){
+    public void handle(MapPacket packet) {
         game.createMap(packet.getMap());
     }
 
@@ -119,19 +120,21 @@ public class Communications extends CustomClientPacketHandler {
 
     /**
      * Joins the client using basic player information
+     *
      * @param color color to join with
-     * @param name name to join with
+     * @param name  name to join with
      */
-    public void join(Color color, String name){
+    public void join(Color color, String name) {
         log.info("Joining the Game with Name: {}", name);
         client.sendPacket(new JoinPacket(name, color.getRGB()));
     }
 
     /**
      * Pushes a location as a player location onto the server
+     *
      * @param location location to publish
      */
-    public void pushPlayerLocation(MovedLocation location){
+    public void pushPlayerLocation(MovedLocation location) {
         client.sendPacket(new PlayerLocationPacket(0, location.getPosX(), location.getPosY(), location.getVelocityX(), location.getVelocityY())); // We do not care about ids
     }
 

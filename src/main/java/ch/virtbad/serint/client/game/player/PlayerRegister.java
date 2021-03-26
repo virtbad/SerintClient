@@ -11,6 +11,7 @@ import java.util.HashMap;
 
 /**
  * This class keeps track of players
+ *
  * @author Virt
  */
 @Slf4j
@@ -30,9 +31,10 @@ public class PlayerRegister {
 
     /**
      * Creates a PlayerRegister
+     *
      * @param context context of the game
      */
-    public PlayerRegister(GameContext context){
+    public PlayerRegister(GameContext context) {
         this.context = context;
         players = new HashMap<>();
         toInit = new ArrayList<>();
@@ -41,6 +43,7 @@ public class PlayerRegister {
 
     /**
      * Sets the player of the client
+     *
      * @param own own client
      */
     public void setOwn(Player own) {
@@ -51,9 +54,10 @@ public class PlayerRegister {
 
     /**
      * Adds a new player to the register
+     *
      * @param player player to add
      */
-    public void add(Player player){
+    public void add(Player player) {
         log.info("Remote Player added");
         player.setContext(context);
         players.put(player.getId(), player);
@@ -62,30 +66,33 @@ public class PlayerRegister {
 
     /**
      * Returns the player with the id
+     *
      * @param id id of the player
      */
-    public Player get(int id){
+    public Player get(int id) {
         if (own != null && own.getId() == id) return own;
         return players.get(id);
     }
 
     /**
      * Removes a player from the register
+     *
      * @param id player to remove
      */
-    public void remove(int id){
+    public void remove(int id) {
         toDestroy.add(id);
     }
 
     /**
      * Updates all players
+     *
      * @param delta delta time
      */
-    public void update(float delta){
+    public void update(float delta) {
 
         // Init and Update Own
-        if (own != null){
-            if (!ownInit){
+        if (own != null) {
+            if (!ownInit) {
                 own.init();
                 ownInit = true;
             }
@@ -94,7 +101,7 @@ public class PlayerRegister {
         }
 
         // Initialize uninitialized Things
-        if (toInit.size() != 0){
+        if (toInit.size() != 0) {
             for (Integer integer : toInit) {
                 players.get(integer).init();
             }
@@ -103,7 +110,7 @@ public class PlayerRegister {
         }
 
         // Destroy uninitialized Things
-        if (toDestroy.size() != 0){
+        if (toDestroy.size() != 0) {
             for (Integer integer : toDestroy) {
                 players.remove(integer).destroy();
             }
@@ -117,7 +124,7 @@ public class PlayerRegister {
         }
     }
 
-    public void doMapCollisions(float delta, MapCollisions collisions){
+    public void doMapCollisions(float delta, MapCollisions collisions) {
         if (own != null) own.getLocation().timeCollided(delta, collisions.checkCollisions(own.getBounds()));
 
         for (Player value : players.values()) {
@@ -128,8 +135,8 @@ public class PlayerRegister {
     /**
      * Draws all players
      */
-    public void draw(){
-        if (own != null){
+    public void draw() {
+        if (own != null) {
             own.draw();
         }
 

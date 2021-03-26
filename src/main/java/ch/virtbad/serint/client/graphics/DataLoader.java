@@ -42,5 +42,10 @@ public class DataLoader {
         stream = ResourceHelper.getClasspathResource(TILE_PATH);
         if(stream == null) log.error("Failed to load Tiles");
         else tiles = new Gson().fromJson(new InputStreamReader(stream), Tile[].class);
+
+        log.info("Loading Items from {}", ITEM_PATH);
+        stream = ResourceHelper.getClasspathResource(ITEM_PATH);
+        if(stream == null) log.error("Failed to load Items");
+        else items = new Gson().fromJson(new InputStreamReader(stream), ItemType[].class);
     }
 }
