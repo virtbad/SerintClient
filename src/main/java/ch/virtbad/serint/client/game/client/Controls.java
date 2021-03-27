@@ -19,8 +19,8 @@ public class Controls {
     private static final int KEY_A = GLFW.GLFW_KEY_A;
     private static final int KEY_S = GLFW.GLFW_KEY_S;
     private static final int KEY_D = GLFW.GLFW_KEY_D;
-
-    private static final float SPEED = 5f; // = 5 tiles per second
+    private static final int KEY_COLLECT = GLFW.GLFW_KEY_E;
+    private static final int KEY_KILL = GLFW.GLFW_KEY_Q;
 
     private final GameContext context;
 

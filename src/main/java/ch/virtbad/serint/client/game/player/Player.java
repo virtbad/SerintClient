@@ -6,7 +6,9 @@ import ch.virtbad.serint.client.game.collisions.AABB;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import ch.virtbad.serint.client.networking.packets.PlayerAbsorbPacket;
 import lombok.Getter;
+import lombok.Setter;
 import org.joml.Vector3f;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
@@ -26,6 +28,9 @@ public class Player extends MeshedGameObject {
     private AABB bounds;
     private final float xPadding = 0.12f;
 
+    @Setter @Getter
+    private PlayerAttributes attributes;
+
     private Texture texture;
 
     /**
@@ -41,6 +46,7 @@ public class Player extends MeshedGameObject {
         this.name = name;
         this.color = color;
         this.bounds = new AABB(location.getPosX() + xPadding, location.getPosY(), 1 - xPadding * 2, 0.2f);
+        attributes = new PlayerAttributes();
     }
 
     @Override

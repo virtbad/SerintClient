@@ -64,6 +64,9 @@ public class Communications extends CustomClientPacketHandler {
     public void handle(KickPaket packet) throws IOException {
         log.warn("Kicked from server because of: " + packet.getReason());
         client.close();
+
+        // TODO: YES THIS IS A HARD EXIT AND IT IS NOT A GOOD SOLUTION AT ALL!
+        System.exit(2);
     }
 
     public void handle(LoggedInPacket packet) {
@@ -113,6 +116,17 @@ public class Communications extends CustomClientPacketHandler {
 
     public void handle(ItemDestroyPacket packet) {
         game.destroyItem(packet.getItemId());
+    }
+
+
+    // ----- Interaction Methods
+
+    public void collectItem(int id) {
+        client.sendPacket(new ItemCollectionPacket(id));
+    }
+
+    public void attackPlayer(int id) {
+        client.sendPacket(new PlayerAbsorbPacket(id));
     }
 
 

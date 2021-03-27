@@ -6,6 +6,7 @@ import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.util.Time;
 import lombok.Getter;
+import lombok.Setter;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 
@@ -15,14 +16,16 @@ import static org.lwjgl.opengl.GL11.GL_FLOAT;
 public class Item extends MeshedGameObject {
 
     @Getter
+    private int type;
+    @Setter @Getter
     private int id;
 
     private Texture texture;
 
-    public Item(int id, FixedLocation location) {
-        super(ItemOperations.getVertices(id), ItemOperations.getIndices(), "item", location, 1);
+    public Item(int type, FixedLocation location) {
+        super(ItemOperations.getVertices(type), ItemOperations.getIndices(), "item", location, 1);
 
-        this.id = id;
+        this.type = type;
     }
 
     @Override

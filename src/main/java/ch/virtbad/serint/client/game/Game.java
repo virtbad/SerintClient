@@ -10,6 +10,7 @@ import ch.virtbad.serint.client.game.map.MapObject;
 import ch.virtbad.serint.client.game.map.TileMap;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.game.player.Player;
+import ch.virtbad.serint.client.game.player.PlayerAttributes;
 import ch.virtbad.serint.client.game.player.PlayerRegister;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
@@ -27,6 +28,7 @@ import static org.lwjgl.opengl.GL11.*;
  * @author Virt
  */
 public class Game extends Scene {
+    private static final float INTERACTION_RADIUS = 1;
 
     private Communications com;
 
@@ -56,6 +58,9 @@ public class Game extends Scene {
 
     private float lastS = 0;
 
+    private int nearPlayer = -1;
+    private int nearItem = -1;
+
 
     @Override
     public void init() {
@@ -72,7 +77,7 @@ public class Game extends Scene {
     }
 
     @Override
-    public void update() {
+    public void update() { // TODO: More Responsive update Design
 
         float currentTime = Time.getSeconds();
         float delta = lastTime - currentTime;
@@ -106,8 +111,48 @@ public class Game extends Scene {
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
         if (map != null && mapInit) map.draw();
-        items.draw();
+
+        synchronized (items){
+            items.draw();
+        }
+
         players.draw();
+    }
+
+    public void calculateNear() {
+        Item[] currentItems = items.getAll();
+        Player[] currentPlayers = players.getAll();
+        Player own = players.getOwn();
+        float startX = own.getLocation().getPosX() - INTERACTION_RADIUS;
+        float startY = own.getLocation().getPosY() - INTERACTION_RADIUS;
+        float endX = own.getLocation().getPosX() + INTERACTION_RADIUS;
+        float endY = own.getLocation().getPosY() + INTERACTION_RADIUS;
+        boolean itemNear = false;
+        boolean playerNear = false;
+
+
+        for (Item item : currentItems) {
+            float posX = item.getLocation().getPosX();
+            float posY = item.getLocation().getPosY();
+            if (posX >= startX && posX <= endX && posY >= startY && posY <= endY) {
+                nearItem = item.getId();
+                itemNear = true;
+                break;
+            }
+        }
+        if (!itemNear) nearItem = -1;
+
+        for (Player player : currentPlayers) {
+            if(player.getId() == own.getId()) continue;
+            float posX = player.getLocation().getPosX();
+            float posY = player.getLocation().getPosY();
+            if (posX >= startX && posX <= endX && posY >= startY && posY <= endY) {
+                nearPlayer = player.getId();
+                playerNear = true;
+                break;
+            }
+        }
+        if (!playerNear) nearPlayer = -1;
     }
 
     /**
@@ -159,16 +204,24 @@ public class Game extends Scene {
         p.getLocation().setVelocityY(velY);
     }
 
+    public void updatePlayerAttributes(int id, PlayerAttributes attributes) {
+        players.get(id).setAttributes(attributes);
+    }
+
     public void createMap(TileMap map) {
         this.map = new MapObject(map);
         mapInit = false;
     }
 
     public void createItem(int id, float x, float y, int type) {
-        items.add(new Item(type, new FixedLocation(x, y)), id);
+        synchronized (items) {
+            items.add(new Item(type, new FixedLocation(x, y)), id);
+        }
     }
 
     public void destroyItem(int id) {
-        items.remove(id);
+        synchronized (items) {
+            items.remove(id);
+        }
     }
 }

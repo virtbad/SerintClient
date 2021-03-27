@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.game.objects;
 
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
+import lombok.Getter;
 
 /**
  * This class represents a game object which has a position with a quad attached to it
@@ -8,6 +9,7 @@ import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
  */
 public class PositionedGameObject extends GameObject {
 
+    @Getter
     protected FixedLocation location;
 
     protected int layer;

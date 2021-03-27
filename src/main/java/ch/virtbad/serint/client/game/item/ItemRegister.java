@@ -37,6 +37,7 @@ public class ItemRegister {
 
     public void add(Item item, int id) {
         log.info("Item with id {} added", id);
+        item.setId(id);
         item.setContext(context);
         items.put(id, item);
         toInit.add(id);
@@ -59,6 +60,7 @@ public class ItemRegister {
      */
 
     public void remove(int id) {
+        log.info("Removing item with id {}", id);
         toDestroy.add(id);
     }
 
@@ -67,7 +69,6 @@ public class ItemRegister {
      *
      * @param delta delta time
      */
-
     public void update(float delta) {
 
         // Initialize uninitialized Things
@@ -94,10 +95,21 @@ public class ItemRegister {
         }
     }
 
+    /**
+     * Draw all players
+     */
     public void draw() {
         for (Item value : items.values()) {
             value.draw();
         }
+    }
+
+    /**
+     * Returns all items
+     * @return array of items
+     */
+    public Item[] getAll(){
+        return items.values().toArray(new Item[0]);
     }
 
 }
