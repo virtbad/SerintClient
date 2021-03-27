@@ -75,6 +75,15 @@ public class PlayerRegister {
     }
 
     /**
+     * Get all players
+     * @return array with all players
+     */
+
+    public Player[] getAll() {
+        return players.values().toArray(new Player[0]);
+    }
+
+    /**
      * Removes a player from the register
      *
      * @param id player to remove

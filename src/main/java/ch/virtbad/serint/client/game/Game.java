@@ -99,6 +99,16 @@ public class Game extends Scene {
             players.doMapCollisions(delta, map.getCollisions());
         }
 
+        if (players.getOwn() != null) calculateNear();
+
+        if(nearPlayer != -1 && controls.isAttacking()) {
+            com.attackPlayer(nearPlayer);
+        }
+        if(nearItem != -1 && controls.isCollecting()) {
+            com.collectItem(nearItem);
+        }
+
+
         lastTime = currentTime;
     }
 

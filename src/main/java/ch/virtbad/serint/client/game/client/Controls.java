@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 /**
  * This class handles controls for a player
+ *
  * @author Virt
  */
 public class Controls {
@@ -29,6 +30,7 @@ public class Controls {
 
     /**
      * Creates a controls
+     *
      * @param context context of the game
      */
     public Controls(GameContext context) {
@@ -37,18 +39,19 @@ public class Controls {
 
     /**
      * Calculates and applies the movement
+     *
      * @return whether the velocities have changed (to send position updates)
      */
-    public boolean doMovement(){
+    public boolean doMovement() {
         if (player == null) return false;
 
         float velocityX = 0;
         float velocityY = 0;
 
-        if (context.getKeyboard().isDown(KEY_UP) || context.getKeyboard().isDown(KEY_W)) velocityY = SPEED;
-        if (context.getKeyboard().isDown(KEY_DOWN) || context.getKeyboard().isDown(KEY_S)) velocityY = -SPEED;
-        if (context.getKeyboard().isDown(KEY_RIGHT) || context.getKeyboard().isDown(KEY_D)) velocityX = SPEED;
-        if (context.getKeyboard().isDown(KEY_LEFT) || context.getKeyboard().isDown(KEY_A)) velocityX = -SPEED;
+        if (context.getKeyboard().isDown(KEY_UP) || context.getKeyboard().isDown(KEY_W)) velocityY = player.getAttributes().getSpeed();
+        if (context.getKeyboard().isDown(KEY_DOWN) || context.getKeyboard().isDown(KEY_S)) velocityY = -player.getAttributes().getSpeed();
+        if (context.getKeyboard().isDown(KEY_RIGHT) || context.getKeyboard().isDown(KEY_D)) velocityX = player.getAttributes().getSpeed();
+        if (context.getKeyboard().isDown(KEY_LEFT) || context.getKeyboard().isDown(KEY_A)) velocityX = -player.getAttributes().getSpeed();
 
         boolean updated = player.getLocation().getVelocityX() != velocityX || player.getLocation().getVelocityY() != velocityY;
 
@@ -56,6 +59,14 @@ public class Controls {
         player.getLocation().setVelocityY(velocityY);
 
         return updated;
+    }
+
+    public boolean isAttacking() {
+        return context.getKeyboard().isDown(KEY_KILL);
+    }
+
+    public boolean isCollecting() {
+        return context.getKeyboard().isDown(KEY_COLLECT);
     }
 
 }

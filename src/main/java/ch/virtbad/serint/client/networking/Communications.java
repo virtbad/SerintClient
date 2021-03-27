@@ -103,6 +103,10 @@ public class Communications extends CustomClientPacketHandler {
         game.relocatePlayer(packet.getPlayerId(), packet.getX(), packet.getY(), packet.getVelocityX(), packet.getVelocityY());
     }
 
+    public void handle(PlayerAttributePacket packet) {
+        game.updatePlayerAttributes(packet.getPlayer(), packet.getAttributes());
+    }
+
 
     // ----- Environment Packets -----
 

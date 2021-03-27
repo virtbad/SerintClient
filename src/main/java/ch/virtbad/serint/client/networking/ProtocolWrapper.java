@@ -48,6 +48,11 @@ public class ProtocolWrapper {
         protocol.addPacket(PlayerCreatePacket.class, 30);
         protocol.addPacket(PlayerDestroyPacket.class, 31);
         protocol.addPacket(PlayerLocationPacket.class, 32);
+        protocol.addPacket(PlayerAttributePacket.class, 34);
+
+        // Interaction Transmission
+        protocol.addPacket(PlayerAbsorbPacket.class, 41);
+        protocol.addPacket(ItemCollectionPacket.class, 40);
 
     }
 }
