@@ -17,7 +17,7 @@ import org.lwjgl.opengl.GL;
  */
 @Slf4j
 public class Serint {
-    public static final String VERSION = "0.1-alpha";
+    public static final String VERSION = "0.8-beta";
 
     NetworkHandler network;
     Communications communications;

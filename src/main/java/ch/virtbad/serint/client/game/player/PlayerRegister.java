@@ -121,6 +121,7 @@ public class PlayerRegister {
         // Destroy uninitialized Things
         if (toDestroy.size() != 0) {
             for (Integer integer : toDestroy) {
+                if (!players.containsKey(integer)) continue;
                 players.remove(integer).destroy();
             }
 

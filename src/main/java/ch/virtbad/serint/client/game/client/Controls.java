@@ -28,6 +28,9 @@ public class Controls {
     @Setter
     private Player player;
 
+    private boolean lastCollect = false;
+    private boolean lastKill = false;
+
     /**
      * Creates a controls
      *
@@ -62,11 +65,29 @@ public class Controls {
     }
 
     public boolean isAttacking() {
-        return context.getKeyboard().isDown(KEY_KILL);
+        if (context.getKeyboard().isDown(KEY_KILL)){
+            lastKill = true;
+        }else {
+            if (lastKill){
+                lastKill = false;
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public boolean isCollecting() {
-        return context.getKeyboard().isDown(KEY_COLLECT);
+        if (context.getKeyboard().isDown(KEY_COLLECT)){
+            lastCollect = true;
+        }else {
+            if (lastCollect){
+                lastCollect = false;
+                return true;
+            }
+        }
+
+        return false;
     }
 
 }

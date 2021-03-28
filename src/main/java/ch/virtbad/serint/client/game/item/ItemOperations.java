@@ -28,7 +28,7 @@ public class ItemOperations {
         return new float[] {
                 0, 0, tex.getX()    , tex.getY() + 1,
                 1, 0, tex.getX() + 1, tex.getY() + 1,
-                0, 1, tex.getX()    , tex.getX(),
+                0, 1, tex.getX()    , tex.getY(),
                 1, 1, tex.getX() + 1, tex.getY()
         };
     }

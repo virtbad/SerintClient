@@ -84,7 +84,9 @@ public class Game extends Scene {
 
         if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
         players.update(delta);
-        items.update(delta);
+        synchronized (items){
+            items.update(delta);
+        }
 
         cinematography.update();
 
