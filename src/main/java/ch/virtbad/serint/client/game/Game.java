@@ -131,6 +131,11 @@ public class Game extends Scene {
         players.draw();
     }
 
+    @Override
+    public void resized(int width, int height) {
+        camera.setScreenSize(width, height);
+    }
+
     public void calculateNear() {
         Item[] currentItems = items.getAll();
         Player[] currentPlayers = players.getAll();

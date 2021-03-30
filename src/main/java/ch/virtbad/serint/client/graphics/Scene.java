@@ -30,4 +30,11 @@ public abstract class Scene {
      * Is called when the scene should draw
      */
     public abstract void draw();
+
+    /**
+     * Called when the scene / window is resized
+     * @param width width of the scene
+     * @param height height of the scene
+     */
+    public abstract void resized(int width, int height);
 }

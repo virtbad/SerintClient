@@ -26,4 +26,9 @@ public class LoadingScene extends Scene {
         glClearColor(1, 1, 1, 1);
         glClear(GL11.GL_COLOR_BUFFER_BIT);
     }
+
+    @Override
+    public void resized(int width, int height) {
+
+    }
 }

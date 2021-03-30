@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.graphics;
 
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.Window;
+import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.engine.input.Keyboard;
 import ch.virtbad.serint.client.engine.input.Mouse;
 import lombok.Getter;
@@ -47,6 +48,9 @@ public class DisplayHandler {
         window.init();
         window.show();
 
+        window.setResizeEvent(() -> resize(window.getWidth(), window.getHeight()));
+        window.setCloseEvent(() -> System.exit(0)); // TODO: Do proper closing procedure
+
         keyboard = window.getKeyboard();
         mouse = window.getMouse();
 
@@ -88,6 +92,16 @@ public class DisplayHandler {
 
         window.displayBuffer();
         window.fetchEvents();
+    }
+
+    /**
+     * Should be called when the window was resized
+     * @param width new width
+     * @param height new height
+     */
+    public void resize(int width, int height) {
+        // TODO: Do base resizing
+        scenes.get(selected).resized(width, height);
     }
 
 }

@@ -7,10 +7,8 @@ import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
 import ch.virtbad.serint.client.ui.LoadingScene;
-import ch.virtbad.serint.client.ui.TestScene;
 import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
-import org.lwjgl.opengl.GL;
 
 /**
  * @author Virt
