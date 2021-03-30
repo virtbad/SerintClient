@@ -10,8 +10,8 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class ResourceHandler {
-    public static final String TEXTURE_LOCATION = "/assets/textures";
-    public static final String SHADER_LOCATION = "/assets/shaders";
+    public static final String TEXTURE_LOCATION = "/assets/textures/";
+    public static final String SHADER_LOCATION = "/assets/shaders/";
 
     @Getter
     private static TextureLoader textures;
@@ -34,8 +34,8 @@ public class ResourceHandler {
      * Loads the default Resources
      */
     public static void load(){
-        textures.load();
         shaders.load();
+        textures.load();
         data.load();
     }
 

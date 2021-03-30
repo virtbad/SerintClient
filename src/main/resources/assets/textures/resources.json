@@ -1,0 +1,9 @@
+{
+  "ending": ".png",
+  "default": "default",
+  "resources": [
+    "itemsheet",
+    "player",
+    "tilesheet"
+  ]
+}

@@ -30,12 +30,12 @@ dependencies {
     compile "org.lwjgl:lwjgl-openal"
     compile "org.lwjgl:lwjgl-opengl"
     compile "org.lwjgl:lwjgl-stb"
-    runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+    compile "org.lwjgl:lwjgl::$lwjglNatives"
+    compile "org.lwjgl:lwjgl-assimp::$lwjglNatives"
+    compile "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+    compile "org.lwjgl:lwjgl-openal::$lwjglNatives"
+    compile "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+    compile "org.lwjgl:lwjgl-stb::$lwjglNatives"
 
     // Serialisation Dependencies
     compile 'com.google.code.gson:gson:2.8.6'
@@ -46,6 +46,15 @@ dependencies {
     // Logging
     compile group: 'org.slf4j', name: 'slf4j-api', version: '2.0.0-alpha1'
     compile group: 'org.slf4j', name: 'slf4j-simple', version: '2.0.0-alpha1'
+}
+
+jar {
+    manifest {
+        attributes("Class-Path": configurations.compile.collect { it.getName() }.join(' '), "Main-Class": "ch.virtbad.serint.Main")
+    }
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
 }
 
 test {

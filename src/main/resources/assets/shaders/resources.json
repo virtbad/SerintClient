@@ -1,0 +1,9 @@
+{
+  "ending": ".glsl",
+  "default": "default",
+  "resources": [
+    "item",
+    "map",
+    "player"
+  ]
+}

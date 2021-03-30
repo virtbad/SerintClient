@@ -1,8 +1,11 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
 import java.awt.image.BufferedImage;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
@@ -11,10 +14,9 @@ import java.util.HashMap;
  */
 @Slf4j
 public class TextureLoader {
-    public static final String FILE_ENDING = ".png";
-    public static final String FILE_DEFAULT = "default.png";
 
     private final String path;
+    private ResourceIndicator indicator;
 
     private Texture defaultTexture;
     private final HashMap<String, Texture> map;
@@ -33,24 +35,16 @@ public class TextureLoader {
      * Loads the textures from the default folder
      */
     public void load(){
-        loadDefault();
-        load(path);
-    }
+        log.info("Starting to load Textures");
 
-    /**
-     * Loads textures from the folder provided
-     * @param folder folder to load from
-     */
-    public void load(String folder){
-        log.info("Loading Texture Directory: " + folder);
-        String content = ResourceHelper.getText(ResourceHelper.getClasspathResource(folder));
-        if (content == null) throw new IllegalStateException("Failed to load textures from folder: " + folder);
+        InputStream indStream = ResourceHelper.getClasspathResource(path + ResourceIndicator.DEFAULT_NAME);
+        if (indStream == null) throw new IllegalStateException("Cannot load Textures from missing indicator file!");
+        indicator = new Gson().fromJson(new InputStreamReader(indStream), ResourceIndicator.class);
 
-        String[] files = content.split("\n");
-        for (String file : files) {
-            file = file.trim();
+        loadDefault(path + indicator.forgeFilename(indicator.getDefaultResource()));
 
-            if (file.endsWith(FILE_ENDING)) loadTexture(folder + "/" + file, file.substring(0, file.length() - FILE_ENDING.length()));
+        for (String resource : indicator.getResources()) {
+            loadTexture(path + indicator.forgeFilename(resource), resource);
         }
     }
 
@@ -81,10 +75,11 @@ public class TextureLoader {
 
     /**
      * Loads the default Texture
+     * @param path Path of the default texture
      */
-    private void loadDefault(){
+    private void loadDefault(String path){
         log.info("Loading default Texture");
-        BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(path + "/" + FILE_DEFAULT));
+        BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(path));
 
         if (image == null) throw new RuntimeException("Failed to load default Texture");
 

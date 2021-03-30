@@ -1,7 +1,10 @@
 package ch.virtbad.serint.client.engine.resources;
 
+import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 
 /**
@@ -10,10 +13,9 @@ import java.util.HashMap;
  */
 @Slf4j
 public class ShaderLoader {
-    public static final String FILE_ENDING = ".glsl";
-    public static final String FILE_DEFAULT = "default.glsl";
 
     private final String path;
+    private ResourceIndicator indicator;
 
     private Shader defaultShader;
     private final HashMap<String, Shader> map;
@@ -32,24 +34,16 @@ public class ShaderLoader {
      * Loads all shaders from the default path
      */
     public void load(){
-        loadDefault();
-        load(path);
-    }
+        log.info("Starting to load Shaders");
 
-    /**
-     * Loads all Shaders from a given classpath directory
-     * @param folder directory to load from
-     */
-    public void load(String folder){
-        log.info("Loading Shader Directory: " + folder);
-        String content = ResourceHelper.getText(ResourceHelper.getClasspathResource(folder));
-        if (content == null) throw new IllegalStateException("Failed to load shaders from folder: " + folder);
+        InputStream indStream = ResourceHelper.getClasspathResource(path + ResourceIndicator.DEFAULT_NAME);
+        if (indStream == null) throw new IllegalStateException("Cannot load Shaders from missing indicator file!");
+        indicator = new Gson().fromJson(new InputStreamReader(indStream), ResourceIndicator.class);
 
-        String[] files = content.split("\n");
-        for (String file : files) {
-            file = file.trim();
+        loadDefault(path + indicator.forgeFilename(indicator.getDefaultResource()));
 
-            if (file.endsWith(FILE_ENDING)) loadShader(folder + "/" + file, file.substring(0, file.length() - FILE_ENDING.length()));
+        for (String resource : indicator.getResources()) {
+            loadShader(path + indicator.forgeFilename(resource), resource);
         }
     }
 
@@ -80,13 +74,12 @@ public class ShaderLoader {
 
     /**
      * Loads the default Shader
+     * @param path Path to load the default shader from
      */
-    private void loadDefault(){
+    private void loadDefault(String path){
         log.info("Loading default Shader");
-        String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(path + "/" + FILE_DEFAULT));
-
+        String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(path));
         if (source == null) throw new RuntimeException("Failed to load default Shader");
-
         defaultShader = new Shader(source);
     }
 
