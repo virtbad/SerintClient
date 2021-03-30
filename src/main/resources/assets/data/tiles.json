@@ -1,15 +1,6 @@
 [
   {
     "id": 0,
-    "name": "BRICK",
-    "texture": {
-      "x": 5,
-      "y": 1
-    },
-    "type": "FLOOR"
-  },
-  {
-    "id": 1,
     "name": "STONE",
     "texture": {
       "x": 8,
@@ -17,6 +8,16 @@
     },
     "type": "FLOOR"
   },
+  {
+    "id": 1,
+    "name": "BRICK",
+    "texture": {
+      "x": 5,
+      "y": 1
+    },
+    "type": "FLOOR"
+  },
+
   {
     "id": 2,
     "name": "GRASS",
