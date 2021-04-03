@@ -10,8 +10,6 @@ repositories {
     maven { url 'https://jitpack.io' }
 }
 
-project.ext.lwjglNatives = "natives-windows"
-
 dependencies {
 
     // Lombok Annotations Dependencies
@@ -30,12 +28,20 @@ dependencies {
     compile "org.lwjgl:lwjgl-openal"
     compile "org.lwjgl:lwjgl-opengl"
     compile "org.lwjgl:lwjgl-stb"
-    compile "org.lwjgl:lwjgl::$lwjglNatives"
-    compile "org.lwjgl:lwjgl-assimp::$lwjglNatives"
-    compile "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-    compile "org.lwjgl:lwjgl-openal::$lwjglNatives"
-    compile "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-    compile "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    compile "org.lwjgl:lwjgl::natives-windows"
+    compile "org.lwjgl:lwjgl-assimp::natives-windows"
+    compile "org.lwjgl:lwjgl-glfw::natives-windows"
+    compile "org.lwjgl:lwjgl-openal::natives-windows"
+    compile "org.lwjgl:lwjgl-opengl::natives-windows"
+    compile "org.lwjgl:lwjgl-stb::natives-windows"
+
+    compile "org.lwjgl:lwjgl::natives-linux"
+    compile "org.lwjgl:lwjgl-assimp::natives-linux"
+    compile "org.lwjgl:lwjgl-glfw::natives-linux"
+    compile "org.lwjgl:lwjgl-openal::natives-linux"
+    compile "org.lwjgl:lwjgl-opengl::natives-linux"
+    compile "org.lwjgl:lwjgl-stb::natives-linux"
 
     // Serialisation Dependencies
     compile 'com.google.code.gson:gson:2.8.6'
