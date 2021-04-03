@@ -250,7 +250,7 @@
   {
     "target": 0,
     "name": "WALL_SHADOW_BOTTOM",
-    "layer": 1,
+    "layer": 2,
     "texture": {
       "x": 9,
       "y": 1
@@ -259,6 +259,230 @@
       "type": "TYPE",
       "inverted": false,
       "targetType": "WALL"
+    }
+  },
+  {
+    "target": 2,
+    "name": "WALL_SHADOW_BOTTOM_GRASS",
+    "layer": 2,
+    "texture": {
+      "x": 9,
+      "y": 1
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 3,
+    "name": "WALL_SHADOW_BOTTOM_GRAVEL",
+    "layer": 2,
+    "texture": {
+      "x": 9,
+      "y": 1
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 0,
+    "name": "WALL_SHADOW_BOTTOM_BRICK",
+    "layer": 2,
+    "texture": {
+      "x": 9,
+      "y": 1
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 1,
+    "name": "WALL_SHADOW_BOTTOM_STONE",
+    "layer": 2,
+    "texture": {
+      "x": 9,
+      "y": 1
+    },
+    "top": {
+      "type": "TYPE",
+      "inverted": false,
+      "targetType": "WALL"
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRASS_TOP_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 6,
+      "y": 3
+    },
+    "top": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 2
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRASS_BOTTOM_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 5,
+      "y": 3
+    },
+    "bottom": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 2
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRASS_RIGHT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 7,
+      "y": 3
+    },
+    "right": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 2
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRASS_LEFT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 4,
+      "y": 3
+    },
+    "left": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 2
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRAVEL_TOP_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 3,
+      "y": 3
+    },
+    "top": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 3
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRAVEL_BOTTOM_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 2,
+      "y": 3
+    },
+    "bottom": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 3
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRAVEL_LEFT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 1,
+      "y": 3
+    },
+    "left": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 3
+    }
+  },
+  {
+    "target": 0,
+    "name": "GRAVEL_RIGHT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 0,
+      "y": 3
+    },
+    "right": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 3
+    }
+  },
+  {
+    "target": 1,
+    "name": "BRICK_TOP_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 9,
+      "y": 3
+    },
+    "top": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 0
+    }
+  },
+  {
+    "target": 1,
+    "name": "BRICK_BOTTOM_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 8,
+      "y": 3
+    },
+    "bottom": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 0
+    }
+  },
+  {
+    "target": 1,
+    "name": "BRICK_LEFT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 10,
+      "y": 3
+    },
+    "left": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 0
+    }
+  },
+  {
+    "target": 1,
+    "name": "BRICK_RIGHT_TRANSITION",
+    "layer": 1,
+    "texture": {
+      "x": 11,
+      "y": 3
+    },
+    "right": {
+      "type": "TILE",
+      "inverted": false,
+      "targetTile": 0
     }
   }
 ]
