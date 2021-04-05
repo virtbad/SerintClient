@@ -1,4 +1,4 @@
-package ch.virtbad.serint.client.engine.resources;
+package ch.virtbad.serint.client.engine.resources.shaders;
 
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Matrix4f;
