@@ -4,7 +4,10 @@ import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
+import java.nio.ByteBuffer;
+
 import static org.lwjgl.opengl.GL30.*;
+import static org.lwjgl.opengl.GL44.glClearTexImage;
 
 /**
  * @author Virt
@@ -23,6 +26,7 @@ public class TextureFrameBuffer extends FrameBuffer {
      */
     public TextureFrameBuffer(int width, int height) {
         super();
+
         bind();
 
         texture = new Texture(width, height);
@@ -39,5 +43,9 @@ public class TextureFrameBuffer extends FrameBuffer {
     public void destroy() {
         texture.destroy();
         super.destroy();
+    }
+
+    public void resize(int width, int height){
+        texture.reset(width, height, null);
     }
 }

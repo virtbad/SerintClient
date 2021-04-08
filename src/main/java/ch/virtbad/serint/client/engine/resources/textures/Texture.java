@@ -16,7 +16,7 @@ public class Texture {
     private final int id;
 
     @Getter
-    private final int width, height;
+    private int width, height;
 
     /**
      * Loads each pixel with its colours into a byte array, ready to use for the gpu
@@ -112,5 +112,20 @@ public class Texture {
      */
     public void destroy(){
         glDeleteTextures(id);
+    }
+
+    /**
+     * Resets the contents of the texture. Can also be used just for resizing
+     * @param width width of the texture
+     * @param height height of the texture
+     * @param content content of the texture (nullable)
+     */
+    public void reset(int width, int height, ByteBuffer content){
+        bind();
+
+        this.width = width;
+        this.height = height;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, content);
     }
 }
