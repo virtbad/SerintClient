@@ -1,11 +1,14 @@
 package ch.virtbad.serint.client.engine.resources.textures;
 
+import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import lombok.Getter;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  * This class stores code for using and creating textures
@@ -105,6 +108,18 @@ public class Texture {
      */
     public void bind(){
         glBindTexture(GL_TEXTURE_2D, id);
+    }
+
+    /**
+     * Binds the texture and uploads itself into a specific uniform of a shader
+     * @param shader shader to upload to
+     * @param uniformName uniform to upload to
+     * @param slot slot to upload to
+     */
+    public void bindToShader(Shader shader, String uniformName, int slot){
+        glActiveTexture(GL_TEXTURE0 + slot);
+        shader.uploadInt(uniformName, slot);
+        bind();
     }
 
     /**

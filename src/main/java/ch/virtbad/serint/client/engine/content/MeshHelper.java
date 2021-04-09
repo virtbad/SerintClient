@@ -47,4 +47,17 @@ public class MeshHelper {
                 width, height, 1, 0
         };
     }
+
+    /**
+     * Creates vertices that cover the whole screen with uv coordinates, intended for the usage with frame buffers
+     * @return vertices
+     */
+    public static float[] createFramebufferVertices(){
+        return new float[]{
+                -1, -1,    0, 0,
+                -1,  1,    0, 1,
+                 1, -1,    1, 0,
+                 1,  1,    1, 1
+        };
+    }
 }
