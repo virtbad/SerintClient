@@ -1,5 +1,7 @@
-package ch.virtbad.serint.client.engine.resources;
+package ch.virtbad.serint.client.engine.resources.shaders;
 
+import ch.virtbad.serint.client.engine.resources.ResourceHelper;
+import ch.virtbad.serint.client.engine.resources.ResourceIndicator;
 import com.google.gson.Gson;
 import lombok.extern.slf4j.Slf4j;
 

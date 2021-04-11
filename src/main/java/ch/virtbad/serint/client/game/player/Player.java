@@ -1,7 +1,7 @@
 package ch.virtbad.serint.client.game.player;
 
 import ch.virtbad.serint.client.engine.content.MeshHelper;
-import ch.virtbad.serint.client.engine.resources.Texture;
+import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import ch.virtbad.serint.client.game.collisions.AABB;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;

@@ -2,7 +2,7 @@ package ch.virtbad.serint.client.game.objects;
 
 import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.content.Mesh;
-import ch.virtbad.serint.client.engine.resources.Shader;
+import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import org.joml.Matrix4f;

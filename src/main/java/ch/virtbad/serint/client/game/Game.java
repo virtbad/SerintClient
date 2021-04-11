@@ -1,6 +1,10 @@
 package ch.virtbad.serint.client.game;
 
 import ch.virtbad.serint.client.engine.content.Camera;
+import ch.virtbad.serint.client.engine.content.Mesh;
+import ch.virtbad.serint.client.engine.content.MeshHelper;
+import ch.virtbad.serint.client.engine.resources.framebuffers.TextureFrameBuffer;
+import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.client.Cinematography;
 import ch.virtbad.serint.client.game.client.Controls;
 import ch.virtbad.serint.client.game.collisions.CollisionResult;
@@ -12,6 +16,7 @@ import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.game.player.Player;
 import ch.virtbad.serint.client.game.player.PlayerAttributes;
 import ch.virtbad.serint.client.game.player.PlayerRegister;
+import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.util.Globals;
@@ -23,6 +28,8 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 
 /**
  * @author Virt
@@ -53,6 +60,11 @@ public class Game extends Scene {
     private PlayerRegister players;
     private ItemRegister items;
 
+    private Mesh bufferMesh;
+    private Shader bufferShader;
+    private TextureFrameBuffer mapBuffer;
+    private TextureFrameBuffer playerBuffer;
+
     private MapObject map;
     boolean mapInit = true;
 
@@ -74,6 +86,20 @@ public class Game extends Scene {
         cinematography = new Cinematography(context);
         players = new PlayerRegister(context);
         items = new ItemRegister(context);
+
+        setupBuffers();
+    }
+
+    public void setupBuffers(){
+        mapBuffer = new TextureFrameBuffer(1080, 720); //TODO: Also Dynamic
+        playerBuffer = new TextureFrameBuffer(1080, 720); //TODO: Also Dynamic
+
+        bufferMesh = new Mesh(MeshHelper.createFramebufferVertices(), MeshHelper.createQuadIndices());
+        bufferMesh.init();
+        bufferMesh.addVertexAttribPointer(0, 2, GL_FLOAT, 4 * Float.BYTES, 0);
+        bufferMesh.addVertexAttribPointer(1, 2, GL_FLOAT, 4 * Float.BYTES, 2 * Float.BYTES);
+
+        bufferShader = ResourceHandler.getShaders().get("frame");
     }
 
     @Override
@@ -116,27 +142,52 @@ public class Game extends Scene {
 
     @Override
     public void draw() {
-        glClearColor(0, 0, 0, 1);
-        glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         if (keyboard.isDown(GLFW.GLFW_KEY_TAB)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        if (map != null && mapInit) map.draw();
+        mapBuffer.bind();
 
-        synchronized (items){
-            items.draw();
-        }
+            glClearColor(0, 0, 0, 0);
+            glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-        players.draw();
+            if (map != null && mapInit) map.draw();
+
+            synchronized (items){
+                items.draw();
+            }
+
+        mapBuffer.unbind();
+
+        playerBuffer.bind();
+
+            glClearColor(0, 0, 0, 0);
+            glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+            players.draw();
+
+        playerBuffer.unbind();
+
+        glClearColor(0, 0, 0, 1);
+        glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+        bufferShader.bind();
+        playerBuffer.getTexture().bindToShader(bufferShader, "player", 1);
+        mapBuffer.getTexture().bindToShader(bufferShader, "map", 0); // TODO: Why does the sequence matter?
+        bufferMesh.draw();
     }
 
     @Override
     public void resized(int width, int height) {
         camera.setScreenSize(width, height);
+        playerBuffer.resize(width, height);
+        mapBuffer.resize(width, height);
     }
 
     public void calculateNear() {
+
+        // Maybe use Pythagoras?
+
         Item[] currentItems = items.getAll();
         Player[] currentPlayers = players.getAll();
         Player own = players.getOwn();

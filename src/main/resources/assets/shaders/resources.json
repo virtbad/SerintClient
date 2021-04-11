@@ -4,6 +4,7 @@
   "resources": [
     "item",
     "map",
-    "player"
+    "player",
+    "frame"
   ]
 }

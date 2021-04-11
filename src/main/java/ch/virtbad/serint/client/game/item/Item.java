@@ -1,6 +1,6 @@
 package ch.virtbad.serint.client.game.item;
 
-import ch.virtbad.serint.client.engine.resources.Texture;
+import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;

@@ -1,11 +1,14 @@
-package ch.virtbad.serint.client.engine.resources;
+package ch.virtbad.serint.client.engine.resources.textures;
 
+import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import lombok.Getter;
 
 import java.awt.image.BufferedImage;
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
+import static org.lwjgl.opengl.GL13.glActiveTexture;
 
 /**
  * This class stores code for using and creating textures
@@ -16,7 +19,7 @@ public class Texture {
     private final int id;
 
     @Getter
-    private final int width, height;
+    private int width, height;
 
     /**
      * Loads each pixel with its colours into a byte array, ready to use for the gpu
@@ -79,10 +82,65 @@ public class Texture {
     }
 
     /**
+     * Creates a texture with no content.
+     * This is commonly used for frame buffer objects
+     * @param width width of the texture
+     * @param height height of the texture
+     */
+    public Texture(int width, int height){
+        this.width = width;
+        this.height = height;
+
+        // Creates and uploads Texture onto the Graphics Card
+        id = glGenTextures();
+        glBindTexture(GL_TEXTURE_2D, id);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
+    }
+
+    /**
      * Binds the texture for further usage
      */
     public void bind(){
         glBindTexture(GL_TEXTURE_2D, id);
     }
 
+    /**
+     * Binds the texture and uploads itself into a specific uniform of a shader
+     * @param shader shader to upload to
+     * @param uniformName uniform to upload to
+     * @param slot slot to upload to
+     */
+    public void bindToShader(Shader shader, String uniformName, int slot){
+        glActiveTexture(GL_TEXTURE0 + slot);
+        shader.uploadInt(uniformName, slot);
+        bind();
+    }
+
+    /**
+     * Removes the texture from memory
+     */
+    public void destroy(){
+        glDeleteTextures(id);
+    }
+
+    /**
+     * Resets the contents of the texture. Can also be used just for resizing
+     * @param width width of the texture
+     * @param height height of the texture
+     * @param content content of the texture (nullable)
+     */
+    public void reset(int width, int height, ByteBuffer content){
+        bind();
+
+        this.width = width;
+        this.height = height;
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, content);
+    }
 }
