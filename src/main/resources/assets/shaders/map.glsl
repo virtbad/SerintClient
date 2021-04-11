@@ -93,4 +93,6 @@ void main(){
         next = texture(uTexture, uv8 / textureDimension);
         color = next * next.a + color * (1 - next.a);
     }
+
+    color.a = 1;
 }
