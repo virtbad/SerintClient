@@ -1,10 +1,13 @@
 package ch.virtbad.serint.client.game;
 
+import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.content.Mesh;
 import ch.virtbad.serint.client.engine.content.MeshHelper;
 import ch.virtbad.serint.client.engine.resources.framebuffers.TextureFrameBuffer;
 import ch.virtbad.serint.client.engine.resources.shaders.Shader;
+import ch.virtbad.serint.client.game.client.Lighting;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -18,7 +21,13 @@ public class GameRenderer {
     private TextureFrameBuffer map;
     private TextureFrameBuffer player;
 
-    public GameRenderer(int width, int height){
+    private final Lighting lighting;
+    private final Camera gameCamera;
+
+    public GameRenderer(int width, int height, Lighting lighting, Camera gameCamera){
+        this.lighting = lighting;
+        this.gameCamera = gameCamera;
+
         // Create Framebuffers
         map = new TextureFrameBuffer(width, height);
         player = new TextureFrameBuffer(width, height);
@@ -34,10 +43,8 @@ public class GameRenderer {
     }
 
     public void resize(int width, int height){
-
         map.resize(width, height);
         player.resize(width, height);
-
     }
 
     public void bindMap(){
@@ -59,7 +66,11 @@ public class GameRenderer {
         player.getTexture().bindToShader(shader, "player", 1);
         map.getTexture().bindToShader(shader, "map", 0); // Why does the sequence matter?
 
+        shader.uploadVec2("gameViewportPosition", new Vector2f(gameCamera.getXPos(), gameCamera.getYPos()));
+        shader.uploadVec2("gameViewportSize", new Vector2f(gameCamera.getXUnits(), gameCamera.getYUnits()));
+
+        lighting.upload(shader);
+
         mesh.draw();
     }
-
 }

@@ -63,7 +63,7 @@ public class Player extends MeshedGameObject {
     @Override
     protected void uploadUniforms() {
         texture.bind();
-        shader.uploadVector("color", color);
+        shader.uploadVec3("color", color);
     }
 
     @Override

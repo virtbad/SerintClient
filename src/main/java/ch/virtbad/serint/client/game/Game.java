@@ -1,26 +1,19 @@
 package ch.virtbad.serint.client.game;
 
 import ch.virtbad.serint.client.engine.content.Camera;
-import ch.virtbad.serint.client.engine.content.Mesh;
-import ch.virtbad.serint.client.engine.content.MeshHelper;
-import ch.virtbad.serint.client.engine.resources.framebuffers.TextureFrameBuffer;
-import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.client.Cinematography;
 import ch.virtbad.serint.client.game.client.Controls;
-import ch.virtbad.serint.client.game.collisions.CollisionResult;
+import ch.virtbad.serint.client.game.client.Lighting;
 import ch.virtbad.serint.client.game.item.Item;
 import ch.virtbad.serint.client.game.item.ItemRegister;
-import ch.virtbad.serint.client.game.map.MapObject;
 import ch.virtbad.serint.client.game.map.MapRegister;
 import ch.virtbad.serint.client.game.map.TileMap;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.game.player.Player;
 import ch.virtbad.serint.client.game.player.PlayerAttributes;
 import ch.virtbad.serint.client.game.player.PlayerRegister;
-import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
-import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector3f;
@@ -30,8 +23,6 @@ import org.lwjgl.opengl.GL11;
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE0;
-import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 
 /**
  * @author Virt
@@ -61,6 +52,7 @@ public class Game extends Scene {
     private Camera camera;
     private Cinematography cinematography;
     private Controls controls;
+    private Lighting lighting;
 
     private PlayerRegister players;
     private ItemRegister items;
@@ -88,7 +80,9 @@ public class Game extends Scene {
         items = new ItemRegister(context);
         map = new MapRegister(context);
 
-        renderer = new GameRenderer(width, height);
+        lighting = new Lighting();
+
+        renderer = new GameRenderer(width, height, lighting, camera);
     }
 
     @Override
@@ -259,6 +253,7 @@ public class Game extends Scene {
 
     public void createMap(TileMap map) {
         this.map.create(map);
+        lighting.loadMap(map);
     }
 
     public void createItem(int id, float x, float y, int type) {
