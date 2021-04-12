@@ -12,7 +12,7 @@ import static org.lwjgl.opengl.GL11.glClearColor;
  */
 public class LoadingScene extends Scene {
     @Override
-    public void init() {
+    public void init(int width, int height) {
 
     }
 

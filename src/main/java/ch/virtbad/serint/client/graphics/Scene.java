@@ -19,7 +19,7 @@ public abstract class Scene {
     /**
      * Is called when the scene should be initialized
      */
-    public abstract void init();
+    public abstract void init(int width, int height);
 
     /**
      * Is called when the scene should update its components

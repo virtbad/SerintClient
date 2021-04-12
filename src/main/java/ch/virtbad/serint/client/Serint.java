@@ -50,11 +50,11 @@ public class Serint {
         ResourceHandler.init();
         // Create and show Display
         rendering = new DisplayHandler();
+        rendering.init();
 
         rendering.addScene(0, new LoadingScene());
         rendering.setScene(0);
 
-        rendering.init();
         rendering.getUpdater().forceCall();
     }
 

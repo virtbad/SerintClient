@@ -69,7 +69,7 @@ public class DisplayHandler {
         // Initializing Scene
         scenes.get(id).setKeyboard(keyboard);
         scenes.get(id).setMouse(mouse);
-        scenes.get(id).init();
+        scenes.get(id).init(window.getWidth(), window.getHeight());
     }
 
     /**

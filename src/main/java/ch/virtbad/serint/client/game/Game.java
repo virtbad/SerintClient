@@ -11,6 +11,7 @@ import ch.virtbad.serint.client.game.collisions.CollisionResult;
 import ch.virtbad.serint.client.game.item.Item;
 import ch.virtbad.serint.client.game.item.ItemRegister;
 import ch.virtbad.serint.client.game.map.MapObject;
+import ch.virtbad.serint.client.game.map.MapRegister;
 import ch.virtbad.serint.client.game.map.TileMap;
 import ch.virtbad.serint.client.game.objects.positioning.FixedLocation;
 import ch.virtbad.serint.client.game.player.Player;
@@ -21,6 +22,7 @@ import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.util.Time;
+import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
@@ -34,6 +36,7 @@ import static org.lwjgl.opengl.GL13.GL_TEXTURE1;
 /**
  * @author Virt
  */
+@Slf4j
 public class Game extends Scene {
     private static final float INTERACTION_RADIUS = 1;
 
@@ -49,6 +52,8 @@ public class Game extends Scene {
         communications.setGame(this);
     }
 
+    private volatile boolean joined;
+
 
     private GameContext context;
     private float lastTime = Time.getSeconds();
@@ -60,25 +65,20 @@ public class Game extends Scene {
     private PlayerRegister players;
     private ItemRegister items;
 
-    private Mesh bufferMesh;
-    private Shader bufferShader;
-    private TextureFrameBuffer mapBuffer;
-    private TextureFrameBuffer playerBuffer;
+    private GameRenderer renderer;
 
-    private MapObject map;
-    boolean mapInit = true;
-
-    private float lastS = 0;
+    private MapRegister map;
 
     private int nearPlayer = -1;
     private int nearItem = -1;
 
 
     @Override
-    public void init() {
+    public void init(int width, int height) {
+        joined = false;
 
         camera = new Camera(10, 10);
-        camera.setScreenSize(1080, 720); //TODO: Dynamic
+        camera.setScreenSize(width, height);
 
         context = new GameContext(camera, keyboard, mouse);
 
@@ -86,49 +86,32 @@ public class Game extends Scene {
         cinematography = new Cinematography(context);
         players = new PlayerRegister(context);
         items = new ItemRegister(context);
+        map = new MapRegister(context);
 
-        setupBuffers();
-    }
-
-    public void setupBuffers(){
-        mapBuffer = new TextureFrameBuffer(1080, 720); //TODO: Also Dynamic
-        playerBuffer = new TextureFrameBuffer(1080, 720); //TODO: Also Dynamic
-
-        bufferMesh = new Mesh(MeshHelper.createFramebufferVertices(), MeshHelper.createQuadIndices());
-        bufferMesh.init();
-        bufferMesh.addVertexAttribPointer(0, 2, GL_FLOAT, 4 * Float.BYTES, 0);
-        bufferMesh.addVertexAttribPointer(1, 2, GL_FLOAT, 4 * Float.BYTES, 2 * Float.BYTES);
-
-        bufferShader = ResourceHandler.getShaders().get("frame");
+        renderer = new GameRenderer(width, height);
     }
 
     @Override
-    public void update() { // TODO: More Responsive update Design
+    public void update() {
+        if (!joined) return;
 
         float currentTime = Time.getSeconds();
         float delta = lastTime - currentTime;
 
+        cinematography.update();
         if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
+
         players.update(delta);
         synchronized (items){
             items.update(delta);
         }
 
-        cinematography.update();
+        map.update(delta);
+        players.doMapCollisions(delta, map.getMap().getCollisions());
 
-        if (!mapInit) {
-            map.setContext(context);
-            map.init();
-            mapInit = true;
-        }
-        if (map != null) {
-            map.update(delta);
+        // Interactions
 
-            players.doMapCollisions(delta, map.getCollisions());
-        }
-
-        if (players.getOwn() != null) calculateNear();
-
+        calculateNear();
         if(nearPlayer != -1 && controls.isAttacking()) {
             com.attackPlayer(nearPlayer);
         }
@@ -142,49 +125,44 @@ public class Game extends Scene {
 
     @Override
     public void draw() {
+        if (!joined) return;
 
         if (keyboard.isDown(GLFW.GLFW_KEY_TAB)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
-        mapBuffer.bind();
+        // DRAW MAP
 
-            glClearColor(0, 0, 0, 0);
-            glClear(GL11.GL_COLOR_BUFFER_BIT);
+        renderer.bindMap();
 
-            if (map != null && mapInit) map.draw();
-
-            synchronized (items){
-                items.draw();
-            }
-
-        mapBuffer.unbind();
-
-        playerBuffer.bind();
-
-            glClearColor(0, 0, 0, 0);
-            glClear(GL11.GL_COLOR_BUFFER_BIT);
-
-            players.draw();
-
-        playerBuffer.unbind();
-
-        glClearColor(0, 0, 0, 1);
+        glClearColor(0, 0, 0, 0);
         glClear(GL11.GL_COLOR_BUFFER_BIT);
 
-        bufferShader.bind();
-        playerBuffer.getTexture().bindToShader(bufferShader, "player", 1);
-        mapBuffer.getTexture().bindToShader(bufferShader, "map", 0); // TODO: Why does the sequence matter?
-        bufferMesh.draw();
+        map.draw();
+
+        synchronized (items){
+            items.draw();
+        }
+
+        // DRAW PLAYERS
+
+        renderer.bindPlayer();
+
+        glClearColor(0, 0, 0, 0);
+        glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+        players.draw();
+
+
+        renderer.draw();
     }
 
     @Override
     public void resized(int width, int height) {
         camera.setScreenSize(width, height);
-        playerBuffer.resize(width, height);
-        mapBuffer.resize(width, height);
+        renderer.resize(width, height);
     }
 
-    public void calculateNear() {
+    public void calculateNear() { //TODO: Do better
 
         // Maybe use Pythagoras?
 
@@ -232,6 +210,9 @@ public class Game extends Scene {
         players.setOwn(new Player(ownId, new Vector3f(1, 1, 0), "Own Test")); // TODO: Replace info here with actual info sent to the server
         controls.setPlayer(players.getOwn());
         cinematography.follow(players.getOwn().getLocation());
+        joined = true;
+
+        log.info("Joined the Game successfully!");
     }
 
     /**
@@ -277,8 +258,7 @@ public class Game extends Scene {
     }
 
     public void createMap(TileMap map) {
-        this.map = new MapObject(map);
-        mapInit = false;
+        this.map.create(map);
     }
 
     public void createItem(int id, float x, float y, int type) {
