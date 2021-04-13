@@ -14,6 +14,7 @@ public class Lighting {
     private float[] positions;
     private float[] colors;
     private float[] intensities;
+    private int amount;
 
     public Lighting() {
         positions = new float[0];
@@ -57,11 +58,14 @@ public class Lighting {
             // Fill intensities
             intensities[i] = current.getIntensity();
         }
+
+        amount = length + 1; // Also player vision
     }
 
     public void upload(Shader shader){
         shader.uploadVec2Array("lightPositions", positions);
         shader.uploadVec3Array("lightColors", colors);
         shader.uploadFloatArray("lightIntensities", intensities);
+        shader.uploadInt("lightSources", amount);
     }
 }
