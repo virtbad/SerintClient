@@ -4,6 +4,7 @@
   "resources": [
     "itemsheet",
     "player",
+    "font",
     "tilesheet"
   ]
 }
