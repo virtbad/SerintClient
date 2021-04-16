@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.ui;
 
+import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.ui.components.Button;
 
 /**

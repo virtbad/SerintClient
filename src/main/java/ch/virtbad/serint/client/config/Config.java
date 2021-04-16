@@ -17,4 +17,6 @@ public class Config {
 
     private String serverHost = "localhost";
     private int serverPort = 17371;
+
+    private String language = "en_US";
 }

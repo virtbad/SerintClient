@@ -1,0 +1,7 @@
+{
+  "identifier": "en_US",
+  "name": "American English",
+  "content": {
+    "test.string": "Hello World!"
+  }
+}
