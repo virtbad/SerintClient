@@ -90,12 +90,19 @@ public class Serint {
         log.info("Cleaning current Instance");
         updateLoadingMessage("Finishing up");
 
-        tryToConnect();
+        if (true){
+            tryToConnect();
 
-        rendering.addScene(1, game);
-        rendering.setScene(1);
+            rendering.addScene(1, game);
+            rendering.setScene(1);
 
-        communications.connect();
+            communications.connect();
+
+        }else {
+
+            rendering.addScene(2, new MainMenu());
+            rendering.setScene(2);
+        }
 
 
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
