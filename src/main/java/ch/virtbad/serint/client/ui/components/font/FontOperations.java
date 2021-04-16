@@ -1,6 +1,5 @@
 package ch.virtbad.serint.client.ui.components.font;
 
-import java.nio.charset.StandardCharsets;
 import java.text.Normalizer;
 
 /**
@@ -81,6 +80,24 @@ public class FontOperations {
         }
 
         return indices;
+    }
+
+    /**
+     * Returns the height of a rendered string. (Although it is currently always one)
+     * @param s string to get height for
+     * @return height of string
+     */
+    public static float getOneLineHeight(String s){
+        return 1;
+    }
+
+    /**
+     * Returns the width of a rendered string.
+     * @param s string to get width for
+     * @return width of string
+     */
+    public static float getOneLineWidth(String s){
+        return s.length();
     }
 
     /**

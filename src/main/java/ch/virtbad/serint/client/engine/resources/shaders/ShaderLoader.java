@@ -54,7 +54,7 @@ public class ShaderLoader {
      * @param file filename of the shader
      * @param name name of the shader
      */
-    private void loadShader(String file, String name){
+    public void loadShader(String file, String name){
         log.info("Loading Shader: " + file);
         String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(file));
 
@@ -78,7 +78,7 @@ public class ShaderLoader {
      * Loads the default Shader
      * @param path Path to load the default shader from
      */
-    private void loadDefault(String path){
+    public void loadDefault(String path){
         log.info("Loading default Shader");
         String source = ResourceHelper.getText(ResourceHelper.getClasspathResource(path));
         if (source == null) throw new RuntimeException("Failed to load default Shader");

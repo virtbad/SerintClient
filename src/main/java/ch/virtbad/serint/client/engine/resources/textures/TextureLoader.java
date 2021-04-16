@@ -55,7 +55,7 @@ public class TextureLoader {
      * @param file filename to load the texture from
      * @param name name to store it with
      */
-    private void loadTexture(String file, String name){
+    public void loadTexture(String file, String name){
         log.info("Loading Texture: " + file);
         BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(file));
 
@@ -79,7 +79,7 @@ public class TextureLoader {
      * Loads the default Texture
      * @param path Path of the default texture
      */
-    private void loadDefault(String path){
+    public void loadDefault(String path){
         log.info("Loading default Texture");
         BufferedImage image = ResourceHelper.getImage(ResourceHelper.getClasspathResource(path));
 

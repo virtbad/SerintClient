@@ -7,6 +7,7 @@ import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
 import ch.virtbad.serint.client.ui.LoadingScene;
+import ch.virtbad.serint.client.ui.MainMenu;
 import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,6 +25,8 @@ public class Serint {
     Game game;
 
     float startTime;
+
+    private LoadingScene loading;
 
     /**
      * Creates the Main Class
@@ -52,9 +55,16 @@ public class Serint {
         rendering = new DisplayHandler();
         rendering.init();
 
-        rendering.addScene(0, new LoadingScene());
+        // Show loading scene
+        loading = new LoadingScene();
+        rendering.addScene(0, loading);
         rendering.setScene(0);
+        rendering.getUpdater().forceCall();
 
+        // Loading and creating loading text
+        ResourceHandler.getShaders().loadShader("/assets/shaders/font.glsl", "font");
+        ResourceHandler.getTextures().loadTexture("/assets/textures/font.png", "font");
+        loading.addLoadingText();
         rendering.getUpdater().forceCall();
     }
 
@@ -65,10 +75,11 @@ public class Serint {
         log.info("Creating Client components");
 
         // Loading Resources
+        updateLoadingMessage("Loading Resources");
         ResourceHandler.load(); // Needs to have context to work
 
-
         // Creating Networking
+        updateLoadingMessage("Initializing Networking");
         network = new NetworkHandler();
     }
 
@@ -77,6 +88,7 @@ public class Serint {
      */
     public void post(){
         log.info("Cleaning current Instance");
+        updateLoadingMessage("Finishing up");
 
         tryToConnect();
 
@@ -84,6 +96,7 @@ public class Serint {
         rendering.setScene(1);
 
         communications.connect();
+
 
         log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
     }
@@ -102,5 +115,14 @@ public class Serint {
         }
 
         game = new Game(communications);
+    }
+
+    /**
+     * Updates the text shown on the loading screen
+     * @param s new text
+     */
+    private void updateLoadingMessage(String s){
+        loading.setLoadingText(s);
+        rendering.getUpdater().forceCall();
     }
 }

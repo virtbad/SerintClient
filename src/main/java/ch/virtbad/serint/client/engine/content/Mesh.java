@@ -22,8 +22,8 @@ import static org.lwjgl.system.MemoryUtil.NULL;
  */
 public class Mesh {
 
-    private final float[] vertices;
-    private final int[] indices;
+    private float[] vertices;
+    private int[] indices;
 
     private int vbo, ebo, vao;
 
@@ -51,6 +51,28 @@ public class Mesh {
         // Binding Buffers onto VAO
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
+    }
+
+    /**
+     * Updates the vertices of the mesh
+     * @param vertices new vertices
+     */
+    public void updateVertices(float[] vertices){
+        this.vertices = vertices;
+
+        glBindBuffer(GL_ARRAY_BUFFER, vbo);
+        glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
+    }
+
+    /**
+     * Updates the indices of the mesh
+     * @param indices new indices
+     */
+    public void updateIndices(int[] indices){
+        this.indices = indices;
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);
