@@ -71,7 +71,7 @@ public class Mouse {
      * @param button button to check for
      * @return whether button is pressed
      */
-    private boolean isDown(int button){
+    public boolean isDown(int button){
         if (button < 0 || button >= 8) throw new IllegalStateException("Cannot get State of nonexistent Button. (Only up to 8 mouse buttons are supported)");
         else return buttons[button];
     }
@@ -81,7 +81,7 @@ public class Mouse {
      * This is the exact opposite of isDown
      * @see #isDown(int)
      */
-    private boolean isUp(int button){
+    public boolean isUp(int button){
         return !isDown(button);
     }
 

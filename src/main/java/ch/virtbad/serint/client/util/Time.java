@@ -36,7 +36,7 @@ public class Time {
      * @return current seconds
      */
     public static float getSeconds() {
-        return (START - System.currentTimeMillis()) / 1000f; //TODO: Make Unified and why does it need this?
+        return (System.currentTimeMillis() - START) / 1000f; //TODO: Make Unified and why does it need this?
     }
 
     /**

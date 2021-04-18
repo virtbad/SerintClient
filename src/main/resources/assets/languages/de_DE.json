@@ -1,0 +1,12 @@
+{
+  "identifier": "en_US",
+  "name": "Deutsch",
+  "content": {
+    "name": "Serint",
+    "ui.main.button.play": "Spielen",
+    "ui.main.button.options": "Einstellungen",
+    "ui.main.button.about": "Über",
+    "ui.main.button.quit": "Schliessen",
+    "ui.main.button.back": "Zurück"
+  }
+}

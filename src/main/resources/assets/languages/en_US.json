@@ -2,6 +2,25 @@
   "identifier": "en_US",
   "name": "American English",
   "content": {
-    "test.string": "Hello World!"
+    "name": "Serint",
+    "ui.main.button.play": "Play",
+    "ui.main.button.options": "Options",
+    "ui.main.button.about": "About",
+    "ui.main.button.quit": "Quit",
+    "ui.main.button.back": "Back",
+    "ui.about.info.version": " version ",
+    "ui.about.info.libraries": "Libraries used:",
+    "ui.about.info.rendering": "Rendering: ",
+    "ui.about.info.opengl": "OpenGL",
+    "ui.about.info.bindings": "GL Bindings: ",
+    "ui.about.info.lwjgl": "LWJGL",
+    "ui.about.info.serialization": "Serialization: ",
+    "ui.about.info.gson": "Gson",
+    "ui.about.info.networking": "Networking: ",
+    "ui.about.info.pseudopackets": "PseudoPackets",
+    "ui.about.info.creators": "Created by:",
+    "ui.about.info.view.client": "View this Project on ",
+    "ui.about.info.view.server": "Get the Server on ",
+    "ui.about.info.github": "GitHub"
   }
 }

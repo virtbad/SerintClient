@@ -2,6 +2,6 @@
   "ending": ".json",
   "default": "en_US",
   "resources": [
-
+    "de_DE"
   ]
 }

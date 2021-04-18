@@ -6,8 +6,10 @@ import ch.virtbad.serint.client.graphics.DisplayHandler;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
+import ch.virtbad.serint.client.ui.AboutMenu;
 import ch.virtbad.serint.client.ui.LoadingScene;
 import ch.virtbad.serint.client.ui.MainMenu;
+import ch.virtbad.serint.client.ui.SettingsMenu;
 import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,6 +29,9 @@ public class Serint {
     float startTime;
 
     private LoadingScene loading;
+    private MainMenu mainMenu;
+    private SettingsMenu settingsMenu;
+    private AboutMenu aboutMenu;
 
     /**
      * Creates the Main Class
@@ -90,18 +95,23 @@ public class Serint {
         log.info("Cleaning current Instance");
         updateLoadingMessage("Finishing up");
 
+        mainMenu = new MainMenu();
+        rendering.addScene(1, mainMenu);
+        settingsMenu = new SettingsMenu();
+        rendering.addScene(2, settingsMenu);
+        aboutMenu = new AboutMenu();
+        rendering.addScene(3, aboutMenu);
+
         if (true){
             tryToConnect();
 
-            rendering.addScene(1, game);
-            rendering.setScene(1);
+            rendering.addScene(0, game);
+            rendering.setScene(0);
 
             communications.connect();
 
         }else {
-
-            rendering.addScene(2, new MainMenu());
-            rendering.setScene(2);
+            rendering.setScene(1);
         }
 
 

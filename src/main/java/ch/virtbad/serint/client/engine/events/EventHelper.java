@@ -22,4 +22,13 @@ public class EventHelper {
     public static void emitEvent(BooleanEvent event, boolean value){
         if (event != null) event.emit(value);
     }
+
+    /**
+     * Emits integer events, only if not null
+     * @param event event to emit
+     * @param value value to be emitted with
+     */
+    public static void emitEvent(IntegerEvent event, int value){
+        if (event != null) event.emit(value);
+    }
 }

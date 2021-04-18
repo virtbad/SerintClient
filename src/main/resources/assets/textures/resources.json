@@ -6,6 +6,8 @@
     "player",
     "font",
     "button",
+    "fancybutton",
+    "background",
     "tilesheet"
   ]
 }

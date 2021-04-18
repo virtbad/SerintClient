@@ -5,6 +5,7 @@ import ch.virtbad.serint.client.engine.events.EventHelper;
 import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.ui.UiHelper;
+import ch.virtbad.serint.client.ui.components.base.Component;
 import ch.virtbad.serint.client.ui.components.base.QuadComponent;
 import ch.virtbad.serint.client.ui.components.font.Text;
 import ch.virtbad.serint.client.util.Time;
@@ -13,10 +14,10 @@ import org.joml.Vector4f;
 import org.lwjgl.glfw.GLFW;
 
 /**
- * This class represents button component
+ * This class represents a gui component which is a button that is extra fancy
  * @author Virt
  */
-public class Button extends QuadComponent {
+public class FancyButton extends QuadComponent {
 
     @Setter
     private BasicEvent event;
@@ -25,18 +26,19 @@ public class Button extends QuadComponent {
 
     private boolean hovered;
     private boolean pressed;
+    private float hoveringTime = 0;
 
     private Text text;
 
     /**
-     * Creates a button
+     * Creates a fancy button
      * @param x x coordinate
      * @param y y coordinate
      * @param width width
      * @param height height
      */
-    public Button(float x, float y, float width, float height, String text) {
-        super(x, y, width, height, "button", true);
+    public FancyButton(float x, float y, float width, float height, String text) {
+        super(x, y, width, height, "fancybutton", true);
 
         this.text = new Text(text, new Vector4f(1, 1, 1, 1), 0, 0, 0.5f);
     }
@@ -45,7 +47,7 @@ public class Button extends QuadComponent {
     public void init() {
         super.init();
 
-        texture = ResourceHandler.getTextures().get("button");
+        texture = ResourceHandler.getTextures().get("fancybutton");
 
         text.setCamera(context.getCamera());
         text.init();
@@ -55,6 +57,8 @@ public class Button extends QuadComponent {
     @Override
     protected void uploadUniforms() {
         shader.uploadInt("state", hovered ? (pressed ? 2 : 1) : 0);
+        shader.uploadFloat("time", Time.getSeconds());
+        shader.uploadFloat("hoveringTime", hoveringTime);
         texture.bind();
     }
 
@@ -64,6 +68,7 @@ public class Button extends QuadComponent {
         boolean pressing = context.getMouse().isDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
         if (hovering){
+            if (!hovered) hoveringTime = Time.getSeconds();
             hovered = true;
 
             if (pressing){
