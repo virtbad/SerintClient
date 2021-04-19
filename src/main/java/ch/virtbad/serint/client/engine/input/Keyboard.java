@@ -1,5 +1,8 @@
 package ch.virtbad.serint.client.engine.input;
 
+import ch.virtbad.serint.client.engine.events.CharEvent;
+import ch.virtbad.serint.client.engine.events.EventHelper;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import static org.lwjgl.glfw.GLFW.*;
@@ -12,6 +15,9 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Keyboard {
     private boolean[] keys;
 
+    @Setter
+    private CharEvent charListener;
+
     public Keyboard(){
         keys = new boolean[350]; // Roughly 350, because the highest keycode is about that (see org.lwjgl.glfw.GLFW.GLFW_KEY_LAST)
     }
@@ -22,6 +28,7 @@ public class Keyboard {
      */
     public void bindCallback(long windowId){
         glfwSetKeyCallback(windowId, this::callback);
+        glfwSetCharCallback(windowId, this::charCallback);
     }
 
     /**
@@ -31,6 +38,14 @@ public class Keyboard {
     private void callback(long window, int key, int scancode, int action, int mods){
         if (!(key < 0 || key >= 350)) keys[key] = action != GLFW_RELEASE; // False if key was released, so GLFW_PRESS and GLFW_REPEAT both are true
         else log.warn("Invalid Keyboard Event received with following key: " + key);
+    }
+
+    /**
+     * Callback which is getting called by GLFW, for character input
+     * @see org.lwjgl.glfw.GLFWCharCallbackI
+     */
+    private void charCallback(long window, int codepoint){
+        EventHelper.emitEvent(charListener, (char) codepoint);
     }
 
     /**

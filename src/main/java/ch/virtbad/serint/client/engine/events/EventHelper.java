@@ -31,4 +31,14 @@ public class EventHelper {
     public static void emitEvent(IntegerEvent event, int value){
         if (event != null) event.emit(value);
     }
+
+
+    /**
+     * Emits character events, only if not null
+     * @param event event to emit
+     * @param value value to be emitted with
+     */
+    public static void emitEvent(CharEvent event, char value){
+        if (event != null) event.emit(value);
+    }
 }

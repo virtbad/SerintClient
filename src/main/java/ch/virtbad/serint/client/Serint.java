@@ -6,10 +6,7 @@ import ch.virtbad.serint.client.graphics.DisplayHandler;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
-import ch.virtbad.serint.client.ui.AboutMenu;
-import ch.virtbad.serint.client.ui.LoadingScene;
-import ch.virtbad.serint.client.ui.MainMenu;
-import ch.virtbad.serint.client.ui.SettingsMenu;
+import ch.virtbad.serint.client.ui.*;
 import ch.virtbad.serint.client.util.Time;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,12 +23,11 @@ public class Serint {
 
     Game game;
 
-    float startTime;
-
     private LoadingScene loading;
     private MainMenu mainMenu;
     private SettingsMenu settingsMenu;
     private AboutMenu aboutMenu;
+    private ServerConnectMenu connectMenu;
 
     /**
      * Creates the Main Class
@@ -50,8 +46,6 @@ public class Serint {
      * Initializes minor Things
      */
     public void init(){
-        startTime = Time.getSeconds();
-
         log.info("Initializing key components");
         // Load Config
         ConfigHandler.load("config.json");
@@ -101,6 +95,8 @@ public class Serint {
         rendering.addScene(2, settingsMenu);
         aboutMenu = new AboutMenu();
         rendering.addScene(3, aboutMenu);
+        connectMenu = new ServerConnectMenu();
+        rendering.addScene(4, connectMenu);
 
         if (true){
             tryToConnect();
@@ -115,7 +111,7 @@ public class Serint {
         }
 
 
-        log.info("Finished Initialization in {} Seconds!", (startTime - Time.getSeconds()));
+        log.info("Finished Initialization in {} Seconds!", (Time.START - Time.getSeconds()));
     }
 
     public void run(){

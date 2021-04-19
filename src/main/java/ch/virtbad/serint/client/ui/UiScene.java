@@ -60,7 +60,7 @@ public abstract class UiScene extends Scene {
     @Override
     public void update() {
         float time = Time.getSeconds();
-        float delta = lastTime - time;
+        float delta = time - lastTime;
 
         for (Component component : components) {
             component.update(delta);

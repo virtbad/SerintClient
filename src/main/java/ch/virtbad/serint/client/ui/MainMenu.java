@@ -31,6 +31,7 @@ public class MainMenu extends UiScene {
         FancyButton aboutButton = new FancyButton(optionsButton.getX(), optionsButton.getY() - (BUTTON_HEIGHT + BUTTON_SPACING), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.about"));
         FancyButton quitButton = new FancyButton(aboutButton.getX(), aboutButton.getY() - (BUTTON_HEIGHT + BUTTON_SPACING), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.quit"));
 
+        playButton.setEvent(() -> switchScene(4));
         optionsButton.setEvent(() -> switchScene(2));
         aboutButton.setEvent(() -> switchScene(3));
 
