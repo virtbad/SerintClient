@@ -10,7 +10,7 @@ uniform mat4 viewMatrix;
 out vec2 uv;
 
 void main() {
-    uv = tex;
+    uv = tex / 8;
     gl_Position = viewMatrix * (worldMatrix * vec4(pos.x, pos.y, 0.0, 1.0));
 }
 
@@ -20,11 +20,12 @@ void main() {
 in vec2 uv;
 
 uniform vec3 color;
+uniform vec2 part;
 uniform sampler2D uTexture;
 
 out vec4 FragColor;
 
 void main(){
-    vec4 tex = texture(uTexture, vec2(uv.x, uv.y));
+    vec4 tex = texture(uTexture, (part / 8) + uv);
     FragColor = vec4(color * tex.r, tex.a); // TODO: Do real colouring
 }
