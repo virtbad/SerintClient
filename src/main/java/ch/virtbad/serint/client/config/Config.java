@@ -19,4 +19,5 @@ public class Config {
     private int serverPort = 17371;
 
     private String language = "en_US";
+    private float uiScale = 3.5f;
 }

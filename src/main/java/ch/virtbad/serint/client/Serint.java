@@ -98,7 +98,7 @@ public class Serint {
         connectMenu = new ServerConnectMenu();
         rendering.addScene(4, connectMenu);
 
-        if (true){
+        if (false){
             tryToConnect();
 
             rendering.addScene(0, game);

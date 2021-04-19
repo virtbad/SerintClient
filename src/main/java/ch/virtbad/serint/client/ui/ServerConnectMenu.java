@@ -4,11 +4,12 @@ import ch.virtbad.serint.client.ui.components.EditText;
 
 import static ch.virtbad.serint.client.ui.MainMenu.*;
 
-public class ServerConnectMenu extends UiScene{
+/**
+ * This class contains the menu where you can select and connect to a server
+ * @author Virt
+ */
+public class ServerConnectMenu extends MenuScene {
 
-    public ServerConnectMenu() {
-        super(20);
-    }
 
     @Override
     public void build() {
@@ -16,17 +17,4 @@ public class ServerConnectMenu extends UiScene{
         addComponent(editText);
     }
 
-    @Override
-    public void resized(int width, int height) {
-        super.resized(width, height);
-
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
-
-    @Override
-    public void init(int width, int height) {
-        super.init(width, height);
-
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
 }

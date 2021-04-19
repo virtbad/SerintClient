@@ -22,7 +22,7 @@ public abstract class UiScene extends Scene {
 
     private ArrayList<Component> components;
 
-    private final int minUnits;
+    private final float minUnits;
 
     private float lastTime;
 
@@ -30,7 +30,7 @@ public abstract class UiScene extends Scene {
      * Creates a ui scene
      * @param minUnits minimal units in width / height
      */
-    public UiScene(int minUnits) {
+    public UiScene(float minUnits) {
         this.minUnits = minUnits;
     }
 

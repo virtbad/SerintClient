@@ -1,21 +1,22 @@
 package ch.virtbad.serint.client.ui.components;
 
 import ch.virtbad.serint.client.engine.events.BasicEvent;
-import ch.virtbad.serint.client.engine.events.CharEvent;
 import ch.virtbad.serint.client.engine.events.EventHelper;
 import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.ui.UiHelper;
-import ch.virtbad.serint.client.ui.components.base.PositionedComponent;
 import ch.virtbad.serint.client.ui.components.base.QuadComponent;
 import ch.virtbad.serint.client.ui.components.font.Text;
 import ch.virtbad.serint.client.util.Time;
 import lombok.Setter;
 import org.joml.Vector4f;
-import org.lwjgl.glfw.GLFW;
 
 import static org.lwjgl.glfw.GLFW.*;
 
+/**
+ * This class represents a component that is an editable text field
+ * @author Virt
+ */
 public class EditText extends QuadComponent {
 
     private String content;
@@ -38,6 +39,16 @@ public class EditText extends QuadComponent {
     @Setter
     private BasicEvent submitListener;
 
+    /**
+     * Creates an EditText
+     * @param x x coordinate
+     * @param y y coordinate
+     * @param width width
+     * @param height height
+     * @param scale scale of the font
+     * @param centered whether it is centered
+     * @param maxLength maximal length of the content
+     */
     public EditText(float x, float y, float width, float height, float scale, boolean centered, int maxLength) {
         super(x, y, width, height, "edittext", true);
         content = "";
@@ -60,6 +71,9 @@ public class EditText extends QuadComponent {
         texture = ResourceHandler.getTextures().get("edittext");
     }
 
+    /**
+     * Updates the text in the field
+     */
     private void updateText(){
         text.setText(content);
 
@@ -72,15 +86,25 @@ public class EditText extends QuadComponent {
         carriageWidth = 0.05f;
     }
 
-    private void getFocus(){
+    /**
+     * Puts the field in focus
+     */
+    public void obtainFocus(){
         focused = true;
         context.getKeyboard().setCharListener(this::callback);
     }
 
-    private void loseFocus(){
+    /**
+     * Removes the field from focus
+     */
+    public void loseFocus(){
         focused = false;
     }
 
+    /**
+     * Char callback from the keyboard listener
+     * @param letter letter that has been pressed
+     */
     private void callback(char letter){
         if (!focused) return;
 
@@ -112,7 +136,7 @@ public class EditText extends QuadComponent {
         boolean currentPressed = context.getMouse().isDown(GLFW_MOUSE_BUTTON_1);
 
         if (!currentPressed && pressed){
-            if (UiHelper.mouseHovering(x, y, width, height, context)) getFocus();
+            if (UiHelper.mouseHovering(x, y, width, height, context)) obtainFocus();
             else loseFocus();
         }
 

@@ -12,7 +12,7 @@ import static ch.virtbad.serint.client.ui.MainMenu.*;
  * This class is the about menu
  * @author Virt
  */
-public class AboutMenu extends UiScene {
+public class AboutMenu extends MenuScene {
 
     private static final String WSB_NAME = "WhySoBad";
     private static final String VIRT_NAME = "Virt";
@@ -27,13 +27,6 @@ public class AboutMenu extends UiScene {
     private static final String WEBSITE_LWJGL = "https://www.lwjgl.org/";
     private static final String WEBSITE_GSON = "https://github.com/google/gson";
     private static final String WEBSITE_PSEUDOPACKETS = "https://github.com/VirtCode/PseudoPackets";
-
-    /**
-     * Creates an about menu
-     */
-    public AboutMenu() {
-        super(20);
-    }
 
     @Override
     public void build() {
@@ -96,22 +89,4 @@ public class AboutMenu extends UiScene {
         addComponent(l);
     }
 
-    @Override
-    public void draw() {
-        super.draw();
-    }
-
-    @Override
-    public void resized(int width, int height) {
-        super.resized(width, height);
-
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
-
-    @Override
-    public void init(int width, int height) {
-        super.init(width, height);
-
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
 }

@@ -43,4 +43,13 @@ public class UiHelper {
         }
     }
 
+    /**
+     * Returns the minimal units for a specific ui scale
+     * @param scale ui scale
+     * @return units
+     */
+    public static float calculateFromUiScale(float scale){
+        return 80 / scale;
+    }
+
 }

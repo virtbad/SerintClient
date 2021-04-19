@@ -9,14 +9,7 @@ import static ch.virtbad.serint.client.ui.MainMenu.*;
  * This class is the settings menu
  * @author Virt
  */
-public class SettingsMenu extends UiScene{
-
-    /**
-     * Creates a settings menu
-     */
-    public SettingsMenu() {
-        super(20);
-    }
+public class SettingsMenu extends MenuScene {
 
     @Override
     public void build() {
@@ -27,17 +20,5 @@ public class SettingsMenu extends UiScene{
         addComponent(backButton);
     }
 
-    @Override
-    public void resized(int width, int height) {
-        super.resized(width, height);
 
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
-
-    @Override
-    public void init(int width, int height) {
-        super.init(width, height);
-
-        camera.setWorldLocation(camera.getXUnits() / -2, camera.getYUnits() / -2);
-    }
 }
