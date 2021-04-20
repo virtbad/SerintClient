@@ -96,6 +96,7 @@ public class Game extends Scene {
         if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
 
         players.update(delta);
+        lighting.setPlayerVision(players.getOwn());
         synchronized (items){
             items.update(delta);
         }
@@ -119,7 +120,7 @@ public class Game extends Scene {
 
     @Override
     public void draw() {
-        if (!joined) return;
+        if (!joined) return; // TODO: What is THIS?
 
         if (keyboard.isDown(GLFW.GLFW_KEY_TAB)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

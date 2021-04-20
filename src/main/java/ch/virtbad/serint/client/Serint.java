@@ -46,6 +46,7 @@ public class Serint {
      * Initializes minor Things
      */
     public void init(){
+        Time.getSeconds(); // Initialize Start variable
         log.info("Initializing key components");
         // Load Config
         ConfigHandler.load("config.json");
@@ -98,20 +99,20 @@ public class Serint {
         connectMenu = new ServerConnectMenu();
         rendering.addScene(4, connectMenu);
 
-        if (false){
+        if (true){
             tryToConnect();
 
-            rendering.addScene(0, game);
-            rendering.setScene(0);
+            rendering.addScene(10, game);
 
             communications.connect();
 
+            rendering.setScene(10);
         }else {
             rendering.setScene(1);
         }
 
 
-        log.info("Finished Initialization in {} Seconds!", (Time.START - Time.getSeconds()));
+        log.info("Finished Initialization in {} Seconds!", Time.getSeconds());
     }
 
     public void run(){

@@ -2,12 +2,15 @@ package ch.virtbad.serint.client.game.client;
 
 import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.map.TileMap;
+import ch.virtbad.serint.client.game.player.Player;
+import ch.virtbad.serint.client.game.player.PlayerAttributes;
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector3f;
 
 @Slf4j
 public class Lighting {
     private static final int SOURCE_MAX = 100;
+    private static final Vector3f VISION_COLOR = new Vector3f(1, 1, 1);
 
     private TileMap.LightSource[] sources;
 
@@ -17,9 +20,9 @@ public class Lighting {
     private int amount;
 
     public Lighting() {
-        positions = new float[0];
-        colors = new float[0];
-        intensities = new float[0];
+        positions = new float[2];
+        colors = new float[3];
+        intensities = new float[1];
     }
 
     public void loadMap(TileMap map){
@@ -42,9 +45,8 @@ public class Lighting {
         colors = new float[(length + 1) * 3];
         intensities = new float[(length + 1)];
 
-
-        for (int i = 0; i < length; i++) {
-            TileMap.LightSource current = sources[i];
+        for (int i = 1; i < length + 1; i++) {
+            TileMap.LightSource current = sources[i - 1];
 
             // Fill positions
             positions[i * 2    ] = current.getX();
@@ -60,6 +62,21 @@ public class Lighting {
         }
 
         amount = length + 1; // Also player vision
+    }
+
+    public void setPlayerVision(Player player){
+        // Fill positions
+        // TODO: Use dynamic center
+        positions[0] = player.getLocation().getPosX() + 0.5f;
+        positions[1] = player.getLocation().getPosY() + 0.5f;
+
+        // Fill colours (and convert to float)
+        colors[0] = VISION_COLOR.x;
+        colors[1] = VISION_COLOR.y;
+        colors[2] = VISION_COLOR.z;
+
+        // Fill intensities
+        intensities[0] = player.getAttributes().getVision();
     }
 
     public void upload(Shader shader){

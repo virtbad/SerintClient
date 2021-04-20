@@ -11,6 +11,7 @@ public class Time {
     public static final long MILLI_AMOUNT = (long) 1e+3;
 
     public static final long START = System.currentTimeMillis();
+    public static final long START_SECONDS = START / MILLI_AMOUNT;
 
     /**
      * Returns the current time in nanoseconds
