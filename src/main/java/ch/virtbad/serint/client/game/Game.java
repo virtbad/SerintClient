@@ -90,7 +90,7 @@ public class Game extends Scene {
         if (!joined) return;
 
         float currentTime = Time.getSeconds();
-        float delta = lastTime - currentTime;
+        float delta = currentTime - lastTime;
 
         cinematography.update();
         if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());

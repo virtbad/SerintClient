@@ -1,5 +1,7 @@
 package ch.virtbad.serint.client.graphics;
 
+import ch.virtbad.serint.client.engine.events.EventHelper;
+import ch.virtbad.serint.client.engine.events.IntegerEvent;
 import ch.virtbad.serint.client.engine.input.Keyboard;
 import ch.virtbad.serint.client.engine.input.Mouse;
 import lombok.Getter;
@@ -15,6 +17,8 @@ public abstract class Scene {
     protected Keyboard keyboard;
     @Setter
     protected Mouse mouse;
+    @Setter
+    private IntegerEvent sceneSwitcher;
 
     /**
      * Is called when the scene should be initialized
@@ -37,4 +41,8 @@ public abstract class Scene {
      * @param height height of the scene
      */
     public abstract void resized(int width, int height);
+
+    protected void switchScene(int scene){
+        EventHelper.emitEvent(sceneSwitcher, scene);
+    }
 }

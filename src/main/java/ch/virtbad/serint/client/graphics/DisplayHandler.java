@@ -2,7 +2,9 @@ package ch.virtbad.serint.client.graphics;
 
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.Window;
+import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.events.BasicEvent;
+import ch.virtbad.serint.client.engine.events.IntegerEvent;
 import ch.virtbad.serint.client.engine.input.Keyboard;
 import ch.virtbad.serint.client.engine.input.Mouse;
 import lombok.Getter;
@@ -28,6 +30,8 @@ public class DisplayHandler {
     private Keyboard keyboard;
     private Mouse mouse;
 
+    private IntegerEvent sceneSwitcher;
+
     /**
      * Creates a display handler
      */
@@ -35,6 +39,8 @@ public class DisplayHandler {
         scenes = new HashMap<>();
 
         updater = new DisplayUpdater(this);
+
+        sceneSwitcher = this::setScene;
     }
 
     /**
@@ -70,6 +76,7 @@ public class DisplayHandler {
         scenes.get(id).setKeyboard(keyboard);
         scenes.get(id).setMouse(mouse);
         scenes.get(id).init(window.getWidth(), window.getHeight());
+        scenes.get(id).setSceneSwitcher(sceneSwitcher);
     }
 
     /**
@@ -79,6 +86,8 @@ public class DisplayHandler {
     public void setScene(int id){
         log.info("Selected scene {}", id);
         selected = id;
+
+        if (scenes.get(selected) != null) scenes.get(selected).resized(window.getWidth(), window.getHeight());
     }
 
     /**

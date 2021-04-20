@@ -5,6 +5,10 @@
     "itemsheet",
     "player",
     "font",
+    "button",
+    "fancybutton",
+    "background",
+    "edittext",
     "tilesheet"
   ]
 }

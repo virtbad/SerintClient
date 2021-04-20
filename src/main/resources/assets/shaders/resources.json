@@ -6,6 +6,11 @@
     "map",
     "player",
     "font",
+    "button",
+    "fancybutton",
+    "image",
+    "backgroundimage",
+    "edittext",
     "frame"
   ]
 }

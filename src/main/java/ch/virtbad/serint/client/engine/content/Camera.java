@@ -39,6 +39,7 @@ public class Camera {
     private float xUnits, yUnits;
 
     private float xMinUnits, yMinUnits;
+    private int screenWidth, screenHeight;
 
     /**
      * This creates a camera
@@ -59,6 +60,8 @@ public class Camera {
      * @param screenHeight screen height
      */
     public void setScreenSize(int screenWidth, int screenHeight){
+        this.screenWidth = screenWidth;
+        this.screenHeight = screenHeight;
 
         float unitsInHeight, unitsInWidth;
 
@@ -112,4 +115,22 @@ public class Camera {
         return viewMatrix;
     }
 
+    /**
+     * Transforms the pixel screen coordinate into the world coordinate
+     * @param x x screen coordinate
+     * @return x world coordinate
+     */
+    public float screenToWorldPositionX(int x){
+        return xPos + xUnits * (x / ((float) screenWidth));
+    }
+
+    /**
+     * Transforms the pixel screen coordinate into the world coordinate
+     * @param y y screen coordinate
+     * @return y world coordinate
+     */
+    public float screenToWorldPositionY(int y){
+        y = screenHeight - y; // Screen space starts at top, world at bottom
+        return yPos + yUnits * (y / ((float) screenHeight));
+    }
 }
