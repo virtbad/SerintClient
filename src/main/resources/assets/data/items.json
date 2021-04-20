@@ -14,5 +14,53 @@
       "x": 1,
       "y": 0
     }
+  },
+  {
+    "id": 2,
+    "name": "VISION",
+    "texture": {
+      "x": 2,
+      "y": 0
+    }
+  },
+  {
+    "id": 3,
+    "name": "HEALTH",
+    "texture": {
+      "x": 3,
+      "y": 0
+    }
+  },
+  {
+    "id": 4,
+    "name": "SUPER_DEBUG",
+    "texture": {
+      "x": 0,
+      "y": 1
+    }
+  },
+  {
+    "id": 5,
+    "name": "SUPER_SPEEDUP",
+    "texture": {
+      "x": 1,
+      "y": 1
+    }
+  },
+  {
+    "id": 6,
+    "name": "SUPER_VISION",
+    "texture": {
+      "x": 2,
+      "y": 1
+    }
+  },
+  {
+    "id": 7,
+    "name": "RADAR",
+    "texture": {
+      "x": 3,
+      "y": 1
+    }
   }
 ]
