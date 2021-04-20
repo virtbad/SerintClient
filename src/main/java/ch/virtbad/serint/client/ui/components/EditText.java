@@ -75,6 +75,7 @@ public class EditText extends QuadComponent {
      * Updates the text in the field
      */
     private void updateText(){
+        changed = false;
         text.setText(content);
 
         if (centered) text.setPosition(x + width / 2 - text.getWidth() / 2, y + height / 2 - text.getHeight() / 2);

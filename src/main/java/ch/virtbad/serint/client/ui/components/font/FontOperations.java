@@ -15,7 +15,7 @@ public class FontOperations {
      */
     public static float[] generateOneLineVertices(String s){
         float[] vertices = new float[s.length() * 4 * 4]; // four values (x, y, u, v) and four vertices (quad)
-        char[] characters = Normalizer.normalize(s, Normalizer.Form.NFKC).toCharArray();
+        char[] characters = s.toCharArray();
 
         int x = 0;
         int y = 0;
