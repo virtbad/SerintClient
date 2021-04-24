@@ -8,6 +8,7 @@ import ch.virtbad.serint.client.networking.packets.*;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.Serint;
 import com.google.gson.Gson;
+import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,6 +22,18 @@ import java.io.IOException;
  */
 @Slf4j
 public class Communications extends CustomClientPacketHandler {
+    public static final int ESTABLISHING = 1;
+    public static final int FAILED_ESTABLISH = 2;
+    public static final int HANDSHAKE = 3;
+    public static final int FAILED_HANDSHAKE = 4;
+    public static final int IN = 5;
+
+    @Getter @Setter
+    private int status;
+    @Getter @Setter
+    private String statusInformation;
+    @Getter
+    private boolean connected;
 
     @Setter
     private Client client; // Is getting set automatically after server creation
@@ -38,17 +51,20 @@ public class Communications extends CustomClientPacketHandler {
      * Logs into the server
      */
     public void connect() {
+        status = HANDSHAKE;
         client.sendPacket(new PingPacket(System.nanoTime())); // Send Test Ping
         client.sendPacket(new LoginPacket(Serint.VERSION)); // Login
     }
 
     @Override
     public void connected() {
+        connected = true;
         log.info("Connected to server!");
     }
 
     @Override
     public void disconnected() {
+        connected = false;
         log.info("Disconnected from server!");
     }
 
@@ -74,10 +90,19 @@ public class Communications extends CustomClientPacketHandler {
         Globals.getNetwork().setServerDescription(packet.getDescription());
         Globals.getNetwork().setServerVersion(packet.getVersion());
 
-        log.info("Successfully connected to {} with Description \"{}\" on Version {}", packet.getName(), packet.getDescription(), packet.getVersion());
+        status = IN;
 
-        //TODO: Remove, this is only for Testing reasons
-        join(Color.RED, "Test");
+        log.info("Successfully connected to {} with Description \"{}\" on Version {}", packet.getName(), packet.getDescription(), packet.getVersion());
+    }
+
+    public void handle(LoggedOutPacket packet) {
+
+        status = FAILED_HANDSHAKE;
+        statusInformation = packet.getReason();
+
+        disconnect();
+
+        log.info("Failed handshake because of \"{}\"", packet.getReason());
     }
 
 
@@ -154,6 +179,18 @@ public class Communications extends CustomClientPacketHandler {
      */
     public void pushPlayerLocation(MovedLocation location) {
         client.sendPacket(new PlayerLocationPacket(0, location.getPosX(), location.getPosY(), location.getVelocityX(), location.getVelocityY())); // We do not care about ids
+    }
+
+    public void disconnect(){
+        if (!connected) return;
+        log.info("Disconnecting from Server");
+
+        try {
+            client.close();
+        } catch (IOException e) {
+            log.warn("Failed to disconnect from Server");
+            e.printStackTrace();
+        }
     }
 
 }

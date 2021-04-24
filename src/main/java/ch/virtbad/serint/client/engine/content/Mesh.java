@@ -1,5 +1,7 @@
 package ch.virtbad.serint.client.engine.content;
 
+import lombok.Getter;
+
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL20.glEnableVertexAttribArray;
 import static org.lwjgl.opengl.GL20.glVertexAttribPointer;
@@ -63,6 +65,8 @@ public class Mesh {
     public void updateVertices(float[] vertices){
         this.vertices = vertices;
 
+        glBindVertexArray(vao); // Rebind VAO to prevent overwriting content of other meshes
+
         glBindBuffer(GL_ARRAY_BUFFER, vbo);
         glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW);
     }
@@ -73,6 +77,8 @@ public class Mesh {
      */
     public void updateIndices(int[] indices){
         this.indices = indices;
+
+        glBindVertexArray(vao); // Rebind VAO to prevent overwriting content of other meshes
 
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
         glBufferData(GL_ELEMENT_ARRAY_BUFFER, indices, GL_STATIC_DRAW);

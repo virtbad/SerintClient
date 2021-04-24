@@ -15,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
  */
 @Slf4j
 public class Serint {
-    public static final String VERSION = "0.8-beta";
+    public static final String VERSION = "0.9-beta";
 
     NetworkHandler network;
     Communications communications;
@@ -28,6 +28,7 @@ public class Serint {
     private SettingsMenu settingsMenu;
     private AboutMenu aboutMenu;
     private ServerConnectMenu connectMenu;
+    private ServerJoinMenu joinMenu;
 
     /**
      * Creates the Main Class
@@ -78,9 +79,26 @@ public class Serint {
         updateLoadingMessage("Loading Resources");
         ResourceHandler.load(); // Needs to have context to work
 
-        // Creating Networking
-        updateLoadingMessage("Initializing Networking");
+        // Initializing Game and Communications
+        updateLoadingMessage("Preparing Game");
+
         network = new NetworkHandler();
+        communications = new Communications();
+
+        // Creating GUI
+        updateLoadingMessage("Building GUI");
+
+        mainMenu = new MainMenu();
+        rendering.addScene(1, mainMenu);
+        settingsMenu = new SettingsMenu();
+        rendering.addScene(2, settingsMenu);
+        aboutMenu = new AboutMenu();
+        rendering.addScene(3, aboutMenu);
+        connectMenu = new ServerConnectMenu(network, communications);
+        rendering.addScene(4, connectMenu);
+        joinMenu = new ServerJoinMenu();
+        rendering.addScene(5, joinMenu);
+
     }
 
     /**
@@ -90,16 +108,7 @@ public class Serint {
         log.info("Cleaning current Instance");
         updateLoadingMessage("Finishing up");
 
-        mainMenu = new MainMenu();
-        rendering.addScene(1, mainMenu);
-        settingsMenu = new SettingsMenu();
-        rendering.addScene(2, settingsMenu);
-        aboutMenu = new AboutMenu();
-        rendering.addScene(3, aboutMenu);
-        connectMenu = new ServerConnectMenu();
-        rendering.addScene(4, connectMenu);
-
-        if (true){
+        if (false){
             tryToConnect();
 
             rendering.addScene(10, game);
@@ -122,13 +131,7 @@ public class Serint {
     }
 
     public void tryToConnect(){
-        communications = network.connect(new Communications(), ConfigHandler.getConfig().getServerHost(), ConfigHandler.getConfig().getServerPort());
-        if (communications == null){
-            log.error("Failed to connect to server, going to exit.");
-            System.exit(0);
-        }
 
-        game = new Game(communications);
     }
 
     /**

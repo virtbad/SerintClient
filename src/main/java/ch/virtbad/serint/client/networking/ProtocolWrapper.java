@@ -34,6 +34,7 @@ public class ProtocolWrapper {
         protocol.addPacket(LoginPacket.class, 1);
         protocol.addPacket(LoggedInPacket.class, 2);
         protocol.addPacket(KickPaket.class, 3);
+        protocol.addPacket(LoggedOutPacket.class, 4);
 
         // Game Connection Packets
         protocol.addPacket(JoinPacket.class, 10);

@@ -41,6 +41,11 @@ public class Label extends PositionedComponent {
         this.text.setPosition(centered ? x + width / 2 - this.text.getWidth() / 2 : x, midded ? y + height / 2 - this.text.getHeight() / 2 : y);
     }
 
+    public void setText(String text){
+        this.text.setText(text);
+        this.text.setPosition(centered ? x + width / 2 - this.text.getWidth() / 2 : x, midded ? y + height / 2 - this.text.getHeight() / 2 : y);
+    }
+
     @Override
     public void update(float delta) {
 

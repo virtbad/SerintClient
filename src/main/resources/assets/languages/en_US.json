@@ -21,6 +21,18 @@
     "ui.about.info.creators": "Created by:",
     "ui.about.info.view.client": "View this Project on ",
     "ui.about.info.view.server": "Get the Server on ",
-    "ui.about.info.github": "GitHub"
+    "ui.about.info.github": "GitHub",
+    "ui.connect.title.ip": "Server Hostname:",
+    "ui.connect.button.connect": "Connect",
+    "ui.connect.button.disconnect": "Disconnect",
+    "ui.connect.button.proceed": "Proceed",
+    "ui.connect.status.initializing": "Initializing",
+    "ui.connect.status.connect": "Establishing Connection",
+    "ui.connect.status.handshake": "Doing Handshake",
+    "ui.connect.status.success": "Connected Successfully",
+    "ui.connect.status.failed.connect": "Failed to Connect",
+    "ui.connect.status.failed.handshake": "Failed to do Handshake",
+    "ui.connect.button.cancel": "Cancel",
+    "ui.connect.button.back": "Back"
   }
 }

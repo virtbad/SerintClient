@@ -8,6 +8,7 @@ import ch.virtbad.serint.client.ui.UiHelper;
 import ch.virtbad.serint.client.ui.components.base.QuadComponent;
 import ch.virtbad.serint.client.ui.components.font.Text;
 import ch.virtbad.serint.client.util.Time;
+import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector4f;
 
@@ -19,6 +20,7 @@ import static org.lwjgl.glfw.GLFW.*;
  */
 public class EditText extends QuadComponent {
 
+    @Getter
     private String content;
     private boolean changed;
     private Text text;
