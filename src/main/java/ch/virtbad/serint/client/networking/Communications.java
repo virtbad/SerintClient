@@ -110,7 +110,7 @@ public class Communications extends CustomClientPacketHandler {
 
     public void handle(JoinedPacket packet) {
         log.info("Joined with Player id {}", packet.getPlayerId());
-        game.joined(packet.getPlayerId());
+        game.joined(packet.getPlayerId(), new Color(packet.getColor()), packet.getName());
     }
 
 

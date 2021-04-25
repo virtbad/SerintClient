@@ -81,8 +81,10 @@ public class ServerConnectMenu extends MenuScene {
 
         Button disconnectButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING / 2 - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.disconnect"));
         confirm.addComponent(disconnectButton);
+        disconnectButton.setEvent(this::disconnect);
         Button proceedButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING / 2 - BUTTON_HEIGHT - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.proceed"));
         confirm.addComponent(proceedButton);
+        proceedButton.setEvent(() -> switchScene(5));
 
         failed = new Container();
         failedLabel = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.status.failed.connect"), true, false);
@@ -148,6 +150,13 @@ public class ServerConnectMenu extends MenuScene {
         else networkHandler.cancelConnection();
     }
 
+    public void disconnect(){
+        communications.disconnect();
+
+        confirm.setVisible(false);
+        prompt.setVisible(true);
+    }
+
     @Override
     public void update() {
         super.update();
@@ -172,7 +181,9 @@ public class ServerConnectMenu extends MenuScene {
                 case Communications.IN:
                     progressLabel.setText(ResourceHandler.getLanguages().getString("ui.connect.status.success"));
 
-                    switchScene(5);
+                    loading.setVisible(false);
+                    confirm.setVisible(true);
+
                     break;
                 case Communications.FAILED_ESTABLISH:
                     loading.setVisible(false);

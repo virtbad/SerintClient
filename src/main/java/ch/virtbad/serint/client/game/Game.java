@@ -201,8 +201,8 @@ public class Game extends Scene {
      *
      * @param ownId assigned id by the server
      */
-    public void joined(int ownId) {
-        players.setOwn(new Player(ownId, new Vector3f(1, 1, 0), "Own Test")); // TODO: Replace info here with actual info sent to the server
+    public void joined(int ownId, Color ownColor, String ownName) {
+        players.setOwn(new Player(ownId, new Vector3f(ownColor.getRed() / 255f, ownColor.getGreen() / 255f, ownColor.getBlue() / 255f), ownName));
         controls.setPlayer(players.getOwn());
         cinematography.follow(players.getOwn().getLocation());
         joined = true;

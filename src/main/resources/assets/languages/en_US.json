@@ -33,6 +33,9 @@
     "ui.connect.status.failed.connect": "Failed to Connect",
     "ui.connect.status.failed.handshake": "Failed to do Handshake",
     "ui.connect.button.cancel": "Cancel",
-    "ui.connect.button.back": "Back"
+    "ui.connect.button.back": "Back",
+    "ui.join.button.join": "Join",
+    "ui.join.title.name": "Enter Player Name:",
+    "ui.join.title.color": "Enter Player Color (HEX without #):"
   }
 }

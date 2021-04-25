@@ -96,7 +96,7 @@ public class Serint {
         rendering.addScene(3, aboutMenu);
         connectMenu = new ServerConnectMenu(network, communications);
         rendering.addScene(4, connectMenu);
-        joinMenu = new ServerJoinMenu();
+        joinMenu = new ServerJoinMenu(communications, this::startGame);
         rendering.addScene(5, joinMenu);
 
     }
@@ -132,6 +132,11 @@ public class Serint {
 
     public void tryToConnect(){
 
+    }
+
+    public void startGame(){
+        game = new Game(communications);
+        rendering.addScene(10, game);
     }
 
     /**
