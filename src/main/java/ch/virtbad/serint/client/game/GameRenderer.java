@@ -20,6 +20,7 @@ public class GameRenderer {
     private Shader shader;
     private TextureFrameBuffer map;
     private TextureFrameBuffer player;
+    private TextureFrameBuffer gui;
 
     private final Lighting lighting;
     private final Camera gameCamera;
@@ -31,6 +32,7 @@ public class GameRenderer {
         // Create Framebuffers
         map = new TextureFrameBuffer(width, height);
         player = new TextureFrameBuffer(width, height);
+        gui = new TextureFrameBuffer(width, height);
 
         // Create Rendering Mesh
         mesh = new Mesh(MeshHelper.createFramebufferVertices(), MeshHelper.createQuadIndices());
@@ -45,6 +47,7 @@ public class GameRenderer {
     public void resize(int width, int height){
         map.resize(width, height);
         player.resize(width, height);
+        gui.resize(width, height);
     }
 
     public void bindMap(){
@@ -55,6 +58,10 @@ public class GameRenderer {
         player.bind();
     }
 
+    public void bindGui(){
+        gui.bind();
+    }
+
     public void draw(){
         glBindFramebuffer(GL_FRAMEBUFFER, 0);
 
@@ -63,6 +70,7 @@ public class GameRenderer {
         glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         shader.bind();
+        gui.getTexture().bindToShader(shader, "gui", 2);
         player.getTexture().bindToShader(shader, "player", 1);
         map.getTexture().bindToShader(shader, "map", 0); // Why does the sequence matter?
 

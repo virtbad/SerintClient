@@ -53,6 +53,7 @@ public class Game extends Scene {
     private Cinematography cinematography;
     private Controls controls;
     private Lighting lighting;
+    private GameUI gui;
 
     private PlayerRegister players;
     private ItemRegister items;
@@ -79,6 +80,12 @@ public class Game extends Scene {
         players = new PlayerRegister(context);
         items = new ItemRegister(context);
         map = new MapRegister(context);
+
+        // Create UI
+        gui = new GameUI();
+        gui.setKeyboard(keyboard);
+        gui.setMouse(mouse);
+        gui.init(width, height);
 
         lighting = new Lighting();
 
@@ -114,6 +121,7 @@ public class Game extends Scene {
             com.collectItem(nearItem);
         }
 
+        gui.update();
 
         lastTime = currentTime;
     }
@@ -147,6 +155,13 @@ public class Game extends Scene {
 
         players.draw();
 
+        // DRAW GUI
+
+        renderer.bindGui();
+        glClearColor(1, 0, 0, 0);
+        glClear(GL11.GL_COLOR_BUFFER_BIT);
+
+        gui.draw();
 
         renderer.draw();
     }
@@ -155,6 +170,7 @@ public class Game extends Scene {
     public void resized(int width, int height) {
         camera.setScreenSize(width, height);
         renderer.resize(width, height);
+        gui.resized(width, height);
     }
 
     public void calculateNear() { //TODO: Do better

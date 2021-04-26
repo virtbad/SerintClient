@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 
+import static org.lwjgl.opengl.GL11.glFinish;
+
 /**
  * This class handles the update / drawing thread and the window
  * @author Virt
@@ -98,6 +100,8 @@ public class DisplayHandler {
             scenes.get(selected).update();
             scenes.get(selected).draw();
         }
+
+        glFinish(); // Tells opengl to finish its operation before continuing. Seems to improve the smoothness
 
         window.displayBuffer();
         window.fetchEvents();

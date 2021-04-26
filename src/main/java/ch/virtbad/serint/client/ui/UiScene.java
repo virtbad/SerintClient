@@ -4,7 +4,9 @@ import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.graphics.Scene;
 import ch.virtbad.serint.client.ui.components.base.Component;
 import ch.virtbad.serint.client.util.Time;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
+import org.lwjgl.system.CallbackI;
 
 import java.util.ArrayList;
 
@@ -19,6 +21,7 @@ public abstract class UiScene extends Scene {
 
     protected Context context;
     protected Camera camera;
+    protected Vector4f background = new Vector4f(0, 0, 0, 1);
 
     private ArrayList<Component> components;
 
@@ -71,7 +74,7 @@ public abstract class UiScene extends Scene {
 
     @Override
     public void draw() {
-        glClearColor(0, 0, 0, 1);
+        glClearColor(background.x, background.y, background.z, background.w);
         glClear(GL11.GL_COLOR_BUFFER_BIT);
 
         for (Component component : components) {

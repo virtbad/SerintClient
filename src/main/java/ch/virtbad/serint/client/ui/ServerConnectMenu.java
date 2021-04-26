@@ -38,6 +38,11 @@ public class ServerConnectMenu extends MenuScene {
     private boolean connecting;
     private int lastCode;
 
+    /**
+     * Creates a server connect menu
+     * @param networkHandler network handler
+     * @param communications communications
+     */
     public ServerConnectMenu(NetworkHandler networkHandler, Communications communications) {
         this.networkHandler = networkHandler;
         this.communications = communications;
@@ -108,6 +113,9 @@ public class ServerConnectMenu extends MenuScene {
         failed.setVisible(false);
     }
 
+    /**
+     * Connects with the current values
+     */
     public void connect() {
         prompt.setVisible(false);
         loading.setVisible(true);
@@ -141,6 +149,9 @@ public class ServerConnectMenu extends MenuScene {
 
     }
 
+    /**
+     * Cancels the connection
+     */
     public void cancel(){
         loading.setVisible(false);
         prompt.setVisible(true);
@@ -150,6 +161,9 @@ public class ServerConnectMenu extends MenuScene {
         else networkHandler.cancelConnection();
     }
 
+    /**
+     * Disconnects again from the server
+     */
     public void disconnect(){
         communications.disconnect();
 

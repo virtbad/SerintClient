@@ -29,6 +29,7 @@ void main() {
 
 uniform sampler2D map;
 uniform sampler2D player;
+uniform sampler2D gui;
 
 uniform int lightSources;
 
@@ -78,5 +79,9 @@ void main()
     float maximum = max(passingColor.r, max(passingColor.g, passingColor.b));
     if (maximum > 1) passingColor *= (1 / maximum);
     color = vec4(color.rgb * passingColor, color.a);
+
+    // Gui
+    vec4 guiColor = texture(gui, uv);
+    color = guiColor * guiColor.a + color * (1 - guiColor.a);
 
 }

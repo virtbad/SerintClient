@@ -11,6 +11,10 @@ import java.awt.*;
 
 import static ch.virtbad.serint.client.ui.MainMenu.*;
 
+/**
+ * This class contains the ui that is used to join a server. May be merged with other UI soon
+ * @author Virt
+ */
 public class ServerJoinMenu extends MenuScene{
     private final Communications communications;
     private final BasicEvent gameStart;
@@ -18,6 +22,11 @@ public class ServerJoinMenu extends MenuScene{
     private EditText colorEdit;
     private EditText nameEdit;
 
+    /**
+     * Creates the ui
+     * @param communications current communications
+     * @param gameStart event to fire when to start the game
+     */
     public ServerJoinMenu(Communications communications, BasicEvent gameStart) {
         this.communications = communications;
         this.gameStart = gameStart;
@@ -25,6 +34,8 @@ public class ServerJoinMenu extends MenuScene{
 
     @Override
     public void build() {
+
+        // TODO: Save last things and load it back in
 
         Button backButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING / 2 - BUTTON_HEIGHT - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
         backButton.setEvent(() -> switchScene(4));
@@ -46,6 +57,9 @@ public class ServerJoinMenu extends MenuScene{
 
     }
 
+    /**
+     * Joins the game with current values
+     */
     public void join(){
         String color = colorEdit.getContent();
 
