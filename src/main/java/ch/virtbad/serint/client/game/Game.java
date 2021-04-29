@@ -20,6 +20,7 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
+import javax.xml.stream.Location;
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -29,7 +30,8 @@ import static org.lwjgl.opengl.GL11.*;
  */
 @Slf4j
 public class Game extends Scene {
-    private static final float INTERACTION_RADIUS = 1;
+    public static final float INTERACTION_RADIUS = 2;
+    public static final float KILL_COOLDOWN = 10;
 
     private Communications com;
 
@@ -44,7 +46,6 @@ public class Game extends Scene {
     }
 
     private volatile boolean joined;
-
 
     private GameContext context;
     private float lastTime = Time.getSeconds();
@@ -62,8 +63,7 @@ public class Game extends Scene {
 
     private MapRegister map;
 
-    private int nearPlayer = -1;
-    private int nearItem = -1;
+    private float lastKill = Time.getSeconds();
 
 
     @Override
@@ -112,13 +112,31 @@ public class Game extends Scene {
         players.doMapCollisions(delta, map.getMap().getCollisions());
 
         // Interactions
+        if(controls.isAttacking() && lastKill + KILL_COOLDOWN < Time.getSeconds() ) {
 
-        calculateNear();
-        if(nearPlayer != -1 && controls.isAttacking()) {
-            com.attackPlayer(nearPlayer);
+            // Do cooldown anyway
+            lastKill = Time.getSeconds();
+            gui.setLastKill(lastKill);
+
+            for (Player player : players.getAll()) {
+                if(player.getId() == players.getOwn().getId()) continue;
+
+                if (players.getOwn().getLocation().distanceTo(player.getLocation()) < INTERACTION_RADIUS) {
+                    com.attackPlayer(player.getId());
+                    break;
+                }
+            }
         }
-        if(nearItem != -1 && controls.isCollecting()) {
-            com.collectItem(nearItem);
+
+        if(controls.isCollecting()) {
+
+            for (Item item : items.getAll()) {
+                if (players.getOwn().getLocation().distanceTo(item.getLocation()) < INTERACTION_RADIUS) {
+                    com.collectItem(item.getId());
+                    break;
+                }
+            }
+
         }
 
         gui.update();
@@ -173,45 +191,6 @@ public class Game extends Scene {
         gui.resized(width, height);
     }
 
-    public void calculateNear() { //TODO: Do better
-
-        // Maybe use Pythagoras?
-
-        Item[] currentItems = items.getAll();
-        Player[] currentPlayers = players.getAll();
-        Player own = players.getOwn();
-        float startX = own.getLocation().getPosX() - INTERACTION_RADIUS;
-        float startY = own.getLocation().getPosY() - INTERACTION_RADIUS;
-        float endX = own.getLocation().getPosX() + INTERACTION_RADIUS;
-        float endY = own.getLocation().getPosY() + INTERACTION_RADIUS;
-        boolean itemNear = false;
-        boolean playerNear = false;
-
-
-        for (Item item : currentItems) {
-            float posX = item.getLocation().getPosX();
-            float posY = item.getLocation().getPosY();
-            if (posX >= startX && posX <= endX && posY >= startY && posY <= endY) {
-                nearItem = item.getId();
-                itemNear = true;
-                break;
-            }
-        }
-        if (!itemNear) nearItem = -1;
-
-        for (Player player : currentPlayers) {
-            if(player.getId() == own.getId()) continue;
-            float posX = player.getLocation().getPosX();
-            float posY = player.getLocation().getPosY();
-            if (posX >= startX && posX <= endX && posY >= startY && posY <= endY) {
-                nearPlayer = player.getId();
-                playerNear = true;
-                break;
-            }
-        }
-        if (!playerNear) nearPlayer = -1;
-    }
-
     /**
      * Is called when the player has successfully joined the game.
      *
@@ -219,9 +198,14 @@ public class Game extends Scene {
      */
     public void joined(int ownId, Color ownColor, String ownName) {
         players.setOwn(new Player(ownId, new Vector3f(ownColor.getRed() / 255f, ownColor.getGreen() / 255f, ownColor.getBlue() / 255f), ownName));
+        gui.setOwn(players.getOwn());
         controls.setPlayer(players.getOwn());
         cinematography.follow(players.getOwn().getLocation());
         joined = true;
+
+        // Start cooldown
+        lastKill = Time.getSeconds();
+        gui.setLastKill(lastKill);
 
         log.info("Joined the Game successfully!");
     }

@@ -63,4 +63,10 @@ public class Label extends PositionedComponent {
     public void draw() {
         text.draw();
     }
+
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+        text.setPosition(x, y);
+    }
 }

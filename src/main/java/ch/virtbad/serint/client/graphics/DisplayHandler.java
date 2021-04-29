@@ -12,7 +12,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.util.HashMap;
 
-import static org.lwjgl.opengl.GL11.glFinish;
+import static org.lwjgl.opengl.GL11.*;
 
 /**
  * This class handles the update / drawing thread and the window
@@ -61,6 +61,8 @@ public class DisplayHandler {
 
         keyboard = window.getKeyboard();
         mouse = window.getMouse();
+
+        log.info("Running on GPU: \"{}\" by \"{}\" ", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
 
         updater.setFrameRate(ConfigHandler.getConfig().getFps());
         updater.forceCall();

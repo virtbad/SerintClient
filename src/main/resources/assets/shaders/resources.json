@@ -11,6 +11,8 @@
     "image",
     "backgroundimage",
     "edittext",
-    "frame"
+    "indicator",
+    "frame",
+    "kill"
   ]
 }
