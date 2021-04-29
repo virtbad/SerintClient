@@ -7,6 +7,19 @@
     "ui.main.button.options": "Einstellungen",
     "ui.main.button.about": "Über",
     "ui.main.button.quit": "Schliessen",
-    "ui.main.button.back": "Zurück"
+    "ui.main.button.back": "Zurück",
+    "ui.game.button.back": "Zurück zum Menü",
+    "ui.game.button.spectate": "Beobachten",
+    "ui.win.title": "Gewonnen",
+    "ui.win.subtitle": "Du bist der letzte Überlebende",
+    "ui.lose.title": "Ausgeschieden",
+    "ui.death.title": "Gestorben",
+    "ui.death.killer": "%s hat dich getötet",
+    "ui.death.lives": "Du hast noch %s Leben übrig",
+    "ui.death.respawn": "Wiederbelebung in",
+    "ui.pause.title": "Pausiert",
+    "ui.pause.options": "Optionen",
+    "ui.pause.leave": "Runde verlassen",
+    "ui.pause.back": "Zurück zum Spiel"
   }
 }
