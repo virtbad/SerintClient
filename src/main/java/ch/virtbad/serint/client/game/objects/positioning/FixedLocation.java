@@ -5,6 +5,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Locale;
+
 /**
  * This class handles a fixed location
  * @author Virt
@@ -39,5 +41,16 @@ public class FixedLocation {
      */
     public void timeCollided(float delta, CollisionResult result) {
 
+    }
+
+    /**
+     * Gets the distance between this and the other location
+     * @param location compare
+     * @return distance
+     */
+    public float distanceTo(FixedLocation location){
+        float xDelta = posX - location.getPosX();
+        float yDelta = posY - location.getPosY();
+        return (float) Math.sqrt(xDelta * xDelta + yDelta * yDelta);
     }
 }

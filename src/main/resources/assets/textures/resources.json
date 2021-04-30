@@ -9,6 +9,8 @@
     "fancybutton",
     "background",
     "edittext",
-    "tilesheet"
+    "indicator",
+    "tilesheet",
+    "kill"
   ]
 }

@@ -27,5 +27,5 @@ out vec4 FragColor;
 
 void main(){
     vec4 tex = texture(uTexture, (part / 8) + uv);
-    FragColor = vec4(color * tex.r, tex.a); // TODO: Do real colouring
+    FragColor = vec4(color.r * tex.r, color.g * tex.g, color.b * tex.b, tex.a);
 }

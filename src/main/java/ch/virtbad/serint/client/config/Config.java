@@ -13,6 +13,7 @@ public class Config {
     private int width = 1080;
     private int height = 720;
 
+    private boolean showFps = true;
     private int fps = 60;
 
     private String serverHost = "localhost";

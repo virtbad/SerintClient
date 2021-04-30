@@ -27,6 +27,7 @@ public class Player extends MeshedGameObject {
 
     @Getter
     private int id;
+    @Getter
     private Vector3f color;
     @Getter
     private String name;

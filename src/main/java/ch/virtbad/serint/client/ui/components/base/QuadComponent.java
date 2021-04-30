@@ -72,6 +72,18 @@ public abstract class QuadComponent extends PositionedComponent{
 
     }
 
+    /**
+     * Changes the position of the object
+     * @param x x position
+     * @param y y position
+     */
+    public void setPosition(float x, float y){
+        this.x = x;
+        this.y = y;
+
+        updateWorldMatrix();
+    }
+
     @Override
     public void draw() {
         // Binds and modifies Shader
