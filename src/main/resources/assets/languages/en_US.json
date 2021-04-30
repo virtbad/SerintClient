@@ -36,6 +36,19 @@
     "ui.connect.button.back": "Back",
     "ui.join.button.join": "Join",
     "ui.join.title.name": "Enter Player Name:",
-    "ui.join.title.color": "Enter Player Color (HEX without #):"
+    "ui.join.title.color": "Enter Player Color (HEX without #):",
+    "ui.game.button.back": "Back to menu",
+    "ui.game.button.spectate": "Spectate",
+    "ui.win.title": "Won",
+    "ui.win.subtitle": "You're the last survivor",
+    "ui.lose.title": "Eliminated",
+    "ui.death.title": "Died",
+    "ui.death.killer": "%s killed you",
+    "ui.death.lives": "You have %s lives left",
+    "ui.death.respawn": "Respawn in",
+    "ui.pause.title": "Paused",
+    "ui.pause.options": "Options",
+    "ui.pause.leave": "Leave round",
+    "ui.pause.back": "Back to game"
   }
 }
