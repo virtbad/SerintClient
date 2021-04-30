@@ -1,6 +1,7 @@
 package ch.virtbad.serint.client.game.map;
 
 import ch.virtbad.serint.client.engine.content.Mesh;
+import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.engine.resources.textures.Texture;
 import ch.virtbad.serint.client.game.collisions.MapCollisions;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
@@ -21,6 +22,10 @@ public class MapObject extends MeshedGameObject {
     @Getter
     private MapCollisions collisions;
 
+    private Mesh cosmetics;
+    private Texture cosmeticTexture;
+    private Shader cosmeticShader;
+
     public MapObject(TileMap map) {
         super(new float[0], new int[0], "map", new FixedLocation(), -1);
 
@@ -35,6 +40,14 @@ public class MapObject extends MeshedGameObject {
         texture = ResourceHandler.getTextures().get("tilesheet");
 
         super.init();
+
+        cosmetics = new Mesh(MapOperations.generateCosmeticVertices(map.getCosmetics()), MapOperations.generateCosmeticIndices(map.getCosmetics()));
+        cosmeticTexture = ResourceHandler.getTextures().get("cosmeticsheet");
+        cosmeticShader = ResourceHandler.getShaders().get("cosmeticshader");
+
+        cosmetics.init();
+        cosmetics.addVertexAttribPointer(0, 2, GL_FLOAT, 4 * Float.BYTES, 0);
+        cosmetics.addVertexAttribPointer(1, 2, GL_FLOAT, 4 * Float.BYTES, 2 * Float.BYTES);
     }
 
     @Override
@@ -55,5 +68,17 @@ public class MapObject extends MeshedGameObject {
         texture.bind();
         shader.uploadFloat("textureDimension", 16f);
         super.uploadUniforms();
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
+
+        cosmeticShader.bind();
+        cosmeticShader.uploadMatrix("worldMatrix", worldMatrix);
+        cosmeticShader.uploadMatrix("viewMatrix", context.getCamera().getViewMatrix());
+        cosmeticShader.uploadInt("textureDimension", 8);
+        cosmeticTexture.bind();
+        cosmetics.draw();
     }
 }

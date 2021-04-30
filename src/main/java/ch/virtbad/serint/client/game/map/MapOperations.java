@@ -221,6 +221,46 @@ public class MapOperations {
     }
 
     /**
+     * Generates vertices for cosmetic tiles
+     * <p>
+     * Each vertex consists of four floats
+     * * Two for Position (X,Y)
+     * * Two for texture position (X,Y)
+     * <p>
+     *
+     * There are also four vertices per tile
+     *
+     * @param tiles cosmetic tiles of the map
+     * @return vertices
+     */
+
+    public static float[] generateCosmeticVertices(TileMap.Cosmetic[] tiles) {
+
+        int textureWidth = 8, textureHeight = 8;
+
+        float[] cosmetics = new float[tiles.length * 4 * 4]; // RelativeX, RelativeY, TextureX, TextureY
+
+        for (int i = 0; i < tiles.length; i++) {
+            TileMap.Cosmetic cosmetic = tiles[i];
+            for (int j = 0; j < 4; j++) {
+                int relativeX = j == 0 || j == 3 ? 0 : 1;
+                int relativeY = j == 2 || j == 3 ? 0 : 1;
+
+                int textureY = cosmetic.getType() / textureHeight;
+                int textureX = cosmetic.getType() - textureY * textureWidth;
+
+                int index = i * 16 + j * 4;
+                cosmetics[index] = cosmetic.getX() + relativeX;
+                cosmetics[index + 1] = cosmetic.getY() + relativeY;
+                cosmetics[index + 2] = textureX + relativeX;
+                cosmetics[index + 3] = textureY + relativeY == 1 ? 0 : 1;
+            }
+        }
+
+        return cosmetics;
+    }
+
+    /**
      * Generates indices for Rendered tiles
      * <p>
      * The Quad is divided like follows:
@@ -233,7 +273,6 @@ public class MapOperations {
      * This results in the indices:
      * 0, 3, 1 and 0, 3, 2
      *
-     * @param tiles  tiles
      * @param width  width of the map
      * @param height height of the map
      * @return indices
@@ -257,6 +296,40 @@ public class MapOperations {
                 cornerIndex += 4;
 
             }
+        }
+
+        return indices;
+    }
+
+    /**
+     * Generates indices for Rendered tiles
+     * <p>
+     * The Quad is divided like follows:
+     * <p>
+     * 2-----3      <br>
+     * |   / |      <br>
+     * | /   |      <br>
+     * 0-----1      <br>
+     * <p>
+     * This results in the indices:
+     * 0, 3, 1 and 0, 3, 2
+     *
+     * @param tiles cosmetic tiles of the map
+     * @return indices
+     */
+
+    public static int[] generateCosmeticIndices(TileMap.Cosmetic[] tiles) {
+        int[] indices = new int[tiles.length * 2 * 3];
+
+        for (int i = 0; i < tiles.length; i++) {
+            int index = i * 3 * 2;
+            int vIndex = i * 4;
+            indices[index] = vIndex;
+            indices[index + 1] = vIndex + 1;
+            indices[index + 2] = vIndex + 2;
+            indices[index + 3] = vIndex;
+            indices[index + 4] = vIndex + 3;
+            indices[index + 5] = vIndex + 2;
         }
 
         return indices;
