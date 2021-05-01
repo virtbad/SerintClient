@@ -99,7 +99,10 @@ public class DisplayHandler {
             selected = id;
         }
 
-        if (scenes.get(selected) != null) scenes.get(selected).resized(window.getWidth(), window.getHeight());
+        if (scenes.get(selected) != null){
+            scenes.get(selected).resized(window.getWidth(), window.getHeight());
+            scenes.get(selected).shown();
+        }
     }
 
     /**

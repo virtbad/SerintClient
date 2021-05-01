@@ -106,6 +106,7 @@ public class Game extends Scene {
         gui.setMouse(mouse);
         gui.init(width, height);
         gui.setSceneSwitcher(this::switchScene);
+        gui.hideHud();
 
         lighting = new Lighting();
 
@@ -223,6 +224,11 @@ public class Game extends Scene {
         gui.resized(width, height);
     }
 
+    @Override
+    public void shown() {
+
+    }
+
     private void setPlayerVisible(boolean whether){
         showPlayer = whether;
         players.setShowOwn(whether);
@@ -240,10 +246,6 @@ public class Game extends Scene {
         cinematography.follow(players.getOwn().getLocation());
         joined = true;
         ingame = true;
-
-        // Start cooldown
-        lastKill = Time.getSeconds();
-        gui.setLastKill(lastKill);
 
         log.info("Joined the Game successfully!");
     }
@@ -336,5 +338,17 @@ public class Game extends Scene {
         gui.showWinScreen();
         renderer.setIngui(true);
         ingame = false;
+    }
+
+    public void peakStart(float delay){
+        gui.showStartScreen(delay);
+    }
+
+    public void start(){
+        gui.hideScreen();
+
+        // Start cooldown
+        lastKill = Time.getSeconds();
+        gui.setLastKill(lastKill);
     }
 }

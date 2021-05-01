@@ -5,6 +5,7 @@ import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.ui.Context;
 import ch.virtbad.serint.client.ui.MenuScene;
+import ch.virtbad.serint.client.ui.UiHelper;
 import ch.virtbad.serint.client.ui.components.Button;
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.game.player.Player;
@@ -43,6 +44,8 @@ public class GameUI extends MenuScene {
     private Label lifeLeft;
     private Container loseMenu;
     private Container winMenu;
+    private Container startMenu;
+    private Label startCountdown;
 
     private float countdownStart;
     private float countdown = 0;
@@ -150,8 +153,18 @@ public class GameUI extends MenuScene {
         winMenu.addComponent(winTitle);
         winMenu.addComponent(winSubtitle);
         winMenu.addComponent(homeButton);
-        winMenu.setVisible(true);
+        winMenu.setVisible(false);
         addComponent(winMenu);
+
+        // Start Menu
+        startMenu = new Container();
+        Label startTitle = new Label(-camera.getXMinUnits() / 2, -camera.getYMinUnits() / 2 + BUTTON_SPACING + 1 + BUTTON_SPACING, camera.getXMinUnits(), 0.5f, 0.5f, ResourceHandler.getLanguages().getString("ui.game.start.title"), true, false);
+        startCountdown = new Label(-camera.getXMinUnits() / 2, -camera.getYMinUnits() / 2 + BUTTON_SPACING, camera.getXMinUnits(), 1, 0.75f, "-", true, true);
+
+        startMenu.addComponent(startTitle);
+        startMenu.addComponent(startCountdown);
+        startMenu.setVisible(false);
+        addComponent(startMenu);
     }
 
     public void hideScreen() {
@@ -159,6 +172,7 @@ public class GameUI extends MenuScene {
         loseMenu.setVisible(false);
         deathMenu.setVisible(false);
         pauseMenu.setVisible(false);
+        startMenu.setVisible(false);
 
         hudContainer.setVisible(true);
     }
@@ -181,6 +195,7 @@ public class GameUI extends MenuScene {
     public void showDeathScreen(String killer, float delay) {
         menuChanged = true;
 
+        countdown = 0;
         countdownStart = Time.getSeconds() + delay;
         issuer = killer;
 
@@ -191,6 +206,17 @@ public class GameUI extends MenuScene {
 
     public void showPauseScreen() {
         pauseMenu.setVisible(true);
+        hudContainer.setVisible(false);
+    }
+
+    public void showStartScreen(float delay){
+        countdown = 0;
+        countdownStart = Time.getSeconds() + delay;
+
+        startMenu.setVisible(true);
+    }
+
+    public void hideHud(){
         hudContainer.setVisible(false);
     }
 
@@ -230,6 +256,13 @@ public class GameUI extends MenuScene {
             if (menuChanged) {
 
                 killerName.setText(String.format(ResourceHandler.getLanguages().getString("ui.death.killer"), issuer));
+            }
+        }else if (startMenu.isVisible()){
+
+            int time = (int) (Time.getSeconds() * 10 - countdownStart * 10);
+            if (time / 10f != countdown) {
+                countdown = time / 10f;
+                startCountdown.setText("" + (countdown < 0 ? -countdown : 0));
             }
         }
 

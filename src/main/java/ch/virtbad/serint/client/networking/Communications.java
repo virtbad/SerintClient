@@ -1,13 +1,12 @@
 package ch.virtbad.serint.client.networking;
 
 import ch.virt.pseudopackets.client.Client;
+import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.game.Game;
-import ch.virtbad.serint.client.game.map.MapOperations;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import ch.virtbad.serint.client.networking.packets.*;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.Serint;
-import com.google.gson.Gson;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +26,9 @@ public class Communications extends CustomClientPacketHandler {
     public static final int HANDSHAKE = 3;
     public static final int FAILED_HANDSHAKE = 4;
     public static final int IN = 5;
+    public static final int JOINING = 6;
+    public static final int FAILED_JOIN = 7;
+    public static final int DONE = 8;
 
     @Getter @Setter
     private int status;
@@ -40,11 +42,15 @@ public class Communications extends CustomClientPacketHandler {
     @Setter
     private Game game;
 
+    private final BasicEvent kicked;
+
     /**
      * Creates the communication
+     * @param kicked listener to call when kicked
      */
-    public Communications() {
+    public Communications(BasicEvent kicked) {
 
+        this.kicked = kicked;
     }
 
     /**
@@ -81,8 +87,8 @@ public class Communications extends CustomClientPacketHandler {
         log.warn("Kicked from server because of: " + packet.getReason());
         client.close();
 
-        // TODO: YES THIS IS A HARD EXIT AND IT IS NOT A GOOD SOLUTION AT ALL!
-        System.exit(2);
+        statusInformation = packet.getReason();
+        kicked.emit();
     }
 
     public void handle(LoggedInPacket packet) {
@@ -111,6 +117,16 @@ public class Communications extends CustomClientPacketHandler {
     public void handle(JoinedPacket packet) {
         log.info("Joined with Player id {}", packet.getPlayerId());
         game.joined(packet.getPlayerId(), new Color(packet.getColor()), packet.getName());
+        status = DONE;
+    }
+
+    public void handle(NotJoinedPacket packet) {
+        status = FAILED_JOIN;
+        statusInformation = packet.getReason();
+
+        disconnect();
+
+        log.info("Failed to join because {}", packet.getReason());
     }
 
 
@@ -176,6 +192,14 @@ public class Communications extends CustomClientPacketHandler {
         game.win();
     }
 
+    public void handle(GameStartPacket packet){
+        game.start();
+    }
+
+    public void handle(GameStartPeakPacket packet){
+        game.peakStart(packet.getDelay());
+    }
+
     // ----- Other Methods -----
 
     /**
@@ -185,6 +209,7 @@ public class Communications extends CustomClientPacketHandler {
      * @param name  name to join with
      */
     public void join(Color color, String name) {
+        status = JOINING;
         log.info("Joining the Game with Name: {}", name);
         client.sendPacket(new JoinPacket(name, color.getRGB()));
     }

@@ -28,7 +28,7 @@ public class Serint {
     private SettingsMenu settingsMenu;
     private AboutMenu aboutMenu;
     private ServerConnectMenu connectMenu;
-    private ServerJoinMenu joinMenu;
+    private KickScene kickMenu;
 
     /**
      * Creates the Main Class
@@ -83,7 +83,7 @@ public class Serint {
         updateLoadingMessage("Preparing Game");
 
         network = new NetworkHandler();
-        communications = new Communications();
+        communications = new Communications(() -> rendering.setScene(5));
 
         // Creating GUI
         updateLoadingMessage("Building GUI");
@@ -94,11 +94,10 @@ public class Serint {
         rendering.addScene(2, settingsMenu);
         aboutMenu = new AboutMenu();
         rendering.addScene(3, aboutMenu);
-        connectMenu = new ServerConnectMenu(network, communications);
+        connectMenu = new ServerConnectMenu(network, communications, this::startGame);
         rendering.addScene(4, connectMenu);
-        joinMenu = new ServerJoinMenu(communications, this::startGame);
-        rendering.addScene(5, joinMenu);
-
+        kickMenu = new KickScene(communications);
+        rendering.addScene(5, kickMenu);
     }
 
     /**
@@ -108,18 +107,7 @@ public class Serint {
         log.info("Cleaning current Instance");
         updateLoadingMessage("Finishing up");
 
-        if (false){
-            tryToConnect();
-
-            rendering.addScene(10, game);
-
-            communications.connect();
-
-            rendering.setScene(10);
-        }else {
-            rendering.setScene(1);
-        }
-
+        rendering.setScene(1);
 
         log.info("Finished Initialization in {} Seconds!", Time.getSeconds());
     }
@@ -128,10 +116,6 @@ public class Serint {
         while (true) { // TODO: Add breakpoint(s)
             rendering.getUpdater().call();
         }
-    }
-
-    public void tryToConnect(){
-
     }
 
     public void startGame(){
