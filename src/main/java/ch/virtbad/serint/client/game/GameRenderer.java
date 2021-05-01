@@ -7,6 +7,7 @@ import ch.virtbad.serint.client.engine.resources.framebuffers.TextureFrameBuffer
 import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.client.Lighting;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import lombok.Setter;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
@@ -24,6 +25,9 @@ public class GameRenderer {
 
     private final Lighting lighting;
     private final Camera gameCamera;
+
+    @Setter
+    private boolean ingui;
 
     public GameRenderer(int width, int height, Lighting lighting, Camera gameCamera){
         this.lighting = lighting;
@@ -76,6 +80,7 @@ public class GameRenderer {
 
         shader.uploadVec2("gameViewportPosition", new Vector2f(gameCamera.getXPos(), gameCamera.getYPos()));
         shader.uploadVec2("gameViewportSize", new Vector2f(gameCamera.getXUnits(), gameCamera.getYUnits()));
+        shader.uploadInt("ingui", ingui ? 1 : 0);
 
         lighting.upload(shader);
 

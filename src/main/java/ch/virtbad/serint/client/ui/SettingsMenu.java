@@ -15,7 +15,7 @@ public class SettingsMenu extends MenuScene {
     public void build() {
         Button backButton = new Button(-BUTTON_WIDTH / 2, - (10 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
 
-        backButton.setEvent(() -> switchScene(1));
+        backButton.setEvent(() -> switchScene(-1));
 
         addComponent(backButton);
     }

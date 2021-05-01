@@ -4,6 +4,7 @@ import ch.virtbad.serint.client.game.GameContext;
 import ch.virtbad.serint.client.game.collisions.MapCollisions;
 import ch.virtbad.serint.client.game.player.Player;
 import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.ArrayList;
@@ -20,6 +21,8 @@ public class PlayerRegister {
     @Getter
     private Player own;
     private boolean ownInit = false;
+    @Getter @Setter
+    private boolean showOwn = true;
 
     private HashMap<Integer, Player> players;
 
@@ -146,7 +149,7 @@ public class PlayerRegister {
      * Draws all players
      */
     public void draw() {
-        if (own != null) {
+        if (showOwn && own != null) {
             own.draw();
         }
 

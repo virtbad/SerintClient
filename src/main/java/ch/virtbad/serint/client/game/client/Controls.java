@@ -20,8 +20,10 @@ public class Controls {
     private static final int KEY_A = GLFW.GLFW_KEY_A;
     private static final int KEY_S = GLFW.GLFW_KEY_S;
     private static final int KEY_D = GLFW.GLFW_KEY_D;
+
     private static final int KEY_COLLECT = GLFW.GLFW_KEY_E;
     private static final int KEY_KILL = GLFW.GLFW_KEY_Q;
+    private static final int KEY_PAUSE = GLFW.GLFW_KEY_ESCAPE;
 
     private final GameContext context;
 
@@ -30,6 +32,7 @@ public class Controls {
 
     private boolean lastCollect = false;
     private boolean lastKill = false;
+    private boolean lastPause = false;
 
     /**
      * Creates a controls
@@ -83,6 +86,19 @@ public class Controls {
         }else {
             if (lastCollect){
                 lastCollect = false;
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public boolean isPausing(){
+        if (context.getKeyboard().isDown(KEY_PAUSE)){
+            lastPause = true;
+        } else {
+            if (lastPause){
+                lastPause = false;
                 return true;
             }
         }

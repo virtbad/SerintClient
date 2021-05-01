@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.ui.components;
 
 import ch.virtbad.serint.client.ui.Context;
 import ch.virtbad.serint.client.ui.components.base.Component;
+import lombok.Getter;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -12,7 +13,7 @@ public class Container extends Component {
     private boolean initialized;
     private List<Component> children;
 
-    @Setter
+    @Setter @Getter
     private boolean visible = true;
 
     public Container() {

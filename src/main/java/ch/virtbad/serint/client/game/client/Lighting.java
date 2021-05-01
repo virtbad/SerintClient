@@ -64,7 +64,7 @@ public class Lighting {
         amount = length + 1; // Also player vision
     }
 
-    public void setPlayerVision(Player player){
+    public void setPlayerVision(Player player, boolean visible){
         // Fill positions
         // TODO: Use dynamic center
         positions[0] = player.getLocation().getPosX() + 0.5f;
@@ -76,7 +76,7 @@ public class Lighting {
         colors[2] = VISION_COLOR.z;
 
         // Fill intensities
-        intensities[0] = player.getAttributes().getVision();
+        intensities[0] = visible ? player.getAttributes().getVision() : 0;
     }
 
     public void upload(Shader shader){

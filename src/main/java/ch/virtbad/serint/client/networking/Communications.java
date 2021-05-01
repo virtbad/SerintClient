@@ -158,6 +158,23 @@ public class Communications extends CustomClientPacketHandler {
         client.sendPacket(new PlayerAbsorbPacket(id));
     }
 
+    // ----- Game States -----
+
+    public void handle(AbsorbedPacket packet) {
+        game.absorbed(packet.getRespawnTime(), packet.getAbsorberName());
+    }
+
+    public void handle(RespawnPacket packet) {
+        game.respawn();
+    }
+
+    public void handle(LoosePacket packet){
+        game.loose(packet.getAbsorberName());
+    }
+
+    public void handle(WinPacket packet){
+        game.win();
+    }
 
     // ----- Other Methods -----
 

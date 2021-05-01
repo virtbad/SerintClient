@@ -43,7 +43,7 @@ public class ServerJoinMenu extends MenuScene{
 
         Label nameLabel = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_HEIGHT * 2 + BUTTON_SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.join.title.name"), true, false);
         addComponent(nameLabel);
-        nameEdit = new EditText(-BUTTON_WIDTH / 2, BUTTON_HEIGHT + BUTTON_SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29); // Yes, this is the most letters that fit into the input and not an arbitrary number
+        nameEdit = new EditText(-BUTTON_WIDTH / 2, BUTTON_HEIGHT + BUTTON_SPACING * 3, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 11); // Yes, this is the most letters that fit into the input and not an arbitrary number
         addComponent(nameEdit);
 
         Label colourLabel = new Label(-BUTTON_WIDTH / 2, BUTTON_HEIGHT + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.join.title.color"), true, false);
