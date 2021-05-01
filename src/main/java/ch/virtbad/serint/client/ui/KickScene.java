@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.ui;
 
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
+import ch.virtbad.serint.client.ui.components.BackgroundImage;
 import ch.virtbad.serint.client.ui.components.Button;
 import ch.virtbad.serint.client.ui.components.Label;
 
@@ -20,6 +21,9 @@ public class KickScene extends MenuScene {
 
     @Override
     public void build() {
+
+        BackgroundImage background = new BackgroundImage("background");
+        addComponent(background);
 
         Label title = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.kick.title"), true, false);
         addComponent(title);
