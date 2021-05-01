@@ -39,6 +39,7 @@ public class ProtocolWrapper {
         // Game Connection Packets
         protocol.addPacket(JoinPacket.class, 10);
         protocol.addPacket(JoinedPacket.class, 11);
+        protocol.addPacket(NotJoinedPacket.class, 12);
 
         // Environment Data Packets
         protocol.addPacket(MapPacket.class, 20);
@@ -54,6 +55,14 @@ public class ProtocolWrapper {
         // Interaction Transmission
         protocol.addPacket(PlayerAbsorbPacket.class, 41);
         protocol.addPacket(ItemCollectionPacket.class, 40);
+
+        // Game State Transmission
+        protocol.addPacket(GameStartPeakPacket.class, 50);
+        protocol.addPacket(GameStartPacket.class, 51);
+        protocol.addPacket(AbsorbedPacket.class, 52);
+        protocol.addPacket(RespawnPacket.class, 53);
+        protocol.addPacket(WinPacket.class, 54);
+        protocol.addPacket(LoosePacket.class, 55);
 
     }
 }

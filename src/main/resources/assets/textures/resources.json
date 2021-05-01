@@ -11,7 +11,8 @@
     "edittext",
     "indicator",
     "tilesheet",
-    "kill",
+    "numberspinner",
+    "kill"
     "cosmeticsheet"
   ]
 }

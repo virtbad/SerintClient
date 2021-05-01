@@ -23,6 +23,7 @@ public class DisplayHandler {
 
     private Window window;
 
+    private int last;
     private int selected;
     private HashMap<Integer, Scene> scenes;
 
@@ -85,13 +86,23 @@ public class DisplayHandler {
 
     /**
      * Sets a scene to display
-     * @param id id of that scene
+     * @param id id of that scene (-1 for previous)
      */
     public void setScene(int id){
         log.info("Selected scene {}", id);
-        selected = id;
+        if(id == -1){ // -1 Corresponds to last Scene
+            int current = selected;
+            selected = last;
+            last = current;
+        }else {
+            last = selected;
+            selected = id;
+        }
 
-        if (scenes.get(selected) != null) scenes.get(selected).resized(window.getWidth(), window.getHeight());
+        if (scenes.get(selected) != null){
+            scenes.get(selected).resized(window.getWidth(), window.getHeight());
+            scenes.get(selected).shown();
+        }
     }
 
     /**

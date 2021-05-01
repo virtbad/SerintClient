@@ -66,4 +66,9 @@ public class LoadingScene extends Scene {
 
         if (text != null) text.setPosition(camera.getXUnits() / 2 - text.getWidth() / 2, camera.getYUnits() / 2 - text.getHeight() / 2);
     }
+
+    @Override
+    public void shown() {
+
+    }
 }

@@ -20,7 +20,6 @@ import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
 import org.lwjgl.opengl.GL11;
 
-import javax.xml.stream.Location;
 import java.awt.*;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -45,10 +44,13 @@ public class Game extends Scene {
         communications.setGame(this);
     }
 
+
+    private volatile boolean ingame;
     private volatile boolean joined;
 
     private GameContext context;
     private float lastTime = Time.getSeconds();
+
 
     private Camera camera;
     private Cinematography cinematography;
@@ -56,14 +58,17 @@ public class Game extends Scene {
     private Lighting lighting;
     private GameUI gui;
 
-    private PlayerRegister players;
-    private ItemRegister items;
-
     private GameRenderer renderer;
 
+
+    private PlayerRegister players;
+    private ItemRegister items;
     private MapRegister map;
 
+
+    // Ingame Variables
     private float lastKill = Time.getSeconds();
+    private boolean showPlayer = true;
 
 
     @Override
@@ -82,10 +87,26 @@ public class Game extends Scene {
         map = new MapRegister(context);
 
         // Create UI
-        gui = new GameUI();
+        gui = new GameUI(() -> {
+            // Disconnect
+
+            com.disconnect();
+            switchScene(4);
+
+        }, () -> {
+            // Back to game
+
+            if (gui.isPaused()){
+                gui.hideScreen();
+                ingame = true;
+            }
+
+        });
         gui.setKeyboard(keyboard);
         gui.setMouse(mouse);
         gui.init(width, height);
+        gui.setSceneSwitcher(this::switchScene);
+        gui.hideHud();
 
         lighting = new Lighting();
 
@@ -100,10 +121,10 @@ public class Game extends Scene {
         float delta = currentTime - lastTime;
 
         cinematography.update();
-        if (controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
+        if (ingame && controls.doMovement()) com.pushPlayerLocation(players.getOwn().getLocation());
 
         players.update(delta);
-        lighting.setPlayerVision(players.getOwn());
+        lighting.setPlayerVision(players.getOwn(), showPlayer);
         synchronized (items){
             items.update(delta);
         }
@@ -112,7 +133,7 @@ public class Game extends Scene {
         players.doMapCollisions(delta, map.getMap().getCollisions());
 
         // Interactions
-        if(controls.isAttacking() && lastKill + KILL_COOLDOWN < Time.getSeconds() ) {
+        if(ingame && controls.isAttacking() && lastKill + KILL_COOLDOWN < Time.getSeconds() ) {
 
             // Do cooldown anyway
             lastKill = Time.getSeconds();
@@ -128,7 +149,7 @@ public class Game extends Scene {
             }
         }
 
-        if(controls.isCollecting()) {
+        if(ingame && controls.isCollecting()) {
 
             for (Item item : items.getAll()) {
                 if (players.getOwn().getLocation().distanceTo(item.getLocation()) < INTERACTION_RADIUS) {
@@ -139,6 +160,18 @@ public class Game extends Scene {
 
         }
 
+        // Pause
+        if (controls.isPausing()){
+            if (gui.isPaused()){
+                gui.hideScreen();
+                ingame = true;
+            }
+            else if (ingame) {
+                ingame = false;
+                gui.showPauseScreen();
+            }
+        }
+
         gui.update();
 
         lastTime = currentTime;
@@ -146,7 +179,7 @@ public class Game extends Scene {
 
     @Override
     public void draw() {
-        if (!joined) return; // TODO: What is THIS?
+        if (!joined) return;
 
         if (keyboard.isDown(GLFW.GLFW_KEY_TAB)) glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
         else glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
@@ -191,6 +224,16 @@ public class Game extends Scene {
         gui.resized(width, height);
     }
 
+    @Override
+    public void shown() {
+
+    }
+
+    private void setPlayerVisible(boolean whether){
+        showPlayer = whether;
+        players.setShowOwn(whether);
+    }
+
     /**
      * Is called when the player has successfully joined the game.
      *
@@ -202,10 +245,7 @@ public class Game extends Scene {
         controls.setPlayer(players.getOwn());
         cinematography.follow(players.getOwn().getLocation());
         joined = true;
-
-        // Start cooldown
-        lastKill = Time.getSeconds();
-        gui.setLastKill(lastKill);
+        ingame = true;
 
         log.info("Joined the Game successfully!");
     }
@@ -267,5 +307,48 @@ public class Game extends Scene {
         synchronized (items) {
             items.remove(id);
         }
+    }
+
+    public void absorbed(float delay, String issuer){
+        log.info("Absorbed!");
+
+        gui.showDeathScreen(issuer, delay);
+        renderer.setIngui(true);
+        setPlayerVisible(false);
+        ingame = false;
+    }
+
+    public void respawn(){
+        log.info("Respawned!");
+
+        gui.hideScreen();
+        renderer.setIngui(false);
+        setPlayerVisible(true);
+        ingame = true;
+    }
+
+    public void loose(String lastIssuer){
+        gui.showLoseScreen(lastIssuer);
+        renderer.setIngui(true);
+        setPlayerVisible(false);
+        ingame = false;
+    }
+
+    public void win(){
+        gui.showWinScreen();
+        renderer.setIngui(true);
+        ingame = false;
+    }
+
+    public void peakStart(float delay){
+        gui.showStartScreen(delay);
+    }
+
+    public void start(){
+        gui.hideScreen();
+
+        // Start cooldown
+        lastKill = Time.getSeconds();
+        gui.setLastKill(lastKill);
     }
 }

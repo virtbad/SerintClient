@@ -38,6 +38,7 @@ public class Camera {
     @Getter
     private float xUnits, yUnits;
 
+    @Getter
     private float xMinUnits, yMinUnits;
     private int screenWidth, screenHeight;
 

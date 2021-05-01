@@ -86,4 +86,9 @@ public abstract class UiScene extends Scene {
     public void resized(int width, int height) {
         camera.setScreenSize(width, height);
     }
+
+    @Override
+    public void shown() {
+
+    }
 }

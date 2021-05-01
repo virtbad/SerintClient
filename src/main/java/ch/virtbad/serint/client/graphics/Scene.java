@@ -42,6 +42,15 @@ public abstract class Scene {
      */
     public abstract void resized(int width, int height);
 
+    /**
+     * Called when the scene is switched to
+     */
+    public abstract void shown();
+
+    /**
+     * Switches the scene
+     * @param scene scene to switch to
+     */
     protected void switchScene(int scene){
         EventHelper.emitEvent(sceneSwitcher, scene);
     }

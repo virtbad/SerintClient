@@ -27,10 +27,13 @@ void main() {
 #define BASE_LIGHT 0.2f
 #define PLAYER_FADE_STRENGTH 5
 
+#define IN_GUI_INTENSITY 0.5
+
 uniform sampler2D map;
 uniform sampler2D player;
 uniform sampler2D gui;
 
+uniform int ingui;
 uniform int lightSources;
 
 uniform vec3 lightColors[SOURCE_MAX];
@@ -79,6 +82,11 @@ void main()
     float maximum = max(passingColor.r, max(passingColor.g, passingColor.b));
     if (maximum > 1) passingColor *= (1 / maximum);
     color = vec4(color.rgb * passingColor, color.a);
+
+    if (ingui != 0){
+        vec4 goal = vec4(0, 0, 0, IN_GUI_INTENSITY);
+        color = goal * goal.a + color * (1 - goal.a);
+    }
 
     // Gui
     vec4 guiColor = texture(gui, uv);

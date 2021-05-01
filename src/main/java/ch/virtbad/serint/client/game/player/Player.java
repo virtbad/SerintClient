@@ -6,10 +6,12 @@ import ch.virtbad.serint.client.game.collisions.AABB;
 import ch.virtbad.serint.client.game.objects.MeshedGameObject;
 import ch.virtbad.serint.client.game.objects.positioning.MovedLocation;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import ch.virtbad.serint.client.ui.components.font.Text;
 import lombok.Getter;
 import lombok.Setter;
 import org.joml.Vector2f;
 import org.joml.Vector3f;
+import org.joml.Vector4f;
 
 import static org.lwjgl.opengl.GL11.GL_FLOAT;
 
@@ -44,6 +46,9 @@ public class Player extends MeshedGameObject {
     private float delayPassed;
     private boolean blinking;
 
+    private Text nameTag;
+    private boolean init;
+
     /**
      * Creates a player instance
      *
@@ -60,12 +65,21 @@ public class Player extends MeshedGameObject {
         this.bounds = new AABB(location.getPosX() + xPadding, location.getPosY(), 1 - xPadding * 2, 0.2f);
         attributes = new PlayerAttributes();
         this.part = new Vector2f(1, 0);
+
+        nameTag = new Text(name, new Vector4f(1, 1, 1, 1), 0, 0, 0.25f);
     }
 
     @Override
     public void init() {
         texture = ResourceHandler.getTextures().get("player");
+
+        nameTag.setCamera(context.getCamera());
+        nameTag.init();
+
+        nameTag.setPosition(location.getPosX() + 0.5f - nameTag.getWidth() / 2, location.getPosY() + 1);
+
         super.init();
+        init = true;
     }
 
     @Override
@@ -84,6 +98,7 @@ public class Player extends MeshedGameObject {
     @Override
     public void update(float updateDelta) {
         updateWorldMatrix();
+        nameTag.setPosition(location.getPosX() + 0.5f - nameTag.getWidth() / 2, location.getPosY() + 1);
         bounds.setPosition(location.getPosX() + xPadding, location.getPosY());
 
         // Hovering and Blinking animation (could also be done in shader)
@@ -122,6 +137,12 @@ public class Player extends MeshedGameObject {
         else if (loc.getVelocityX() < 0 && loc.getVelocityY() < 0) part.y = 2; // Down Left
         else if (loc.getVelocityX() == 0 && loc.getVelocityY() > 0) part.y = 1; // Up
         else part.y = 0; // Down and Default
+    }
+
+    @Override
+    public void draw() {
+        super.draw();
+        if(init) nameTag.draw();
     }
 
     /**

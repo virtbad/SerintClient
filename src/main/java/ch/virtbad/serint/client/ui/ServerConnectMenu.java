@@ -1,7 +1,7 @@
 package ch.virtbad.serint.client.ui;
 
-import ch.virtbad.serint.client.config.Config;
 import ch.virtbad.serint.client.config.ConfigHandler;
+import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
@@ -9,9 +9,9 @@ import ch.virtbad.serint.client.ui.components.Button;
 import ch.virtbad.serint.client.ui.components.Container;
 import ch.virtbad.serint.client.ui.components.EditText;
 import ch.virtbad.serint.client.ui.components.Label;
+import ch.virtbad.serint.client.util.Globals;
 
-import javax.imageio.event.IIOReadProgressListener;
-import java.awt.event.TextEvent;
+import java.awt.*;
 
 import static ch.virtbad.serint.client.ui.MainMenu.*;
 
@@ -31,25 +31,34 @@ public class ServerConnectMenu extends MenuScene {
     private Label progressLabel;
     private Label failedLabel;
     private Label errorLabel;
+    private EditText colorEdit;
+    private EditText nameEdit;
+    private Label serverTitle;
+    private Label serverDescription;
 
     private final NetworkHandler networkHandler;
     private final Communications communications;
+    private final BasicEvent gameStart;
 
-    private boolean connecting;
     private int lastCode;
 
     /**
      * Creates a server connect menu
+     *
      * @param networkHandler network handler
      * @param communications communications
+     * @param gameStart
      */
-    public ServerConnectMenu(NetworkHandler networkHandler, Communications communications) {
+    public ServerConnectMenu(NetworkHandler networkHandler, Communications communications, BasicEvent gameStart) {
         this.networkHandler = networkHandler;
         this.communications = communications;
+        this.gameStart = gameStart;
     }
 
     @Override
     public void build() {
+
+        // Prompt
 
         prompt = new Container();
 
@@ -68,6 +77,8 @@ public class ServerConnectMenu extends MenuScene {
         connectButton.setEvent(this::connect);
         prompt.addComponent(connectButton);
 
+        // Loading
+
         loading = new Container();
 
         progressLabel = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.status.connect"), true, false);
@@ -76,20 +87,33 @@ public class ServerConnectMenu extends MenuScene {
         cancelButton.setEvent(this::cancel);
         loading.addComponent(cancelButton);
 
+        // Confirm
+
         confirm = new Container();
 
-        Label serverTitle = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT + BUTTON_SPACING + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.75f, ResourceHandler.getLanguages().getString("Lorem Ipsum"), true, false);
+        serverTitle = new Label(-BUTTON_WIDTH / 2, BUTTON_HEIGHT * 4, BUTTON_WIDTH, BUTTON_HEIGHT, 0.75f, "Server Name", true, false);
         confirm.addComponent(serverTitle);
-
-        Label serverDescription = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("Lorem Ipsum Server in Serint!"), true, true);
+        serverDescription = new Label(-BUTTON_WIDTH / 2, serverTitle.getY() - 1f, BUTTON_WIDTH, 1f, 0.5f, "Server Description", true, false);
         confirm.addComponent(serverDescription);
 
-        Button disconnectButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING / 2 - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.disconnect"));
+        nameEdit = new EditText(-BUTTON_WIDTH / 2, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 11); // Maximal amount of letters fitting on to the hud
+        confirm.addComponent(nameEdit);
+        Label nameLabel = new Label(-BUTTON_WIDTH / 2, nameEdit.getY() + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.title.name"), true, false);
+        confirm.addComponent(nameLabel);
+
+        colorEdit = new EditText(-BUTTON_WIDTH / 2, -BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29);
+        confirm.addComponent(colorEdit);
+        Label colorLabel = new Label(-BUTTON_WIDTH / 2, colorEdit.getY() + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.title.color"), true, false);
+        confirm.addComponent(colorLabel);
+
+        Button disconnectButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING - BUTTON_HEIGHT * 2, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.disconnect"));
         confirm.addComponent(disconnectButton);
         disconnectButton.setEvent(this::disconnect);
-        Button proceedButton = new Button(-BUTTON_WIDTH / 2, 0 - BUTTON_SPACING / 2 - BUTTON_HEIGHT - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.proceed"));
+        Button proceedButton = new Button(-BUTTON_WIDTH / 2, disconnectButton.getY() - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.connect.button.join"));
         confirm.addComponent(proceedButton);
-        proceedButton.setEvent(() -> switchScene(5));
+        proceedButton.setEvent(this::join);
+
+        // Failed
 
         failed = new Container();
         failedLabel = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT + BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.status.failed.connect"), true, false);
@@ -102,6 +126,8 @@ public class ServerConnectMenu extends MenuScene {
             prompt.setVisible(true);
         });
         failed.addComponent(failedBackButton);
+
+        // Finishing up
 
         addComponent(prompt);
         addComponent(loading);
@@ -142,7 +168,6 @@ public class ServerConnectMenu extends MenuScene {
             }
         }
 
-        connecting = true;
         lastCode = 0;
 
         networkHandler.connect(communications, host, port);
@@ -152,7 +177,7 @@ public class ServerConnectMenu extends MenuScene {
     /**
      * Cancels the connection
      */
-    public void cancel(){
+    public void cancel() {
         loading.setVisible(false);
         prompt.setVisible(true);
 
@@ -164,18 +189,41 @@ public class ServerConnectMenu extends MenuScene {
     /**
      * Disconnects again from the server
      */
-    public void disconnect(){
+    public void disconnect() {
         communications.disconnect();
 
         confirm.setVisible(false);
         prompt.setVisible(true);
     }
 
+
+    /**
+     * Joins the game with current values
+     */
+    public void join() {
+        String color = colorEdit.getContent();
+
+        Color c;
+        if (color.matches("([0123456789AaBbCcDdEeFf]){6}"))
+            c = Color.decode("#" + color); // Assert that color has right format
+        else if (color.matches("#([0123456789AaBbCcDdEeFf]){6}")) c = Color.decode(color);
+        else c = Color.getHSBColor((float) (Math.random() * 360), 1, 1);
+
+        gameStart.emit();
+
+        communications.join(c, nameEdit.getContent());
+
+        confirm.setVisible(false);
+        loading.setVisible(true);
+
+        progressLabel.setText(ResourceHandler.getLanguages().getString("ui.connect.status.joining"));
+    }
+
     @Override
     public void update() {
         super.update();
 
-        if (connecting && communications.getStatus() != lastCode) {
+        if (communications.getStatus() != lastCode) {
             lastCode = communications.getStatus();
 
             switch (lastCode) {
@@ -195,6 +243,9 @@ public class ServerConnectMenu extends MenuScene {
                 case Communications.IN:
                     progressLabel.setText(ResourceHandler.getLanguages().getString("ui.connect.status.success"));
 
+                    serverTitle.setText(Globals.getNetwork().getServerName());
+                    serverDescription.setText(Globals.getNetwork().getServerDescription());
+
                     loading.setVisible(false);
                     confirm.setVisible(true);
 
@@ -206,9 +257,28 @@ public class ServerConnectMenu extends MenuScene {
                     errorLabel.setText(communications.getStatusInformation());
                     failedLabel.setText(ResourceHandler.getLanguages().getString("ui.connect.status.failed.connect"));
 
-                    connecting = false;
+                    break;
+                case Communications.FAILED_JOIN:
+                    loading.setVisible(false);
+                    failed.setVisible(true);
+
+                    errorLabel.setText(communications.getStatusInformation());
+                    failedLabel.setText(ResourceHandler.getLanguages().getString("ui.connect.status.failed.join"));
+
+                    break;
+                case Communications.DONE:
+                    switchScene(10);
                     break;
             }
         }
+    }
+
+    @Override
+    public void shown() {
+        super.shown();
+        prompt.setVisible(true);
+        loading.setVisible(false);
+        confirm.setVisible(false);
+        failed.setVisible(false);
     }
 }
