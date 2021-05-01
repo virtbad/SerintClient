@@ -11,6 +11,7 @@
     "edittext",
     "indicator",
     "tilesheet",
+    "numberspinner",
     "kill"
   ]
 }
