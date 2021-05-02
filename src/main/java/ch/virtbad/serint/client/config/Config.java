@@ -26,4 +26,8 @@ public class Config {
     private boolean enableAspects = true;
     private boolean enableCosmetics = true;
     private int maxLightSources = 50;
+
+    private String lastServerHost = null;
+    private String lastColor = null;
+    private String lastName = null;
 }

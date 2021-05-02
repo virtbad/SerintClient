@@ -51,9 +51,9 @@ public class EditText extends QuadComponent {
      * @param centered whether it is centered
      * @param maxLength maximal length of the content
      */
-    public EditText(float x, float y, float width, float height, float scale, boolean centered, int maxLength) {
+    public EditText(float x, float y, float width, float height, float scale, boolean centered, int maxLength, String startContent) {
         super(x, y, width, height, "edittext", true);
-        content = "";
+        content = startContent;
         this.maxLength = maxLength;
 
         this.scale = scale;

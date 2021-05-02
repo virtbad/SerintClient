@@ -4,7 +4,8 @@ import ch.virt.pseudopackets.packets.Packet;
 import lombok.Getter;
 
 /**
- * Sent to a player when one looses
+ * Sent to a player when one loses
+ * AND YES THIS CLASS HAS A TYPO IN ITS NAME
  */
 public class LoosePacket extends Packet {
 

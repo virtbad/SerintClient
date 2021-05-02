@@ -37,7 +37,7 @@ public class AboutMenu extends MenuScene {
         BackgroundImage background = new BackgroundImage("background");
         addComponent(background);
 
-        Button backButton = new Button(-BUTTON_WIDTH / 2, - (10 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
+        Button backButton = new Button(-BUTTON_WIDTH / 2, - (camera.getYMinUnits() / 2 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
         backButton.setEvent(() -> switchScene(1));
 
         Label title = new Label(-10, 10 - (BUTTON_SPACING + BUTTON_HEIGHT), 20, 2, 0.75f, ResourceHandler.getLanguages().getString("name") + ResourceHandler.getLanguages().getString("ui.about.info.version") + Serint.VERSION, true, true);

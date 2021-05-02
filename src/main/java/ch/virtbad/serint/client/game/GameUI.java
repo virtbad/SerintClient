@@ -106,9 +106,9 @@ public class GameUI extends MenuScene {
 
         // Pause menu
 
-        Label pauseTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.pause.title"), true, false );
-        Button leaveButton =  new Button(-BUTTON_WIDTH / 2, pauseTitle.getY() - BUTTON_HEIGHT - BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.pause.leave"));
-        Button returnButton =  new Button(-BUTTON_WIDTH / 2, leaveButton.getY() - BUTTON_HEIGHT - BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.pause.back"));
+        Label pauseTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.game.pause.title"), true, false );
+        Button leaveButton =  new Button(-BUTTON_WIDTH / 2, pauseTitle.getY() - BUTTON_HEIGHT - BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.game.pause.leave"));
+        Button returnButton =  new Button(-BUTTON_WIDTH / 2, leaveButton.getY() - BUTTON_HEIGHT - BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.game.pause.back"));
         returnButton.setEvent(backToGame);
         leaveButton.setEvent(disconnect);
 
@@ -120,10 +120,10 @@ public class GameUI extends MenuScene {
 
         // Death menu
 
-        Label deathTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.death.title"), true, false );
-        killerName = new Label(-camera.getXUnits() / 2, 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.death.killer"), true, true);
-        lifeLeft = new Label(-camera.getXUnits() / 2, killerName.getY() - 2f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.death.lives"), true, true);
-        Label respawnText = new Label(-camera.getXUnits() / 2, lifeLeft.getY() - 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.death.respawn"), true, true);
+        Label deathTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.game.death.title"), true, false );
+        killerName = new Label(-camera.getXUnits() / 2, 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.game.death.killer"), true, true);
+        lifeLeft = new Label(-camera.getXUnits() / 2, killerName.getY() - 2f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.game.death.lives"), true, true);
+        Label respawnText = new Label(-camera.getXUnits() / 2, lifeLeft.getY() - 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.game.death.respawn"), true, true);
         counter =  new Label(-camera.getXUnits() / 2, respawnText.getY() - 2f, camera.getXUnits(), 1, 0.75f, "" + 0, true, true);
 
         deathMenu.addComponent(deathTitle);
@@ -136,8 +136,8 @@ public class GameUI extends MenuScene {
 
         // Lose menu
 
-        Label loseTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT ,camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.lose.title"), true, true );
-        Button homeButton =  new Button(-BUTTON_WIDTH / 2, killerName.getY() - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.game.button.back"));
+        Label loseTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT ,camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.game.lose.title"), true, true );
+        Button homeButton =  new Button(-BUTTON_WIDTH / 2, killerName.getY() - BUTTON_SPACING - BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.game.finish.back"));
         homeButton.setEvent(disconnect);
 
         loseMenu.addComponent(loseTitle);
@@ -149,8 +149,8 @@ public class GameUI extends MenuScene {
         // Win menu
 
         winMenu = new Container();
-        Label winTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.win.title"), true, true );
-        Label winSubtitle = new Label(-camera.getXUnits() / 2, 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.win.subtitle"), true, true);
+        Label winTitle = new Label(-camera.getXUnits() / 2, BUTTON_HEIGHT, camera.getXUnits(), 1, 1f, ResourceHandler.getLanguages().getString("ui.game.win.title"), true, true );
+        Label winSubtitle = new Label(-camera.getXUnits() / 2, 1f, camera.getXUnits(), 1, 0.5f, ResourceHandler.getLanguages().getString("ui.game.win.subtitle"), true, true);
 
         winMenu.addComponent(winTitle);
         winMenu.addComponent(winSubtitle);

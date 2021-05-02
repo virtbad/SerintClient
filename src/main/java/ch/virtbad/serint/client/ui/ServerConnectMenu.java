@@ -65,14 +65,14 @@ public class ServerConnectMenu extends MenuScene {
 
         prompt = new Container();
 
-        Button backButton = new Button(-BUTTON_WIDTH / 2, -(10 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
+        Button backButton = new Button(-BUTTON_WIDTH / 2, - (camera.getYMinUnits() / 2 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
         backButton.setEvent(() -> switchScene(1));
         prompt.addComponent(backButton);
 
         Label hostLabel = new Label(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2 + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.title.ip"), true, false);
         prompt.addComponent(hostLabel);
 
-        hostEdit = new EditText(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29); // Yes, this is the most letters that fit into the input and not an arbitrary number
+        hostEdit = new EditText(-BUTTON_WIDTH / 2, 0 + BUTTON_SPACING / 2, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29, (ConfigHandler.getConfig().getLastServerHost() == null ? "" : ConfigHandler.getConfig().getLastServerHost())); // Yes, this is the most letters that fit into the input and not an arbitrary number
         hostEdit.setSubmitListener(this::connect);
         prompt.addComponent(hostEdit);
 
@@ -99,12 +99,12 @@ public class ServerConnectMenu extends MenuScene {
         serverDescription = new Label(-BUTTON_WIDTH / 2, serverTitle.getY() - 1f, BUTTON_WIDTH, 1f, 0.5f, "Server Description", true, false);
         confirm.addComponent(serverDescription);
 
-        nameEdit = new EditText(-BUTTON_WIDTH / 2, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 11); // Maximal amount of letters fitting on to the hud
+        nameEdit = new EditText(-BUTTON_WIDTH / 2, BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 11, ConfigHandler.getConfig().getLastName() == null ? "" : ConfigHandler.getConfig().getLastName()); // Maximal amount of letters fitting on to the hud
         confirm.addComponent(nameEdit);
         Label nameLabel = new Label(-BUTTON_WIDTH / 2, nameEdit.getY() + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.title.name"), true, false);
         confirm.addComponent(nameLabel);
 
-        colorEdit = new EditText(-BUTTON_WIDTH / 2, -BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29);
+        colorEdit = new EditText(-BUTTON_WIDTH / 2, -BUTTON_SPACING, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, true, 29, ConfigHandler.getConfig().getLastColor() == null ? "" : ConfigHandler.getConfig().getLastColor());
         confirm.addComponent(colorEdit);
         Label colorLabel = new Label(-BUTTON_WIDTH / 2, colorEdit.getY() + BUTTON_HEIGHT, BUTTON_WIDTH, BUTTON_HEIGHT, 0.5f, ResourceHandler.getLanguages().getString("ui.connect.title.color"), true, false);
         confirm.addComponent(colorLabel);
@@ -158,7 +158,10 @@ public class ServerConnectMenu extends MenuScene {
         String input = hostEdit.getContent();
 
         // Only Hostname
-        if (host.length() > 0) host = input;
+        if (input.length() > 0){
+            host = input;
+            ConfigHandler.getConfig().setLastServerHost(input);
+        }
 
         // With Port
         if (input.contains(":")) {
@@ -166,10 +169,17 @@ public class ServerConnectMenu extends MenuScene {
             if (args.length == 2) {
                 host = args[0];
 
-                if (args[1].matches("[0-9]+")) port = Integer.parseInt(args[1]);
-                if (port > 65535) port = ConfigHandler.getConfig().getServerPort(); // Prevent out of range Ports
+                if (args[1].matches("[0-9]+")){
+                    port = Integer.parseInt(args[1]);
+                    if (port > 65535) port = ConfigHandler.getConfig().getServerPort(); // Prevent out of range Ports
+                    else {
+                        ConfigHandler.getConfig().setLastServerHost(input);
+                    }
+                }
             }
         }
+
+        ConfigHandler.save();
 
         lastCode = 0;
 
@@ -207,12 +217,20 @@ public class ServerConnectMenu extends MenuScene {
         String color = colorEdit.getContent();
 
         Color c;
-        if (color.matches("([0123456789AaBbCcDdEeFf]){6}"))
+        if (color.matches("([0123456789AaBbCcDdEeFf]){6}")){
             c = Color.decode("#" + color); // Assert that color has right format
-        else if (color.matches("#([0123456789AaBbCcDdEeFf]){6}")) c = Color.decode(color);
+            ConfigHandler.getConfig().setLastColor(color);
+        }
+        else if (color.matches("#([0123456789AaBbCcDdEeFf]){6}")){
+            c = Color.decode(color);
+            ConfigHandler.getConfig().setLastColor(color);
+        }
         else c = Color.getHSBColor((float) (Math.random() * 360), 1, 1);
 
         gameStart.emit();
+
+        ConfigHandler.getConfig().setLastName(nameEdit.getContent());
+        ConfigHandler.save();
 
         communications.join(c, nameEdit.getContent());
 
