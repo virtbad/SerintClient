@@ -1,15 +1,14 @@
 package ch.virtbad.serint.client.game.client;
 
+import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.game.map.TileMap;
 import ch.virtbad.serint.client.game.player.Player;
-import ch.virtbad.serint.client.game.player.PlayerAttributes;
 import lombok.extern.slf4j.Slf4j;
 import org.joml.Vector3f;
 
 @Slf4j
 public class Lighting {
-    private static final int SOURCE_MAX = 100;
     private static final Vector3f VISION_COLOR = new Vector3f(1, 1, 1);
 
     private TileMap.LightSource[] sources;
@@ -36,9 +35,9 @@ public class Lighting {
 
         // One additional for the player vision
         int length = sources.length;
-        if (length > SOURCE_MAX - 1){
-            log.warn("Maximal amount ({}) of light sources exceeded! Not all light will be rendered.", SOURCE_MAX);
-            length = SOURCE_MAX - 1;
+        if (length > ConfigHandler.getConfig().getMaxLightSources() - 1){
+            log.warn("Maximal amount ({}) of light sources exceeded! Not all light will be rendered.", ConfigHandler.getConfig().getMaxLightSources());
+            length = ConfigHandler.getConfig().getMaxLightSources() - 1;
         }
 
         positions = new float[(length + 1) * 2];

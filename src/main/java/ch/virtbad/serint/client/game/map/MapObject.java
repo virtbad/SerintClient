@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.game.map;
 
+import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.content.Mesh;
 import ch.virtbad.serint.client.engine.resources.shaders.Shader;
 import ch.virtbad.serint.client.engine.resources.textures.Texture;
@@ -67,6 +68,7 @@ public class MapObject extends MeshedGameObject {
     protected void uploadUniforms() {
         texture.bind();
         shader.uploadFloat("textureDimension", 16f);
+        shader.uploadInt("enableAspects", ConfigHandler.getConfig().isEnableAspects() ? 1 : 0);
         super.uploadUniforms();
     }
 
@@ -74,11 +76,13 @@ public class MapObject extends MeshedGameObject {
     public void draw() {
         super.draw();
 
-        cosmeticShader.bind();
-        cosmeticShader.uploadMatrix("worldMatrix", worldMatrix);
-        cosmeticShader.uploadMatrix("viewMatrix", context.getCamera().getViewMatrix());
-        cosmeticShader.uploadInt("textureDimension", 8);
-        cosmeticTexture.bind();
-        cosmetics.draw();
+        if (ConfigHandler.getConfig().isEnableCosmetics()) {
+            cosmeticShader.bind();
+            cosmeticShader.uploadMatrix("worldMatrix", worldMatrix);
+            cosmeticShader.uploadMatrix("viewMatrix", context.getCamera().getViewMatrix());
+            cosmeticShader.uploadInt("textureDimension", 8);
+            cosmeticTexture.bind();
+            cosmetics.draw();
+        }
     }
 }

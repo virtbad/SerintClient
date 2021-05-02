@@ -65,6 +65,7 @@ public class DisplayHandler {
 
         log.info("Running on GPU: \"{}\" by \"{}\" ", glGetString(GL_RENDERER), glGetString(GL_VENDOR));
 
+        log.info("Framerate set on {}fps", ConfigHandler.getConfig().getFps());
         updater.setFrameRate(ConfigHandler.getConfig().getFps());
         updater.forceCall();
     }

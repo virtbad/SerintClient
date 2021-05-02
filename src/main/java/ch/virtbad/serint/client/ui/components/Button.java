@@ -21,7 +21,7 @@ public class Button extends QuadComponent {
     @Setter
     private BasicEvent event;
 
-    private Texture texture;
+    protected Texture texture;
 
     private boolean hovered;
     private boolean pressed;
@@ -77,6 +77,11 @@ public class Button extends QuadComponent {
             hovered = false;
             pressed = false;
         }
+    }
+
+    public void setText(String s){
+        this.text.setText(s);
+        text.setPosition(x + width / 2 - text.getWidth() / 2, y + height / 2 - text.getHeight() / 2);
     }
 
     @Override

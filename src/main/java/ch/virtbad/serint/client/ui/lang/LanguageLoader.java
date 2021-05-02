@@ -4,6 +4,7 @@ import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.resources.ResourceHelper;
 import ch.virtbad.serint.client.engine.resources.ResourceIndicator;
 import com.google.gson.Gson;
+import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 
 import java.io.InputStream;
@@ -91,6 +92,10 @@ public class LanguageLoader {
         }
 
         return translation;
+    }
+
+    public String getSelectedIdentifier(){
+        return languages.containsKey(selected) ? selected : defaultLanguage;
     }
 
     /**

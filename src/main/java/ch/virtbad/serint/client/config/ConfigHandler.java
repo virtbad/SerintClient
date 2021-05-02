@@ -2,8 +2,11 @@ package ch.virtbad.serint.client.config;
 
 import ch.virtbad.serint.client.engine.resources.ResourceHelper;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import lombok.extern.slf4j.Slf4j;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ResourceBundle;
@@ -40,6 +43,18 @@ public class ConfigHandler {
             config = new Config();
         }
         else config = new Gson().fromJson(new InputStreamReader(file), Config.class);
+    }
+
+    public static void save(){
+        log.info("Saving config to default path");
+        try {
+            FileWriter writer = new FileWriter(PATH);
+            writer.write(new GsonBuilder().setPrettyPrinting().create().toJson(config));
+            writer.flush();
+            writer.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**

@@ -56,9 +56,13 @@ out vec4 color;
 
 uniform sampler2D uTexture;
 uniform float textureDimension;
+uniform int enableAspects;
 
 void main(){
     color = texture(uTexture, uv0 / textureDimension);
+
+    if (enableAspects == 0) return;
+
     vec4 next;
 
     if (uv1.x != -1){

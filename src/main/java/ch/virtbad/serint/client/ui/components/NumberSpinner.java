@@ -20,16 +20,19 @@ public class NumberSpinner extends QuadComponent {
     boolean plusHover, plusPress;
     boolean minusHover, minusPress;
 
+    float min, max;
     float step;
     @Getter
     float number;
     Text display;
 
-    public NumberSpinner(float x, float y, float width, float height, float start, float step) {
+    public NumberSpinner(float x, float y, float width, float height, float start, float step, float min, float max) {
         super(x, y, width, height, null, true);
 
         number = start;
         this.step = step;
+        this.min = min;
+        this.max = max;
     }
 
     @Override
@@ -104,7 +107,7 @@ public class NumberSpinner extends QuadComponent {
             minusHover = false;
         }
 
-        if (UiHelper.mouseHovering(width - height, y, height, height, context)){
+        if (UiHelper.mouseHovering(x + width - height, y, height, height, context)){
             plusShift = pressing ? 2 : 1;
             plusHover = true;
 
@@ -125,6 +128,9 @@ public class NumberSpinner extends QuadComponent {
         }
 
         if (changed) {
+            if (number > max) number = max;
+            if (number < min) number = min;
+
             display.setText("" + number);
             display.setPosition(x + width / 2 - display.getWidth() / 2, y + 0.25f);
         }

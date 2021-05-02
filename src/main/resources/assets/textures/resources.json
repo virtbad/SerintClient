@@ -12,7 +12,8 @@
     "indicator",
     "tilesheet",
     "numberspinner",
-    "kill"
+    "kill",
+    "optionsbutton",
     "cosmeticsheet"
   ]
 }
