@@ -3,7 +3,7 @@ plugins {
 }
 
 group 'ch.virtbad'
-version '0.9-beta'
+version '1.0'
 
 repositories {
     mavenCentral()
