@@ -2,6 +2,7 @@ package ch.virtbad.serint.client.ui;
 
 import ch.virtbad.serint.client.Serint;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
+import ch.virtbad.serint.client.ui.components.BackgroundImage;
 import ch.virtbad.serint.client.ui.components.Button;
 import ch.virtbad.serint.client.ui.components.Label;
 import ch.virtbad.serint.client.ui.components.LabelLink;
@@ -32,6 +33,9 @@ public class AboutMenu extends MenuScene {
     public void build() {
 
         float x = -7;
+
+        BackgroundImage background = new BackgroundImage("background");
+        addComponent(background);
 
         Button backButton = new Button(-BUTTON_WIDTH / 2, - (10 - (BUTTON_SPACING)), BUTTON_WIDTH, BUTTON_HEIGHT, ResourceHandler.getLanguages().getString("ui.main.button.back"));
         backButton.setEvent(() -> switchScene(1));

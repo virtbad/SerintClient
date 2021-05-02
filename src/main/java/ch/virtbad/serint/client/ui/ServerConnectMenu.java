@@ -5,9 +5,9 @@ import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.networking.Communications;
 import ch.virtbad.serint.client.networking.NetworkHandler;
+import ch.virtbad.serint.client.ui.components.*;
 import ch.virtbad.serint.client.ui.components.Button;
 import ch.virtbad.serint.client.ui.components.Container;
-import ch.virtbad.serint.client.ui.components.EditText;
 import ch.virtbad.serint.client.ui.components.Label;
 import ch.virtbad.serint.client.util.Globals;
 
@@ -57,6 +57,9 @@ public class ServerConnectMenu extends MenuScene {
 
     @Override
     public void build() {
+
+        BackgroundImage background = new BackgroundImage("background");
+        addComponent(background);
 
         // Prompt
 

@@ -13,7 +13,8 @@
     "tilesheet",
     "numberspinner",
     "kill",
-    "optionsbutton",
-    "cosmeticsheet"
+    "cosmeticsheet",
+    "logo",
+    "optionsbutton"
   ]
 }
