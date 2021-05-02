@@ -16,6 +16,7 @@ import ch.virtbad.serint.client.ui.components.Container;
 import ch.virtbad.serint.client.ui.components.Label;
 import ch.virtbad.serint.client.util.Globals;
 import ch.virtbad.serint.client.util.Time;
+import lombok.Setter;
 import org.joml.Vector4f;
 
 import static ch.virtbad.serint.client.ui.MainMenu.*;
@@ -52,7 +53,8 @@ public class GameUI extends MenuScene {
     boolean menuChanged = false;
     private String issuer = "";
 
-
+    @Setter
+    private boolean started;
     private Player own;
 
     private final BasicEvent disconnect;
@@ -174,7 +176,8 @@ public class GameUI extends MenuScene {
         pauseMenu.setVisible(false);
         startMenu.setVisible(false);
 
-        hudContainer.setVisible(true);
+        if (started) hudContainer.setVisible(true);
+        else hudContainer.setVisible(false);
     }
 
     public void showWinScreen() {

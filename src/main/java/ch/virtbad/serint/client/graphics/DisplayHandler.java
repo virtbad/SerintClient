@@ -2,7 +2,6 @@ package ch.virtbad.serint.client.graphics;
 
 import ch.virtbad.serint.client.config.ConfigHandler;
 import ch.virtbad.serint.client.engine.Window;
-import ch.virtbad.serint.client.engine.content.Camera;
 import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.engine.events.IntegerEvent;
 import ch.virtbad.serint.client.engine.input.Keyboard;
@@ -35,10 +34,14 @@ public class DisplayHandler {
 
     private IntegerEvent sceneSwitcher;
 
+    private final BasicEvent close;
+
     /**
      * Creates a display handler
+     * @param close called when it is time to close the game
      */
-    public DisplayHandler(){
+    public DisplayHandler(BasicEvent close){
+        this.close = close;
         scenes = new HashMap<>();
 
         updater = new DisplayUpdater(this);
@@ -58,7 +61,7 @@ public class DisplayHandler {
         window.show();
 
         window.setResizeEvent(() -> resize(window.getWidth(), window.getHeight()));
-        window.setCloseEvent(() -> System.exit(0)); // TODO: Do proper closing procedure
+        window.setCloseEvent(close);
 
         keyboard = window.getKeyboard();
         mouse = window.getMouse();

@@ -20,5 +20,15 @@ public class Main {
         new Serint(); // Just evoking the constructor
 
         log.info("Terminated Starting Thread");
+
+        if (Thread.activeCount() > 1) {
+            log.info("Giving other threads chance to finish and then kill them");
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ignored) { }
+
+            if (Thread.activeCount() > 1) System.exit(0); // Kill all threads that are still running
+        }
     }
 }

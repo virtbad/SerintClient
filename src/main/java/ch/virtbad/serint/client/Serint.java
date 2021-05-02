@@ -30,6 +30,8 @@ public class Serint {
     private ServerConnectMenu connectMenu;
     private KickScene kickMenu;
 
+    private boolean running;
+
     /**
      * Creates the Main Class
      */
@@ -53,7 +55,7 @@ public class Serint {
         ConfigHandler.load("config.json");
         ResourceHandler.init();
         // Create and show Display
-        rendering = new DisplayHandler();
+        rendering = new DisplayHandler(() -> running = false);
         rendering.init();
 
         // Show loading scene
@@ -88,7 +90,7 @@ public class Serint {
         // Creating GUI
         updateLoadingMessage("Building GUI");
 
-        mainMenu = new MainMenu();
+        mainMenu = new MainMenu(() -> running = false);
         rendering.addScene(1, mainMenu);
         settingsMenu = new SettingsMenu();
         rendering.addScene(2, settingsMenu);
@@ -113,9 +115,19 @@ public class Serint {
     }
 
     public void run(){
-        while (true) { // TODO: Add breakpoint(s)
+        log.info("Entering loop");
+        running = true;
+        while (running) {
             rendering.getUpdater().call();
         }
+        log.info("Exited loop");
+
+        close();
+    }
+
+    public void close(){
+        communications.disconnect();
+        network.cancelConnection();
     }
 
     public void startGame(){

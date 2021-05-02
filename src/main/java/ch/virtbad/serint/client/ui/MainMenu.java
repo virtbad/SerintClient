@@ -1,5 +1,6 @@
 package ch.virtbad.serint.client.ui;
 
+import ch.virtbad.serint.client.engine.events.BasicEvent;
 import ch.virtbad.serint.client.graphics.ResourceHandler;
 import ch.virtbad.serint.client.ui.components.BackgroundImage;
 import ch.virtbad.serint.client.ui.components.FancyButton;
@@ -14,6 +15,12 @@ public class MainMenu extends MenuScene {
     public static final float BUTTON_HEIGHT = 2;
     public static final float BUTTON_SPACING = 0.5f;
 
+    private final BasicEvent close;
+
+    public MainMenu(BasicEvent close) {
+        this.close = close;
+    }
+
     @Override
     public void build() {
 
@@ -27,6 +34,7 @@ public class MainMenu extends MenuScene {
         playButton.setEvent(() -> switchScene(4));
         optionsButton.setEvent(() -> switchScene(2));
         aboutButton.setEvent(() -> switchScene(3));
+        quitButton.setEvent(close);
 
         addComponent(background);
 

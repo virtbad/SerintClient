@@ -98,6 +98,7 @@ public class Game extends Scene {
 
             if (gui.isPaused()){
                 gui.hideScreen();
+                renderer.setIngui(false);
                 ingame = true;
             }
 
@@ -165,10 +166,12 @@ public class Game extends Scene {
             if (gui.isPaused()){
                 gui.hideScreen();
                 ingame = true;
+                renderer.setIngui(false);
             }
             else if (ingame) {
                 ingame = false;
                 gui.showPauseScreen();
+                renderer.setIngui(true);
             }
         }
 
@@ -345,6 +348,7 @@ public class Game extends Scene {
     }
 
     public void start(){
+        gui.setStarted(true);
         gui.hideScreen();
 
         // Start cooldown
