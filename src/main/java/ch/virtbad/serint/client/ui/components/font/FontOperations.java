@@ -1,7 +1,5 @@
 package ch.virtbad.serint.client.ui.components.font;
 
-import java.text.Normalizer;
-
 /**
  * This class handles operations to be needed for displaying text.
  * The text is displayed by using primitive bitmap fonts. Oriented by the ascii table.
@@ -22,7 +20,7 @@ public class FontOperations {
         int index = 0;
 
         for (char character : characters) {
-            int c = toAscii(character);
+            int c = toCustomAscii(character);
 
             int uvX = getLetterUvX(c);
             int uvY = getLetterUvY(c);
@@ -123,7 +121,7 @@ public class FontOperations {
      * @param c character
      * @return ascii int (not byte because java bytes are automatically signed)
      */
-    private static int toAscii(char c){
+    private static int toCustomAscii(char c){
         if (c < 128) return (byte) c;
 
         if (c == 0x00FC) return 129; // ue

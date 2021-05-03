@@ -246,8 +246,8 @@ public class GameUI extends MenuScene {
             if (menuChanged){
                 menuChanged = false;
 
-                killerName.setText(String.format(ResourceHandler.getLanguages().getString("ui.death.killer"), issuer));
-                lifeLeft.setText(String.format(ResourceHandler.getLanguages().getString("ui.death.lives"), own.getAttributes().getHealth()));
+                killerName.setText(String.format(ResourceHandler.getLanguages().getString("ui.game.death.killer"), issuer));
+                lifeLeft.setText(String.format(ResourceHandler.getLanguages().getString("ui.game.death.lives"), own.getAttributes().getHealth()));
             }
 
             int time = (int) (Time.getSeconds() * 10 - countdownStart * 10);
@@ -258,7 +258,7 @@ public class GameUI extends MenuScene {
         }else if (loseMenu.isVisible()){
             if (menuChanged) {
 
-                killerName.setText(String.format(ResourceHandler.getLanguages().getString("ui.death.killer"), issuer));
+                killerName.setText(String.format(ResourceHandler.getLanguages().getString("ui.game.death.killer"), issuer));
             }
         }else if (startMenu.isVisible()){
 

@@ -36,7 +36,7 @@ public class SettingsMenu extends MenuScene {
         backButton.setEvent(this::checkout);
         addComponent(backButton);
 
-        Label warningLabel = new Label(-camera.getXMinUnits() / 2, backButton.getY() + BUTTON_HEIGHT, camera.getXMinUnits(), 0.5f, 0.25f, ResourceHandler.getLanguages().getString("ui.settings.disclaimer"), true, false);
+        Label warningLabel = new Label(-camera.getXMinUnits() / 2, backButton.getY() + BUTTON_HEIGHT, camera.getXMinUnits(), 0.5f, 0.325f, ResourceHandler.getLanguages().getString("ui.settings.disclaimer"), true, false);
         addComponent(warningLabel);
 
         float x = -camera.getXMinUnits() / 2 + 1f;

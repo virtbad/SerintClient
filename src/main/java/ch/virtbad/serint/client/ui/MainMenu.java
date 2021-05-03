@@ -15,7 +15,7 @@ public class MainMenu extends MenuScene {
     public static final float BUTTON_WIDTH = 16;
     public static final float BUTTON_HEIGHT = 2;
     public static final float BUTTON_SPACING = 0.5f;
-    public static final float LOGO_HEIGHT = 5;
+    public static final float LOGO_HEIGHT = 6;
 
     private final BasicEvent close;
 

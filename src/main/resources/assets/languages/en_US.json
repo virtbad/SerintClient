@@ -1,6 +1,6 @@
 {
   "identifier": "en_US",
-  "name": "American English",
+  "name": "A. English",
   "content": {
     "name": "Serint",
     "ui.main.button.play": "Play",
@@ -58,8 +58,8 @@
     "ui.game.win.title": "Won",
     "ui.game.win.subtitle": "You're the last survivor",
     "ui.game.lose.title": "Eliminated",
-    "ui.game.death.title": "Died",
-    "ui.game.death.killer": "%s killed you",
+    "ui.game.death.title": "Absorbed",
+    "ui.game.death.killer": "%s absorbed you",
     "ui.game.death.lives": "You have %s lives left",
     "ui.game.death.respawn": "Respawn in",
     "ui.game.pause.title": "Paused",

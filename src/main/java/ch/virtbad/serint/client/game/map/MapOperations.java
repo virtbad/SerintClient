@@ -247,13 +247,13 @@ public class MapOperations {
                 int relativeY = j == 2 || j == 3 ? 0 : 1;
 
                 int textureY = cosmetic.getType() / textureHeight;
-                int textureX = cosmetic.getType() - textureY * textureWidth;
+                int textureX = cosmetic.getType() % textureWidth;
 
                 int index = i * 16 + j * 4;
                 cosmetics[index] = cosmetic.getX() + relativeX;
                 cosmetics[index + 1] = cosmetic.getY() + relativeY;
                 cosmetics[index + 2] = textureX + relativeX;
-                cosmetics[index + 3] = textureY + relativeY == 1 ? 0 : 1;
+                cosmetics[index + 3] = textureY + (relativeY == 0 ? 1 : 0);
             }
         }
 
