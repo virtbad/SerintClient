@@ -130,8 +130,8 @@ public class DisplayHandler {
      * @param height new height
      */
     public void resize(int width, int height) {
-        // TODO: Do base resizing
-        scenes.get(selected).resized(width, height);
+        // Check because tiling WMs are fast
+        if(scenes.get(selected) != null) scenes.get(selected).resized(width, height);
     }
 
 }
